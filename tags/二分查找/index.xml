@@ -1,0 +1,333 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>二分查找 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/</link><description>二分查找 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Fri, 31 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" rel="self" type="application/rss+xml"/><item><title>Q704 二分查找</title><link>https://soybeanmilk.netlify.app/q704-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/</link><pubDate>Fri, 31 Jul 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q704-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/</guid><description><![CDATA[<blockquote>
+<p><strong>题目</strong>：给定一个升序整数数组 <code>nums</code> 和目标值 <code>target</code>。如果目标值存在，返回它的下标；否则返回 <code>-1</code>。题目保证数组中的元素不重复。</p></blockquote>
+<h2 id="简要回答" class="headerLink">
+    <a href="#%e7%ae%80%e8%a6%81%e5%9b%9e%e7%ad%94" class="header-mark"></a>1 简要回答</h2><p>二分查找适用于<strong>有序数组</strong>。每次比较中间元素与目标值，根据大小关系排除一半搜索范围，直到找到目标值或区间为空。</p>
+<p>真正容易出错的地方不是算法思想，而是区间边界。写代码前必须先确定搜索区间是 <code>[left, right]</code> 还是 <code>[left, right)</code>，并让循环条件与边界更新始终遵守这个定义，这就是<strong>循环不变量</strong>。</p>
+<ul>
+<li>时间复杂度：$O(\log n)$</li>
+<li>空间复杂度：$O(1)$</li>
+</ul>
+<h2 id="核心思想" class="headerLink">
+    <a href="#%e6%a0%b8%e5%bf%83%e6%80%9d%e6%83%b3" class="header-mark"></a>2 核心思想</h2><p>设数组为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">下标：  0   1   2   3   4   5
+</span></span><span class="line"><span class="cl">数组： -1   0   3   5   9  12
+</span></span><span class="line"><span class="cl">目标： target = 9
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查找过程：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">第 1 次：[0, 5]，mid = 2，nums[2] = 3 &lt; 9
+</span></span><span class="line"><span class="cl">         排除下标 0～2，下一轮搜索 [3, 5]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">第 2 次：[3, 5]，mid = 4，nums[4] = 9
+</span></span><span class="line"><span class="cl">         找到目标，返回下标 4
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>每次至少排除当前区间的一半，所以最多查找约 $\log_2 n$ 次。</p>
+<h2 id="什么是循环不变量" class="headerLink">
+    <a href="#%e4%bb%80%e4%b9%88%e6%98%af%e5%be%aa%e7%8e%af%e4%b8%8d%e5%8f%98%e9%87%8f" class="header-mark"></a>3 什么是循环不变量</h2><blockquote>
+<p>在循环开始、执行过程中和结束时，搜索目标所在区间的定义始终不变。</p></blockquote>
+<p>例如选择左闭右闭区间 <code>[left, right]</code> 后：</p>
+<ul>
+<li><code>left</code> 指向的元素在搜索范围内。</li>
+<li><code>right</code> 指向的元素也在搜索范围内。</li>
+<li>每次更新后，新的区间仍然必须是左闭右闭。</li>
+</ul>
+<p>因此不能一会儿按照闭区间写 <code>right = mid - 1</code>，一会儿又按照开区间写 <code>right = mid</code>。</p>
+<h2 id="size-与-size---1-的区别" class="headerLink">
+    <a href="#size-%e4%b8%8e-size---1-%e7%9a%84%e5%8c%ba%e5%88%ab" class="header-mark"></a>4 size 与 size - 1 的区别</h2><p>假设数组中有 6 个元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">元素个数 size = 6
+</span></span><span class="line"><span class="cl">有效下标：0、1、2、3、4、5
+</span></span><span class="line"><span class="cl">最后一个有效下标：size - 1 = 5
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>因此，<code>size</code> 表示的是<strong>元素个数</strong>，而 <code>size - 1</code> 才是<strong>最后一个元素的下标</strong>。</p>
+<h3 id="为什么左闭右闭使用-size---1" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e5%b7%a6%e9%97%ad%e5%8f%b3%e9%97%ad%e4%bd%bf%e7%94%a8-size---1" class="header-mark"></a>4.1 为什么左闭右闭使用 size - 1</h3><p>左闭右闭区间 <code>[left, right]</code> 包含 <code>right</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">数组有效下标：[0, 5]
+</span></span><span class="line"><span class="cl">搜索区间：    [0, 5]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>所以 <code>right</code> 必须指向最后一个有效元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果这里写成 <code>right = nums.size()</code>，就会把不存在的 <code>nums[6]</code> 也放进搜索范围，可能造成越界。</p>
+<h3 id="为什么左闭右开使用-size" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e5%b7%a6%e9%97%ad%e5%8f%b3%e5%bc%80%e4%bd%bf%e7%94%a8-size" class="header-mark"></a>4.2 为什么左闭右开使用 size</h3><p>左闭右开区间 <code>[left, right)</code> 不包含 <code>right</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">数组有效下标：[0, 5]
+</span></span><span class="line"><span class="cl">搜索区间：    [0, 6)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>虽然 <code>right = 6</code>，但右端点不参与搜索，真正包含的仍然是下标 <code>0～5</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><strong>记忆方法</strong>：</p>
+<ul>
+<li>右边界<strong>包含在区间里</strong>：它必须是有效下标，所以使用 <code>size - 1</code>。</li>
+<li>右边界<strong>不包含在区间里</strong>：它可以指向末尾元素的后一个位置，所以使用 <code>size</code>。</li>
+</ul></blockquote>
+<h2 id="写法一左闭右闭区间" class="headerLink">
+    <a href="#%e5%86%99%e6%b3%95%e4%b8%80%e5%b7%a6%e9%97%ad%e5%8f%b3%e9%97%ad%e5%8c%ba%e9%97%b4" class="header-mark"></a>5 写法一：左闭右闭区间</h2><p>因为左右端点都有效，所以：</p>
+<ul>
+<li>初始化：<code>right = nums.size() - 1</code></li>
+<li>循环条件：<code>left &lt;= right</code></li>
+<li>去左半边：<code>right = mid - 1</code></li>
+<li>去右半边：<code>left = mid + 1</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">search</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">,</span> <span class="kt">int</span> <span class="n">target</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">left</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 搜索区间始终是 [left, right]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">while</span> <span class="p">(</span><span class="n">left</span> <span class="o">&lt;=</span> <span class="n">right</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">left</span> <span class="o">+</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="n">mid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">target</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">left</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>   <span class="c1">// 下一轮：[mid + 1, right]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">right</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">// 下一轮：[left, mid - 1]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>初学时可以先固定使用左闭右闭写法。循环条件和边界更新比较对称：<code>&lt;=</code>、<code>mid + 1</code>、<code>mid - 1</code>。</p></blockquote>
+<h2 id="写法二左闭右开区间" class="headerLink">
+    <a href="#%e5%86%99%e6%b3%95%e4%ba%8c%e5%b7%a6%e9%97%ad%e5%8f%b3%e5%bc%80%e5%8c%ba%e9%97%b4" class="header-mark"></a>6 写法二：左闭右开区间</h2><p>因为右端点不在搜索范围内，所以：</p>
+<ul>
+<li>初始化：<code>right = nums.size()</code></li>
+<li>循环条件：<code>left &lt; right</code></li>
+<li>去左半边：<code>right = mid</code></li>
+<li>去右半边：<code>left = mid + 1</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">search</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">,</span> <span class="kt">int</span> <span class="n">target</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">left</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 搜索区间始终是 [left, right)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">while</span> <span class="p">(</span><span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">left</span> <span class="o">+</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="n">mid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">target</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">left</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">// 下一轮：[mid + 1, right)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">right</span> <span class="o">=</span> <span class="n">mid</span><span class="p">;</span>     <span class="c1">// 下一轮：[left, mid)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="两种写法对照" class="headerLink">
+    <a href="#%e4%b8%a4%e7%a7%8d%e5%86%99%e6%b3%95%e5%af%b9%e7%85%a7" class="header-mark"></a>7 两种写法对照</h2><table>
+  <thead>
+      <tr>
+          <th>对比项</th>
+          <th>左闭右闭</th>
+          <th>左闭右开</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>搜索区间</td>
+          <td><code>[left, right]</code></td>
+          <td><code>[left, right)</code></td>
+      </tr>
+      <tr>
+          <td><code>right</code> 初值</td>
+          <td><code>size - 1</code></td>
+          <td><code>size</code></td>
+      </tr>
+      <tr>
+          <td>循环条件</td>
+          <td><code>left &lt;= right</code></td>
+          <td><code>left &lt; right</code></td>
+      </tr>
+      <tr>
+          <td>向左收缩</td>
+          <td><code>right = mid - 1</code></td>
+          <td><code>right = mid</code></td>
+      </tr>
+      <tr>
+          <td>向右收缩</td>
+          <td><code>left = mid + 1</code></td>
+          <td><code>left = mid + 1</code></td>
+      </tr>
+      <tr>
+          <td>区间为空</td>
+          <td><code>left &gt; right</code></td>
+          <td><code>left == right</code></td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p><strong>不要混用</strong>：<code>[left, right]</code> 配套的是 <code>left &lt;= right</code> 和 <code>right = mid - 1</code>；<code>[left, right)</code> 配套的是 <code>left &lt; right</code> 和 <code>right = mid</code>。混用会漏查元素、越界或造成死循环。</p></blockquote>
+<h2 id="为什么这样计算-mid" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%bf%99%e6%a0%b7%e8%ae%a1%e7%ae%97-mid" class="header-mark"></a>8 为什么这样计算 mid</h2><p>推荐写法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">left</span> <span class="o">+</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>不推荐：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>数学结果相同，但当 <code>left</code> 和 <code>right</code> 很大时，<code>left + right</code> 可能发生整数溢出。先计算差值更加安全。</p>
+<h2 id="二分查找的真正前提" class="headerLink">
+    <a href="#%e4%ba%8c%e5%88%86%e6%9f%a5%e6%89%be%e7%9a%84%e7%9c%9f%e6%ad%a3%e5%89%8d%e6%8f%90" class="header-mark"></a>9 二分查找的真正前提</h2><p>基础二分查找需要搜索空间具有<strong>单调性</strong>。在本题中表现为数组升序，因此比较 <code>nums[mid]</code> 与 <code>target</code> 后能够确定目标只可能位于哪一半。</p>
+<blockquote>
+<p>数组中有重复元素还能二分吗？可以。重复元素不会让普通二分查找失效，但返回的可能是任意一个匹配位置。如果题目要求第一个或最后一个匹配位置，就需要使用边界二分（lower_bound / upper_bound）。</p></blockquote>
+<h3 id="常见应用" class="headerLink">
+    <a href="#%e5%b8%b8%e8%a7%81%e5%ba%94%e7%94%a8" class="header-mark"></a>9.1 常见应用</h3><ul>
+<li>在有序数组中查找某个值。</li>
+<li>查找第一个大于等于目标值的位置，即 <code>lower_bound</code>。</li>
+<li>查找最后一个小于等于目标值的位置。</li>
+<li>对具有单调性的答案范围进行&quot;二分答案&quot;。</li>
+</ul>
+<p>相关练习：LeetCode 35 搜索插入位置、LeetCode 34 查找元素首末位置、LeetCode 69 x 的平方根、LeetCode 367 有效的完全平方数。</p>
+<h2 id="空数组的细节" class="headerLink">
+    <a href="#%e7%a9%ba%e6%95%b0%e7%bb%84%e7%9a%84%e7%bb%86%e8%8a%82" class="header-mark"></a>10 空数组的细节</h2><p><code>vector::size()</code> 返回无符号整数。如果直接计算 <code>nums.size() - 1</code>，空数组时会发生无符号下溢。因此左闭右闭版本先转换为有符号整数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="易错点" class="headerLink">
+    <a href="#%e6%98%93%e9%94%99%e7%82%b9" class="header-mark"></a>11 易错点</h2><ul>
+<li>没先定义搜索区间，就开始拼凑边界代码。</li>
+<li>左闭右闭写成 <code>while (left &lt; right)</code>，漏掉只剩一个元素的情况。</li>
+<li>左闭右开写成 <code>right = mid - 1</code>，额外漏掉一个元素。</li>
+<li>写成 <code>left = mid</code> 或 <code>right = mid</code> 时没有证明区间一定缩小，可能死循环。</li>
+<li>使用 <code>(left + right) / 2</code>，忽略整数溢出风险。</li>
+<li>看到重复元素就认为不能二分；真正的问题是返回哪一个匹配位置。</li>
+</ul>
+]]></description></item></channel></rss>

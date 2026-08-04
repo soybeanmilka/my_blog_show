@@ -1,4 +1,78 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>前缀和 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E5%89%8D%E7%BC%80%E5%92%8C/</link><description>前缀和 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Fri, 17 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E5%89%8D%E7%BC%80%E5%92%8C/" rel="self" type="application/rss+xml"/><item><title>Q525 连续数组（前缀和 + 哈希）</title><link>https://soybeanmilk.netlify.app/q525-%E8%BF%9E%E7%BB%AD%E6%95%B0%E7%BB%84%E5%89%8D%E7%BC%80%E5%92%8C%E5%93%88%E5%B8%8C/</link><pubDate>Fri, 17 Jul 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q525-%E8%BF%9E%E7%BB%AD%E6%95%B0%E7%BB%84%E5%89%8D%E7%BC%80%E5%92%8C%E5%93%88%E5%B8%8C/</guid><description><![CDATA[<div class="featured-image">
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>前缀和 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E5%89%8D%E7%BC%80%E5%92%8C/</link><description>前缀和 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Sat, 01 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E5%89%8D%E7%BC%80%E5%92%8C/" rel="self" type="application/rss+xml"/><item><title>Q209 长度最小的子数组</title><link>https://soybeanmilk.netlify.app/q209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/</link><pubDate>Sat, 01 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/</guid><description><![CDATA[<blockquote>
+<p><strong>题目</strong>：给定一个含有 n 个正整数的数组和一个正整数 s，找出该数组中满足其和 ≥ s 的长度最小的<strong>连续</strong>子数组，并返回其长度。如果不存在符合条件的子数组，返回 0。</p></blockquote>
+<h2 id="我的想法" class="headerLink">
+    <a href="#%e6%88%91%e7%9a%84%e6%83%b3%e6%b3%95" class="header-mark"></a>1 我的想法</h2><p>我看到这个问题，首先发现它是连续的、并且要求区间大小，会想到用前缀和操作——前缀和可以快速求出连续元素的值，但我对它的时间复杂度了解程度不够好。</p>
+<blockquote>
+<p><strong>核心结论</strong>：滑动窗口如果是求值的话，右窗口滑动的同时，大概率会有某个参数要进行操作，后续进行比较从而操作左窗口，这是一个连续过程，所以题目得是连续问题。</p></blockquote>
+<h2 id="简要回答" class="headerLink">
+    <a href="#%e7%ae%80%e8%a6%81%e5%9b%9e%e7%ad%94" class="header-mark"></a>2 简要回答</h2><p>因为数组元素都是正数，可以使用滑动窗口。右指针不断扩展并累加区间和；当区间和大于等于 <code>target</code> 时，持续移动左指针缩短区间并更新最小长度。两个指针都只向右移动，时间复杂度是 $O(n)$。</p>
+<h2 id="详细回答" class="headerLink">
+    <a href="#%e8%af%a6%e7%bb%86%e5%9b%9e%e7%ad%94" class="header-mark"></a>3 详细回答</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">minSubArrayLen</span><span class="p">(</span><span class="kt">int</span> <span class="n">target</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">left</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="c1">//左指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="c1">//右指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">res</span> <span class="o">=</span> <span class="n">sz</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span><span class="p">(</span><span class="n">right</span> <span class="o">!=</span> <span class="n">sz</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sum</span> <span class="o">+=</span> <span class="n">nums</span><span class="p">[</span><span class="n">right</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span><span class="p">(</span><span class="n">sum</span> <span class="o">&gt;=</span> <span class="n">target</span><span class="p">){</span><span class="c1">//注意,判断left移动是一个连续过程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">res</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">res</span> <span class="p">,</span> <span class="n">right</span><span class="o">-</span><span class="n">left</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">sum</span> <span class="o">-=</span> <span class="n">nums</span><span class="p">[</span><span class="n">left</span><span class="o">++</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">right</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">res</span> <span class="o">==</span> <span class="n">sz</span><span class="o">+</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="前缀和思路是否可行" class="headerLink">
+    <a href="#%e5%89%8d%e7%bc%80%e5%92%8c%e6%80%9d%e8%b7%af%e6%98%af%e5%90%a6%e5%8f%af%e8%a1%8c" class="header-mark"></a>4 前缀和思路是否可行</h2><p><strong>可以。</strong> 设前缀和为 <code>prefix</code>，因为题目中的元素都是正整数，所以 <code>prefix</code> 严格递增。对每个左端点，可以二分查找第一个满足区间和大于等于 <code>target</code> 的右端点。</p>
+<ul>
+<li>只用前缀和枚举左右端点：$O(n^2)$</li>
+<li>前缀和 + 二分查找：$O(n\log n)$</li>
+<li>滑动窗口：$O(n)$</li>
+</ul>
+<p>滑动窗口更快的关键也是&quot;元素全为正数&quot;：右端点右移时区间和只会增大，左端点右移时区间和只会减小，因此两个指针都不需要回退。</p>
+<blockquote>
+<p><strong>易错或补充</strong>：比如数组 <code>[1,1,1,1,100]</code>，<code>target = 100</code>，滑动窗口的 <code>res</code> 初始值（<code>sz+1</code>）要够大，否则取不到正确答案。</p></blockquote>
+<p><figure><a class="lightgallery" href="/q209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/image-1.png" title="滑动窗口图解" data-thumbnail="/q209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/image-1.png">
+        
+    </a></figure></p>
+]]></description></item><item><title>Q525 连续数组（前缀和 + 哈希）</title><link>https://soybeanmilk.netlify.app/q525-%E8%BF%9E%E7%BB%AD%E6%95%B0%E7%BB%84%E5%89%8D%E7%BC%80%E5%92%8C%E5%93%88%E5%B8%8C/</link><pubDate>Fri, 17 Jul 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q525-%E8%BF%9E%E7%BB%AD%E6%95%B0%E7%BB%84%E5%89%8D%E7%BC%80%E5%92%8C%E5%93%88%E5%B8%8C/</guid><description><![CDATA[<div class="featured-image">
                 <img src="/q525-%E8%BF%9E%E7%BB%AD%E6%95%B0%E7%BB%84%E5%89%8D%E7%BC%80%E5%92%8C%E5%93%88%E5%B8%8C/featured-image.png" referrerpolicy="no-referrer">
             </div><blockquote>
 <p><strong>来源</strong>：本题是 LeetCode 525，前缀和 + 哈希表的典型应用。这篇是我从 Obsidian 笔记整理过来的第一篇博客文章。</p></blockquote>
@@ -147,4 +221,162 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div>]]></description></item></channel></rss>
+</div>]]></description></item><item><title>Q560 和为 K 的子数组</title><link>https://soybeanmilk.netlify.app/q560-%E5%92%8C%E4%B8%BAk%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/</link><pubDate>Fri, 17 Jul 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q560-%E5%92%8C%E4%B8%BAk%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/</guid><description><![CDATA[<blockquote>
+<p><strong>题目</strong>：给你一个整数数组 <code>nums</code> 和一个整数 <code>k</code>，请你统计并返回该数组中和为 <code>k</code> 的连续子数组的个数。</p></blockquote>
+<h2 id="解题核心思路" class="headerLink">
+    <a href="#%e8%a7%a3%e9%a2%98%e6%a0%b8%e5%bf%83%e6%80%9d%e8%b7%af" class="header-mark"></a>1 解题核心思路</h2><h3 id="1-为什么用前缀和" class="headerLink">
+    <a href="#1-%e4%b8%ba%e4%bb%80%e4%b9%88%e7%94%a8%e5%89%8d%e7%bc%80%e5%92%8c" class="header-mark"></a>1.1 1. 为什么用前缀和？</h3><p>题目要求<strong>相邻子数组的和</strong>等于 K，前缀和天然适合处理区间和：</p>
+<p>$$preSum[r] - preSum[l] = K \iff preSum[l] = preSum[r] - K$$</p>
+<h3 id="2-为什么用哈希表" class="headerLink">
+    <a href="#2-%e4%b8%ba%e4%bb%80%e4%b9%88%e7%94%a8%e5%93%88%e5%b8%8c%e8%a1%a8" class="header-mark"></a>1.2 2. 为什么用哈希表？</h3><p>要从大量子数组中<strong>快速找出满足条件</strong>的数量。暴力双 for 循环复杂度 $O(n^2)$，哈希表可以降到 $O(n)$。</p>
+<p>哈希表的核心作用：空间换时间——当题目既要计算子数组情况，又要从子数组中快速查找满足条件的项时，哈希表是首选工具。</p>
+<h3 id="3-哈希表存什么" class="headerLink">
+    <a href="#3-%e5%93%88%e5%b8%8c%e8%a1%a8%e5%ad%98%e4%bb%80%e4%b9%88" class="header-mark"></a>1.3 3. 哈希表存什么？</h3><table>
+  <thead>
+      <tr>
+          <th>场景</th>
+          <th>哈希表记录</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>求<strong>数量</strong>（本题）</td>
+          <td><code>val → count</code>（前缀和 → 出现次数）</td>
+      </tr>
+      <tr>
+          <td>求<strong>最大/最小</strong>长度</td>
+          <td><code>val → index</code>（前缀和 → 首次下标）</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="算法步骤" class="headerLink">
+    <a href="#%e7%ae%97%e6%b3%95%e6%ad%a5%e9%aa%a4" class="header-mark"></a>2 算法步骤</h2><ol>
+<li>遍历数组，维护<strong>当前前缀和</strong> <code>sum</code></li>
+<li>计算 <code>need = sum - K</code>，在哈希表中查找 <code>need</code> 出现的次数，累加到结果</li>
+<li>将当前 <code>sum</code> 存入哈希表（次数 +1）</li>
+<li>关键初始化：<code>map[0] = 1</code>，处理从数组开头就满足条件的子数组</li>
+</ol>
+<h2 id="c-完整-ac-代码" class="headerLink">
+    <a href="#c-%e5%ae%8c%e6%95%b4-ac-%e4%bb%a3%e7%a0%81" class="header-mark"></a>3 C++ 完整 AC 代码</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unordered_map&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">subarraySum</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">valToCount</span><span class="p">;</span> <span class="c1">// 前缀和 → 出现次数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">valToCount</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>                  <span class="c1">// 边界初始化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="nl">num</span> <span class="p">:</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sum</span> <span class="o">+=</span> <span class="n">num</span><span class="p">;</span>                     <span class="c1">// 累加当前前缀和
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="kt">int</span> <span class="n">need</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">-</span> <span class="n">k</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">valToCount</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">need</span><span class="p">)</span> <span class="o">!=</span> <span class="n">valToCount</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="c1">// 此处为满足需求
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">res</span> <span class="o">+=</span> <span class="n">valToCount</span><span class="p">[</span><span class="n">need</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">valToCount</span><span class="p">[</span><span class="n">sum</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="复杂度分析" class="headerLink">
+    <a href="#%e5%a4%8d%e6%9d%82%e5%ba%a6%e5%88%86%e6%9e%90" class="header-mark"></a>4 复杂度分析</h2><ul>
+<li><strong>时间复杂度</strong>：$O(n)$，一次遍历</li>
+<li><strong>空间复杂度</strong>：$O(n)$，哈希表最坏存 n 个不同前缀和</li>
+</ul>
+<h2 id="精简优化版不开前缀和数组一次遍历" class="headerLink">
+    <a href="#%e7%b2%be%e7%ae%80%e4%bc%98%e5%8c%96%e7%89%88%e4%b8%8d%e5%bc%80%e5%89%8d%e7%bc%80%e5%92%8c%e6%95%b0%e7%bb%84%e4%b8%80%e6%ac%a1%e9%81%8d%e5%8e%86" class="header-mark"></a>5 精简优化版（不开前缀和数组，一次遍历）</h2><blockquote>
+<p>原代码先构造完整 <code>preSum</code> 数组再遍历，多了一次 $O(n)$ 的预处理。改为一边累加一边查哈希表，只扫一遍。</p></blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">subarraySum</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">mp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="nl">x</span> <span class="p">:</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sum</span> <span class="o">+=</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">mp</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">sum</span> <span class="o">-</span> <span class="n">k</span><span class="p">))</span> <span class="n">ans</span> <span class="o">+=</span> <span class="n">mp</span><span class="p">[</span><span class="n">sum</span> <span class="o">-</span> <span class="n">k</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mp</span><span class="p">[</span><span class="n">sum</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="同类题型总结前缀和--哈希通用套路" class="headerLink">
+    <a href="#%e5%90%8c%e7%b1%bb%e9%a2%98%e5%9e%8b%e6%80%bb%e7%bb%93%e5%89%8d%e7%bc%80%e5%92%8c--%e5%93%88%e5%b8%8c%e9%80%9a%e7%94%a8%e5%a5%97%e8%b7%af" class="header-mark"></a>6 同类题型总结（前缀和 + 哈希通用套路）</h2><table>
+  <thead>
+      <tr>
+          <th>题目</th>
+          <th>转化条件</th>
+          <th>哈希表记录</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>LeetCode 560 和为 K 的子数组</td>
+          <td><code>pre[r] - pre[l] = K</code></td>
+          <td>前缀和 → 出现次数</td>
+      </tr>
+      <tr>
+          <td>LeetCode 525 连续数组</td>
+          <td><code>pre[r] = pre[l]</code>（0→-1, 1→1）</td>
+          <td>前缀和 → 首次下标</td>
+      </tr>
+      <tr>
+          <td>LeetCode 974 和可被 K 整除</td>
+          <td>同余前缀和配对</td>
+          <td>余数 → 出现次数</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p><strong>通用套路</strong>：前缀和做差转化区间条件 → 哈希表快速查找 → 根据题目要求决定存次数还是存下标。</p></blockquote>
+<h2 id="易错提醒" class="headerLink">
+    <a href="#%e6%98%93%e9%94%99%e6%8f%90%e9%86%92" class="header-mark"></a>7 易错提醒</h2><ul>
+<li><code>valToCount[0] = 1</code> 不能漏：当 <code>sum == k</code> 时，<code>need = 0</code>，此时应计为一种合法方案。</li>
+<li>先查哈希表再更新：避免 <code>k = 0</code> 时当前前缀和自己匹配（空子数组不算）。</li>
+</ul>
+]]></description></item></channel></rss>

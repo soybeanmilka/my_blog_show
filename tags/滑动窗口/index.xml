@@ -1,0 +1,75 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>滑动窗口 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/</link><description>滑动窗口 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Sat, 01 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="self" type="application/rss+xml"/><item><title>Q209 长度最小的子数组</title><link>https://soybeanmilk.netlify.app/q209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/</link><pubDate>Sat, 01 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/</guid><description><![CDATA[<blockquote>
+<p><strong>题目</strong>：给定一个含有 n 个正整数的数组和一个正整数 s，找出该数组中满足其和 ≥ s 的长度最小的<strong>连续</strong>子数组，并返回其长度。如果不存在符合条件的子数组，返回 0。</p></blockquote>
+<h2 id="我的想法" class="headerLink">
+    <a href="#%e6%88%91%e7%9a%84%e6%83%b3%e6%b3%95" class="header-mark"></a>1 我的想法</h2><p>我看到这个问题，首先发现它是连续的、并且要求区间大小，会想到用前缀和操作——前缀和可以快速求出连续元素的值，但我对它的时间复杂度了解程度不够好。</p>
+<blockquote>
+<p><strong>核心结论</strong>：滑动窗口如果是求值的话，右窗口滑动的同时，大概率会有某个参数要进行操作，后续进行比较从而操作左窗口，这是一个连续过程，所以题目得是连续问题。</p></blockquote>
+<h2 id="简要回答" class="headerLink">
+    <a href="#%e7%ae%80%e8%a6%81%e5%9b%9e%e7%ad%94" class="header-mark"></a>2 简要回答</h2><p>因为数组元素都是正数，可以使用滑动窗口。右指针不断扩展并累加区间和；当区间和大于等于 <code>target</code> 时，持续移动左指针缩短区间并更新最小长度。两个指针都只向右移动，时间复杂度是 $O(n)$。</p>
+<h2 id="详细回答" class="headerLink">
+    <a href="#%e8%af%a6%e7%bb%86%e5%9b%9e%e7%ad%94" class="header-mark"></a>3 详细回答</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">minSubArrayLen</span><span class="p">(</span><span class="kt">int</span> <span class="n">target</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">left</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="c1">//左指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="c1">//右指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">res</span> <span class="o">=</span> <span class="n">sz</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span><span class="p">(</span><span class="n">right</span> <span class="o">!=</span> <span class="n">sz</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sum</span> <span class="o">+=</span> <span class="n">nums</span><span class="p">[</span><span class="n">right</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span><span class="p">(</span><span class="n">sum</span> <span class="o">&gt;=</span> <span class="n">target</span><span class="p">){</span><span class="c1">//注意,判断left移动是一个连续过程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">res</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">res</span> <span class="p">,</span> <span class="n">right</span><span class="o">-</span><span class="n">left</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">sum</span> <span class="o">-=</span> <span class="n">nums</span><span class="p">[</span><span class="n">left</span><span class="o">++</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">right</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">res</span> <span class="o">==</span> <span class="n">sz</span><span class="o">+</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="前缀和思路是否可行" class="headerLink">
+    <a href="#%e5%89%8d%e7%bc%80%e5%92%8c%e6%80%9d%e8%b7%af%e6%98%af%e5%90%a6%e5%8f%af%e8%a1%8c" class="header-mark"></a>4 前缀和思路是否可行</h2><p><strong>可以。</strong> 设前缀和为 <code>prefix</code>，因为题目中的元素都是正整数，所以 <code>prefix</code> 严格递增。对每个左端点，可以二分查找第一个满足区间和大于等于 <code>target</code> 的右端点。</p>
+<ul>
+<li>只用前缀和枚举左右端点：$O(n^2)$</li>
+<li>前缀和 + 二分查找：$O(n\log n)$</li>
+<li>滑动窗口：$O(n)$</li>
+</ul>
+<p>滑动窗口更快的关键也是&quot;元素全为正数&quot;：右端点右移时区间和只会增大，左端点右移时区间和只会减小，因此两个指针都不需要回退。</p>
+<blockquote>
+<p><strong>易错或补充</strong>：比如数组 <code>[1,1,1,1,100]</code>，<code>target = 100</code>，滑动窗口的 <code>res</code> 初始值（<code>sz+1</code>）要够大，否则取不到正确答案。</p></blockquote>
+<p><figure><a class="lightgallery" href="/q209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/image-1.png" title="滑动窗口图解" data-thumbnail="/q209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/image-1.png">
+        
+    </a></figure></p>
+]]></description></item></channel></rss>

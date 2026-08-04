@@ -1,0 +1,109 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>快慢指针 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E5%BF%AB%E6%85%A2%E6%8C%87%E9%92%88/</link><description>快慢指针 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Tue, 04 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E5%BF%AB%E6%85%A2%E6%8C%87%E9%92%88/" rel="self" type="application/rss+xml"/><item><title>Q142 环形链表II</title><link>https://soybeanmilk.netlify.app/q142-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8ii/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q142-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8ii/</guid><description><![CDATA[<blockquote>
+<p><strong>题目</strong>：给定一个链表的头节点 <code>head</code>，返回链表开始入环的第一个节点。如果链表无环，返回 <code>null</code>。</p></blockquote>
+<h2 id="我的想法" class="headerLink">
+    <a href="#%e6%88%91%e7%9a%84%e6%83%b3%e6%b3%95" class="header-mark"></a>1 我的想法</h2><p>最容易踩的坑：以为快慢指针第一次相遇就是答案。<strong>第一次相遇点不是环入口</strong>——相遇后还要从头再走一遍：让 <code>cur</code>（从 head 出发）和 <code>fast</code>（停在相遇点）同步各走 1 步，两者相遇的位置才是环入口。</p>
+<h2 id="简要回答" class="headerLink">
+    <a href="#%e7%ae%80%e8%a6%81%e5%9b%9e%e7%ad%94" class="header-mark"></a>2 简要回答</h2><ol>
+<li>fast 每次 2 步、slow 每次 1 步，若 <code>fast</code> 或 <code>fast-&gt;next</code> 为空 → 无环，返回 null。</li>
+<li>第一次 <code>fast == slow</code> → 有环，记下相遇点。</li>
+<li><code>cur = head</code>，<code>cur</code> 与 <code>fast</code> 各走 1 步，直到 <code>fast == cur</code> → 返回该节点（环入口）。</li>
+</ol>
+<ul>
+<li>时间复杂度：$O(n)$</li>
+<li>空间复杂度：$O(1)$</li>
+</ul>
+<h2 id="为什么第一次相遇点不是入口" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e7%ac%ac%e4%b8%80%e6%ac%a1%e7%9b%b8%e9%81%87%e7%82%b9%e4%b8%8d%e6%98%af%e5%85%a5%e5%8f%a3" class="header-mark"></a>3 为什么第一次相遇点不是入口</h2><p>第一次相遇发生在环内，具体是环内哪个点取决于 <code>a</code> 和 <code>b</code> 的比例，<strong>没有任何规律保证它是入口</strong>。所以第二阶段必须有。</p>
+<h2 id="为什么第二轮双指针能在入口相遇" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e7%ac%ac%e4%ba%8c%e8%bd%ae%e5%8f%8c%e6%8c%87%e9%92%88%e8%83%bd%e5%9c%a8%e5%85%a5%e5%8f%a3%e7%9b%b8%e9%81%87" class="header-mark"></a>4 为什么第二轮双指针能在入口相遇</h2><p>设 head→环入口距离为 <code>a</code>，环入口→第一次相遇点（沿前进方向）距离为 <code>b</code>，环长为 <code>c</code>。</p>
+<p>相遇时（fast 走的路程是 slow 的 2 倍）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">slow 走：a + b
+</span></span><span class="line"><span class="cl">fast 走：2(a + b) = a + b + n·c     （fast 比 slow 多绕了 n 圈）
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">⇒  a + b = n·c
+</span></span><span class="line"><span class="cl">⇒  a = n·c - b
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>含义：</p>
+<ul>
+<li>从 head 走 <code>a</code> 步 → 到达环入口；</li>
+<li>从相遇点走 <code>a</code> 步 → 绕 <code>n</code> 圈后再退 <code>b</code> 步 → 也到达环入口。</li>
+</ul>
+<p>所以 <code>cur</code>（head 出发）和 <code>fast</code>（相遇点出发）同步各走 1 步，恰好都在走 <code>a</code> 步后到达环入口，相遇。</p>
+<h2 id="代码" class="headerLink">
+    <a href="#%e4%bb%a3%e7%a0%81" class="header-mark"></a>5 代码</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ListNode</span> <span class="o">*</span><span class="n">detectCycle</span><span class="p">(</span><span class="n">ListNode</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ListNode</span><span class="o">*</span> <span class="n">fast</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ListNode</span><span class="o">*</span> <span class="n">slow</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="n">fast</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">fast</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">==</span> <span class="k">nullptr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>          <span class="c1">// 无环
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>     <span class="c1">// 走 2 步
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>           <span class="c1">// 走 1 步
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">if</span> <span class="p">(</span><span class="n">fast</span> <span class="o">==</span> <span class="n">slow</span><span class="p">)</span> <span class="p">{</span>          <span class="c1">// 第一次相遇，说明有环
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">ListNode</span><span class="o">*</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">while</span> <span class="p">(</span><span class="n">fast</span> <span class="o">!=</span> <span class="n">cur</span><span class="p">)</span> <span class="p">{</span>    <span class="c1">// 同步走 1 步
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                    <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="n">cur</span><span class="p">;</span>              <span class="c1">// 环入口
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">nullptr</span><span class="p">;</span>                  <span class="c1">// fast 走到末尾，无环
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>用 <code>1→2→3→4→5→(3)</code>（3 是环入口，环长 3）验证：第一次相遇点在 5，第二阶段从 head 和 5 同步走，在 3 相遇 → 返回 3 ✓。</p>
+<h2 id="无环与空指针" class="headerLink">
+    <a href="#%e6%97%a0%e7%8e%af%e4%b8%8e%e7%a9%ba%e6%8c%87%e9%92%88" class="header-mark"></a>6 无环与空指针</h2><ul>
+<li>无环：<code>fast</code> 先到末尾，<code>fast == nullptr</code> 退出循环，返回 null。</li>
+<li>空链表 / 单节点：<code>fast == nullptr</code> 或 <code>fast-&gt;next == nullptr</code>，返回 null。</li>
+<li><code>fast-&gt;next-&gt;next</code> 在 <code>fast-&gt;next == nullptr</code> 已排除的前提下是安全的（最多为 null，下一轮循环判断）。</li>
+</ul>
+<h2 id="易错点" class="headerLink">
+    <a href="#%e6%98%93%e9%94%99%e7%82%b9" class="header-mark"></a>7 易错点</h2><ul>
+<li><strong>第一次 <code>fast == slow</code> 直接 return 是错的</strong>：那只是环内某个点，不是入口。</li>
+<li>第二阶段不需要判空：已确认有环，<code>cur</code> 和 <code>fast</code> 必然相遇。</li>
+<li>无环判断必须覆盖 <code>fast == nullptr</code> 和 <code>fast-&gt;next == nullptr</code> 两种。</li>
+<li>第一阶段别把 slow 写成走 2 步——快慢都走 2 步永远追不上。</li>
+</ul>
+]]></description></item></channel></rss>
