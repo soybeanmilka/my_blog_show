@@ -8,7 +8,7 @@
   'use strict'
 
   /* 网易云音乐 meting API 兜底（元素上有 api 属性时用元素的） */
-  window.meting_api = window.meting_api || 'https://meting.qjqq.cn/?server=:server&type=:type&id=:id&r=:r'
+  window.meting_api = window.meting_api || 'https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r'
 
   /* ---------- 飘落的花瓣 ---------- */
   function initPetals () {
