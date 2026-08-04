@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Leetcode on 豆浆小屋</title><link>https://soybeanmilka.github.io/my_blog_show/tags/leetcode/</link><description>Recent content in Leetcode on 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>豆浆小屋</copyright><lastBuildDate>Tue, 04 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilka.github.io/my_blog_show/tags/leetcode/index.xml" rel="self" type="application/rss+xml"/><item><title>Q525 连续数组（前缀和 + 哈希）</title><link>https://soybeanmilka.github.io/my_blog_show/p/q525-%E8%BF%9E%E7%BB%AD%E6%95%B0%E7%BB%84%E5%89%8D%E7%BC%80%E5%92%8C--%E5%93%88%E5%B8%8C/</link><pubDate>Fri, 17 Jul 2026 00:00:00 +0000</pubDate><guid>https://soybeanmilka.github.io/my_blog_show/p/q525-%E8%BF%9E%E7%BB%AD%E6%95%B0%E7%BB%84%E5%89%8D%E7%BC%80%E5%92%8C--%E5%93%88%E5%B8%8C/</guid><description>&lt;blockquote&gt;
-&lt;p&gt;[!note] 来源
-本题是 LeetCode 525，前缀和 + 哈希表的典型应用。这篇是我从 Obsidian 笔记整理过来的第一篇博客文章。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：本题是 LeetCode 525，前缀和 + 哈希表的典型应用。这篇是我从 Obsidian 笔记整理过来的第一篇博客文章。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id="一解题核心转化"&gt;一、解题核心转化
 &lt;/h2&gt;&lt;h3 id="1-数值映射关键技巧"&gt;1. 数值映射（关键技巧）
