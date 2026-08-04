@@ -1,0 +1,249 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>C++ - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/c++/</link><description>C++ - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Tue, 04 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/c++/" rel="self" type="application/rss+xml"/><item><title>数组理论基础</title><link>https://soybeanmilk.netlify.app/%E6%95%B0%E7%BB%84%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/%E6%95%B0%E7%BB%84%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/</guid><description><![CDATA[<h1 id="数组理论基础" class="headerLink">
+    <a href="#%e6%95%b0%e7%bb%84%e7%90%86%e8%ae%ba%e5%9f%ba%e7%a1%80" class="header-mark"></a>数组理论基础</h1><blockquote>
+<p><strong>一句话概括</strong>
+数组是存放在一段连续内存空间中的同类型数据集合，因此支持按下标 $O(1)$ 随机访问，但在中间插入或删除时通常需要移动后续元素，时间复杂度为 $O(n)$。</p></blockquote>
+<h2 id="简易回答" class="headerLink">
+    <a href="#%e7%ae%80%e6%98%93%e5%9b%9e%e7%ad%94" class="header-mark"></a>1 简易回答</h2><p>数组有三个核心特点：</p>
+<ol>
+<li>元素类型相同。</li>
+<li>内存空间连续。</li>
+<li>可以通过从 <code>0</code> 开始的下标直接访问元素。</li>
+</ol>
+<p>连续内存让数组可以根据&quot;首地址 + 偏移量&quot;直接定位元素，所以随机访问是 $O(1)$；代价是中间插入或删除会破坏原有顺序，需要移动其他元素，通常是 $O(n)$。</p>
+<h2 id="详细回答" class="headerLink">
+    <a href="#%e8%af%a6%e7%bb%86%e5%9b%9e%e7%ad%94" class="header-mark"></a>2 详细回答</h2><h3 id="1-数组如何存储" class="headerLink">
+    <a href="#1-%e6%95%b0%e7%bb%84%e5%a6%82%e4%bd%95%e5%ad%98%e5%82%a8" class="header-mark"></a>2.1 1. 数组如何存储</h3><p>假设有一个 <code>int</code> 数组：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">nums</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>它在内存中可以理解为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">下标：   0      1      2      3      4
+</span></span><span class="line"><span class="cl">      ┌─────┬─────┬─────┬─────┬─────┐
+</span></span><span class="line"><span class="cl">元素：│  10 │  20 │  30 │  40 │  50 │
+</span></span><span class="line"><span class="cl">      └─────┴─────┴─────┴─────┴─────┘
+</span></span><span class="line"><span class="cl">地址： 1000   1004   1008   1012   1016
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果一个 <code>int</code> 占 4 字节，那么：</p>
+<p>$$
+\text{nums}[i]\text{ 的地址}=\text{首地址}+i\times 4
+$$</p>
+<p>更一般地：</p>
+<p>$$
+\operatorname{addr}(a[i])=\operatorname{base}(a)+i\times \operatorname{sizeof}(T)
+$$</p>
+<p>这就是数组能够通过下标在 $O(1)$ 时间内访问任意元素的原因。</p>
+<h3 id="2-为什么下标从-0-开始" class="headerLink">
+    <a href="#2-%e4%b8%ba%e4%bb%80%e4%b9%88%e4%b8%8b%e6%a0%87%e4%bb%8e-0-%e5%bc%80%e5%a7%8b" class="header-mark"></a>2.2 2. 为什么下标从 0 开始</h3><p>下标可以看成元素相对首地址的<strong>偏移量</strong>：</p>
+<ul>
+<li><code>a[0]</code>：从首地址偏移 0 个元素。</li>
+<li><code>a[1]</code>：从首地址偏移 1 个元素。</li>
+<li><code>a[i]</code>：从首地址偏移 $i$ 个元素。</li>
+</ul>
+<p>因此从 <code>0</code> 开始可以直接使用 <code>base + i × sizeof(T)</code> 计算地址。</p>
+<h3 id="3-插入和删除为什么慢" class="headerLink">
+    <a href="#3-%e6%8f%92%e5%85%a5%e5%92%8c%e5%88%a0%e9%99%a4%e4%b8%ba%e4%bb%80%e4%b9%88%e6%85%a2" class="header-mark"></a>2.3 3. 插入和删除为什么慢</h3><p>假设要删除下标 <code>2</code> 的元素，并保持其他元素的相对顺序：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">删除前：10  20  30  40  50
+</span></span><span class="line"><span class="cl">删除后：10  20  40  50
+</span></span><span class="line"><span class="cl">                 ←   ←
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>原来位于后面的 <code>40</code>、<code>50</code> 都要向前移动。因此：</p>
+<ul>
+<li>访问指定下标：$O(1)$</li>
+<li>修改指定下标：$O(1)$</li>
+<li>尾部插入：固定数组视实现而定；<code>vector</code> 通常均摊 $O(1)$</li>
+<li>中间插入或删除：$O(n)$</li>
+<li>按值查找（无序数组）：$O(n)$</li>
+</ul>
+<blockquote>
+<p><strong>&ldquo;数组不能删除元素&quot;怎么理解</strong>
+固定长度数组的内存块和长度不会因为一次删除操作自动缩短。所谓&quot;删除&rdquo;，一般是覆盖目标元素、移动后续元素，再用一个逻辑长度表示有效范围。<code>vector::erase</code> 能提供删除接口，但底层仍需要移动元素。</p></blockquote>
+<h3 id="4-c-中的数组与-vector" class="headerLink">
+    <a href="#4-c-%e4%b8%ad%e7%9a%84%e6%95%b0%e7%bb%84%e4%b8%8e-vector" class="header-mark"></a>2.4 4. C++ 中的数组与 vector</h3><table>
+  <thead>
+      <tr>
+          <th>对比项</th>
+          <th>原生数组 <code>T a[N]</code></th>
+          <th><code>std::array&lt;T, N&gt;</code></th>
+          <th><code>std::vector&lt;T&gt;</code></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>长度</td>
+          <td>编译期固定</td>
+          <td>编译期固定</td>
+          <td>运行期可变</td>
+      </tr>
+      <tr>
+          <td>内存</td>
+          <td>连续</td>
+          <td>连续</td>
+          <td>连续</td>
+      </tr>
+      <tr>
+          <td>自动扩容</td>
+          <td>否</td>
+          <td>否</td>
+          <td>是</td>
+      </tr>
+      <tr>
+          <td>获取长度</td>
+          <td>需额外处理</td>
+          <td><code>.size()</code></td>
+          <td><code>.size()</code></td>
+      </tr>
+      <tr>
+          <td>边界检查</td>
+          <td><code>[]</code> 不检查</td>
+          <td><code>.at()</code> 可检查</td>
+          <td><code>.at()</code> 可检查</td>
+      </tr>
+  </tbody>
+</table>
+<p><code>vector</code> 是一个动态顺序容器，底层使用连续内存管理元素。扩容时通常需要申请新空间并移动或复制旧元素，相关迭代器、指针和引用可能失效。详见 vector深度解析。</p>
+<h3 id="5-二维数组的内存布局" class="headerLink">
+    <a href="#5-%e4%ba%8c%e7%bb%b4%e6%95%b0%e7%bb%84%e7%9a%84%e5%86%85%e5%ad%98%e5%b8%83%e5%b1%80" class="header-mark"></a>2.5 5. 二维数组的内存布局</h3><h4 id="c-原生二维数组" class="headerLink">
+    <a href="#c-%e5%8e%9f%e7%94%9f%e4%ba%8c%e7%bb%b4%e6%95%b0%e7%bb%84" class="header-mark"></a>2.5.1 C++ 原生二维数组</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>C++ 原生二维数组按行连续存储，可以把它理解为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">matrix[0][0] → matrix[0][1] → matrix[0][2]
+</span></span><span class="line"><span class="cl">                                      ↓
+</span></span><span class="line"><span class="cl">matrix[1][0] → matrix[1][1] → matrix[1][2]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>对一个有 <code>cols</code> 列的二维数组，行优先布局下：</p>
+<p>$$
+\operatorname{addr}(a[i][j])
+=\operatorname{base}(a)+(i\times cols+j)\times \operatorname{sizeof}(T)
+$$</p>
+<h4 id="java-二维数组" class="headerLink">
+    <a href="#java-%e4%ba%8c%e7%bb%b4%e6%95%b0%e7%bb%84" class="header-mark"></a>2.5.2 Java 二维数组</h4><p>Java 的 <code>int[][]</code> 本质上是&quot;数组的数组&quot;：外层数组保存对各行数组的引用，各行可以分别创建，长度也可以不同。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kt">int</span><span class="o">[][]</span><span class="w"> </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="n">1</span><span class="p">,</span><span class="w"> </span><span class="n">2</span><span class="p">,</span><span class="w"> </span><span class="n">3</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="n">4</span><span class="p">,</span><span class="w"> </span><span class="n">5</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="n">6</span><span class="p">,</span><span class="w"> </span><span class="n">7</span><span class="p">,</span><span class="w"> </span><span class="n">8</span><span class="p">,</span><span class="w"> </span><span class="n">9</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">};</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>因此不能假设不同行在内存中彼此连续；而且 Java 不向程序员暴露可直接运算的真实内存地址。</p>
+<h2 id="知识扩展" class="headerLink">
+    <a href="#%e7%9f%a5%e8%af%86%e6%89%a9%e5%b1%95" class="header-mark"></a>3 知识扩展</h2><h3 id="1-连续内存为什么通常更快" class="headerLink">
+    <a href="#1-%e8%bf%9e%e7%bb%ad%e5%86%85%e5%ad%98%e4%b8%ba%e4%bb%80%e4%b9%88%e9%80%9a%e5%b8%b8%e6%9b%b4%e5%bf%ab" class="header-mark"></a>3.1 1. 连续内存为什么通常更快</h3><p>数组元素相邻，CPU 读取一个元素时通常会把附近的一块数据一起加载到缓存中。顺序遍历数组时，后续数据很可能已经在缓存里，因此具有较好的<strong>缓存局部性</strong>。</p>
+<h3 id="2-数组与链表的核心取舍" class="headerLink">
+    <a href="#2-%e6%95%b0%e7%bb%84%e4%b8%8e%e9%93%be%e8%a1%a8%e7%9a%84%e6%a0%b8%e5%bf%83%e5%8f%96%e8%88%8d" class="header-mark"></a>3.2 2. 数组与链表的核心取舍</h3><table>
+  <thead>
+      <tr>
+          <th>特性</th>
+          <th>数组</th>
+          <th>链表</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>内存布局</td>
+          <td>连续</td>
+          <td>通常不连续</td>
+      </tr>
+      <tr>
+          <td>按下标访问</td>
+          <td>$O(1)$</td>
+          <td>$O(n)$</td>
+      </tr>
+      <tr>
+          <td>已知节点后的插入删除</td>
+          <td>通常 $O(n)$，需要移动</td>
+          <td>$O(1)$，修改指针</td>
+      </tr>
+      <tr>
+          <td>缓存友好性</td>
+          <td>较好</td>
+          <td>较差</td>
+      </tr>
+      <tr>
+          <td>额外空间</td>
+          <td>少</td>
+          <td>需要保存指针</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="3-越界访问" class="headerLink">
+    <a href="#3-%e8%b6%8a%e7%95%8c%e8%ae%bf%e9%97%ae" class="header-mark"></a>3.3 3. 越界访问</h3><p>C++ 原生数组和 <code>vector::operator[]</code> 不会自动检查越界。越界访问属于未定义行为，可能读到错误数据，也可能导致程序崩溃。调试时可使用 <code>vector::at()</code> 获得边界检查。</p>
+<h3 id="易错点" class="headerLink">
+    <a href="#%e6%98%93%e9%94%99%e7%82%b9" class="header-mark"></a>3.4 易错点</h3><ul>
+<li>把 <code>vector</code> 直接等同于原生数组：二者都使用连续内存，但抽象层级和能力不同。</li>
+<li>认为数组中间删除是 $O(1)$：定位可以是 $O(1)$，移动元素仍是 $O(n)$。</li>
+<li>认为所有语言的二维数组布局都一样：C++ 原生二维数组与 Java 的数组嵌套模型不同。</li>
+<li>忘记下标范围是 <code>[0, size - 1]</code>。</li>
+<li>混淆&quot;物理长度&quot;和&quot;逻辑长度&quot;。</li>
+</ul>
+<h3 id="自测" class="headerLink">
+    <a href="#%e8%87%aa%e6%b5%8b" class="header-mark"></a>3.5 自测</h3><ol>
+<li>为什么数组可以在 $O(1)$ 时间内访问第 $i$ 个元素？</li>
+<li>删除数组中间的元素为什么通常是 $O(n)$？</li>
+<li>C++ 原生二维数组和 Java <code>int[][]</code> 的内存模型有什么区别？</li>
+<li><code>vector</code> 扩容后，旧指针、引用和迭代器为什么可能失效？</li>
+<li>连续内存除了支持随机访问，还带来了什么性能优势？</li>
+</ol>
+<h3 id="我的补充" class="headerLink">
+    <a href="#%e6%88%91%e7%9a%84%e8%a1%a5%e5%85%85" class="header-mark"></a>3.6 我的补充</h3><blockquote>
+<p><strong>用自己的话重写</strong>
+注意，某些<strong>列优先</strong>（Column-Major，如 Fortran）语言和 C++ 相反，先存完一列再存下一列，顺序是：
+<code>[0][0]→[1][0]→[0][1]→[1][1]→[0][2]→[1][2]</code>
+C/C++/Python 都是行优先，只有少数科学计算语言用列优先。</p></blockquote>
+<h3 id="相关笔记" class="headerLink">
+    <a href="#%e7%9b%b8%e5%85%b3%e7%ac%94%e8%ae%b0" class="header-mark"></a>3.7 相关笔记</h3><ul>
+<li><a href="/posts/%e4%ba%8c%e5%88%86%e6%9f%a5%e6%89%be%e6%a8%a1%e6%9d%bf/" rel="">二分查找模板</a></li>
+<li>链表常用操作总结</li>
+</ul>
+]]></description></item></channel></rss>

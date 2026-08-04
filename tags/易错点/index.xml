@@ -1,0 +1,289 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>易错点 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E6%98%93%E9%94%99%E7%82%B9/</link><description>易错点 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Tue, 04 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E6%98%93%E9%94%99%E7%82%B9/" rel="self" type="application/rss+xml"/><item><title>空指针与虚拟头节点</title><link>https://soybeanmilk.netlify.app/%E7%A9%BA%E6%8C%87%E9%92%88%E4%B8%8E%E8%99%9A%E6%8B%9F%E5%A4%B4%E8%8A%82%E7%82%B9/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/%E7%A9%BA%E6%8C%87%E9%92%88%E4%B8%8E%E8%99%9A%E6%8B%9F%E5%A4%B4%E8%8A%82%E7%82%B9/</guid><description><![CDATA[<blockquote>
+<p><strong>一句话</strong>
+虚拟头 dummy 是真实存在的节点，有地址，所以可以通过 <code>dummy-&gt;next</code> 修改它指向的节点；而 <code>nullptr</code> 只是一个&quot;值&quot;，可以用它的值，但<strong>不能解引用</strong>——读不行，写也不行。</p></blockquote>
+<h2 id="我卡住的点" class="headerLink">
+    <a href="#%e6%88%91%e5%8d%a1%e4%bd%8f%e7%9a%84%e7%82%b9" class="header-mark"></a>1 我卡住的点</h2><ul>
+<li>反转链表里 <code>pre = nullptr</code> 没问题，为什么两两交换里必须 <code>new</code> 一个 dummy？</li>
+<li>结论：区别在于<strong>有没有操作 <code>pre-&gt;next</code>（解引用）</strong>。</li>
+</ul>
+<h2 id="精确的规则" class="headerLink">
+    <a href="#%e7%b2%be%e7%a1%ae%e7%9a%84%e8%a7%84%e5%88%99" class="header-mark"></a>2 精确的规则</h2><p>空指针的<strong>值</strong>可以用，空指针<strong>本身不能被解引用</strong>：</p>
+<table>
+  <thead>
+      <tr>
+          <th>代码</th>
+          <th>合法吗</th>
+          <th>解释</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>ListNode* pre = nullptr; cur-&gt;next = pre;</code></td>
+          <td>✅</td>
+          <td>只把 nullptr 的值赋给 <code>cur-&gt;next</code>，操作的是 cur</td>
+      </tr>
+      <tr>
+          <td><code>pre-&gt;next = cur;</code></td>
+          <td>❌ 崩溃</td>
+          <td>解引用空指针并修改</td>
+      </tr>
+      <tr>
+          <td><code>int v = pre-&gt;val;</code></td>
+          <td>❌ 崩溃</td>
+          <td>解引用空指针，读取也不行</td>
+      </tr>
+      <tr>
+          <td><code>ListNode* dummy = new ListNode(0); dummy-&gt;next = b;</code></td>
+          <td>✅</td>
+          <td>dummy 是真实节点，有地址，可以修改它的 next</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p><strong>不要记成&quot;可以调用但不能修改&quot;</strong>
+更准确的说法：<strong>可以用空指针的值，但不能解引用空指针</strong>。解引用不管是读还是写都会崩。<code>cur-&gt;next = pre</code> 之所以安全，是因为这里操作的是 <code>cur-&gt;next</code>（cur 是真实节点），<code>pre</code> 只是被当作一个值。</p></blockquote>
+<h2 id="两个场景对照" class="headerLink">
+    <a href="#%e4%b8%a4%e4%b8%aa%e5%9c%ba%e6%99%af%e5%af%b9%e7%85%a7" class="header-mark"></a>3 两个场景对照</h2><table>
+  <thead>
+      <tr>
+          <th>场景</th>
+          <th>为什么</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>反转链表：<code>pre = nullptr</code> 够用</td>
+          <td>全程只把 pre 的<strong>值</strong>赋给 <code>cur-&gt;next</code>，没有 <code>pre-&gt;next</code> 这种操作</td>
+      </tr>
+      <tr>
+          <td>两两交换 / 删除节点：必须 new dummy</td>
+          <td>需要写 <code>prev-&gt;next = b</code>，必须通过真实节点修改</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="虚拟头模式的标准结构我的理解" class="headerLink">
+    <a href="#%e8%99%9a%e6%8b%9f%e5%a4%b4%e6%a8%a1%e5%bc%8f%e7%9a%84%e6%a0%87%e5%87%86%e7%bb%93%e6%9e%84%e6%88%91%e7%9a%84%e7%90%86%e8%a7%a3" class="header-mark"></a>3.1 虚拟头模式的标准结构（我的理解）</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">ListNode</span><span class="o">*</span> <span class="n">dummyHead</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>  <span class="c1">// 虚拟头：头节点前面的哨兵
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">dummyHead</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>                 <span class="c1">// 哨兵先挂住真实头
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ListNode</span><span class="o">*</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">dummyHead</span><span class="p">;</span>              <span class="c1">// cur 是真正移动的工作指针
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>三个角色分工：</p>
+<table>
+  <thead>
+      <tr>
+          <th>角色</th>
+          <th>干什么</th>
+          <th>位置变化</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>dummyHead</code></td>
+          <td>哨兵，站在头节点前面</td>
+          <td>永远不动</td>
+      </tr>
+      <tr>
+          <td><code>cur</code></td>
+          <td>干活（遍历、删除、交换）</td>
+          <td>一直往前走</td>
+      </tr>
+      <tr>
+          <td><code>dummyHead-&gt;next</code></td>
+          <td>返回用：当前的真实头节点</td>
+          <td>头被删/被换时自动跟着变</td>
+      </tr>
+  </tbody>
+</table>
+<p>关键理解：</p>
+<ul>
+<li>删除、交换过程中真实头可能会变，但不需要单独维护&quot;头指针&quot;——dummy 没动过，<code>dummyHead-&gt;next</code> 永远指向当前的真实头。</li>
+<li>返回时用 <code>dummyHead-&gt;next</code>，不能用 <code>cur</code>：cur 走到最后已经在链表末尾（甚至 nullptr）了。</li>
+<li>哨兵不参与数据，所以它的 <code>val</code> 随便给（0）；它的存在只是为了给头节点提供一个&quot;前一个节点&quot;。</li>
+<li>一句话：<strong>dummy 站岗，cur 干活，dummy-&gt;next 交卷。</strong></li>
+</ul>
+<h3 id="dummy-不一定要-new可以用栈对象" class="headerLink">
+    <a href="#dummy-%e4%b8%8d%e4%b8%80%e5%ae%9a%e8%a6%81-new%e5%8f%af%e4%bb%a5%e7%94%a8%e6%a0%88%e5%af%b9%e8%b1%a1" class="header-mark"></a>3.2 dummy 不一定要 new：可以用栈对象</h3><p>链表连接靠的是 <code>next</code> 指针（存地址），但<strong>节点本身</strong>可以放在栈上，不用 <code>new</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">ListNode</span> <span class="nf">dummy</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">head</span><span class="p">);</span>   <span class="c1">// 栈上的虚拟头，不是指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ListNode</span><span class="o">*</span> <span class="n">prev</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dummy</span><span class="p">;</span>   <span class="c1">// 取地址当指针用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">while</span> <span class="p">(</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">!=</span> <span class="k">nullptr</span> <span class="o">&amp;&amp;</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">swapTwo</span><span class="p">(</span><span class="n">prev</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">return</span> <span class="n">dummy</span><span class="p">.</span><span class="n">next</span><span class="p">;</span>         <span class="c1">// 注意是 dummy.next，不是 dummy-&gt;next
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>题解常写 <code>new ListNode(0)</code> 只是图省事（LeetCode 不检查内存泄漏），本地代码用栈对象更安全，不用手动 <code>delete</code>。</li>
+<li>注意：不能把局部对象的<strong>地址</strong>返回出去（函数结束就销毁）——但 dummy 不会被返回，返回的是 <code>dummy.next</code>，安全。</li>
+<li>反转链表反而<strong>不能</strong>用真实节点当 <code>pre</code>：最后链表尾巴会指向这个假节点，判题器释放时会崩。这再次印证：只读场景用 <code>nullptr</code>，要改 <code>next</code> 才用真实节点。</li>
+</ul>
+<h2 id="记忆" class="headerLink">
+    <a href="#%e8%ae%b0%e5%bf%86" class="header-mark"></a>4 记忆</h2><ul>
+<li>dummy = 真实节点 = 有一扇可以打开的门（可以改它的 next）。</li>
+<li>nullptr = 值 = 可以借给别人当目标，但它自己没有任何房间，不能开门（不能解引用）。</li>
+</ul>
+<h2 id="相关笔记" class="headerLink">
+    <a href="#%e7%9b%b8%e5%85%b3%e7%ac%94%e8%ae%b0" class="header-mark"></a>5 相关笔记</h2><ul>
+<li><a href="/posts/q206-%e5%8f%8d%e8%bd%ac%e9%93%be%e8%a1%a8/" rel="">Q206 反转链表</a>（pre = nullptr 当虚拟头）</li>
+<li><a href="/posts/q24-%e4%b8%a4%e4%b8%a4%e4%ba%a4%e6%8d%a2%e9%93%be%e8%a1%a8%e4%b8%ad%e7%9a%84%e8%8a%82%e7%82%b9/" rel="">Q24 两两交换链表中的节点</a>（必须 new dummy）</li>
+<li><a href="/posts/%e6%8c%87%e9%92%88%e4%ba%a4%e6%8e%a5%e7%9e%ac%e9%97%b4/" rel="">指针交接瞬间</a>（复制指针 vs 插入）</li>
+<li><a href="/posts/q707-%e8%ae%be%e8%ae%a1%e9%93%be%e8%a1%a8/" rel="">Q707 设计链表</a></li>
+<li>链表常用操作总结</li>
+</ul>
+<h2 id="自测" class="headerLink">
+    <a href="#%e8%87%aa%e6%b5%8b" class="header-mark"></a>6 自测</h2><ul>
+<li><i class="far fa-square fa-fw"></i> 能说出 <code>cur-&gt;next = pre</code>（pre 为空）为什么合法</li>
+<li><i class="far fa-square fa-fw"></i> 能说出 <code>pre-&gt;next = cur</code>（pre 为空）为什么崩溃</li>
+<li><i class="far fa-square fa-fw"></i> 能判断一道新题：是&quot;读前一个节点的值&quot;还是&quot;改前一个节点的 next&quot;，从而决定用 nullptr 还是 dummy</li>
+<li><i class="far fa-square fa-fw"></i> 能用栈对象写 dummy 版本（<code>ListNode dummy(0); ListNode* prev = &amp;dummy;</code>）</li>
+<li><i class="far fa-square fa-fw"></i> 能说出返回时为什么用 <code>dummyHead-&gt;next</code> 而不是 <code>cur</code></li>
+</ul>
+]]></description></item><item><title>指针交接瞬间</title><link>https://soybeanmilk.netlify.app/%E6%8C%87%E9%92%88%E4%BA%A4%E6%8E%A5%E7%9E%AC%E9%97%B4/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/%E6%8C%87%E9%92%88%E4%BA%A4%E6%8E%A5%E7%9E%AC%E9%97%B4/</guid><description><![CDATA[<blockquote>
+<p><strong>一句话</strong>
+<code>a-&gt;next = b-&gt;next</code> 只是&quot;复制指针&quot;（让 <code>a-&gt;next</code> 指向 <code>b-&gt;next</code> 指向的同一个节点）；&ldquo;插入&quot;是两步的组合：<strong>先让新节点接住后面的链，再让前面的节点改指新节点</strong>。两步之间，两个指针会短暂指向同一个节点——这就是交接瞬间。</p></blockquote>
+<h2 id="赋值语义先读清楚一行代码" class="headerLink">
+    <a href="#%e8%b5%8b%e5%80%bc%e8%af%ad%e4%b9%89%e5%85%88%e8%af%bb%e6%b8%85%e6%a5%9a%e4%b8%80%e8%a1%8c%e4%bb%a3%e7%a0%81" class="header-mark"></a>1 赋值语义：先读清楚一行代码</h2><p><code>head-&gt;next = dummy-&gt;next</code> 的意思是：把 <code>dummy-&gt;next</code> 的<strong>值</strong>（一个地址）赋给 <code>head-&gt;next</code>。</p>
+<ul>
+<li>右边是&quot;源&rdquo;，左边是&quot;目标&quot;。</li>
+<li>执行完这一行，<code>head-&gt;next</code> 和 <code>dummy-&gt;next</code> <strong>指向同一个节点</strong>。</li>
+<li>单看这一行，它只是复制指针，不是插入。</li>
+</ul>
+<h2 id="为什么插入必须是两步" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e6%8f%92%e5%85%a5%e5%bf%85%e9%a1%bb%e6%98%af%e4%b8%a4%e6%ad%a5" class="header-mark"></a>2 为什么&quot;插入&quot;必须是两步</h2><p>假设当前状态：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">dummy → 2 → 1 → null
+</span></span><span class="line"><span class="cl">head → 3 → 4 → null
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>第 1 步 <code>head-&gt;next = dummy-&gt;next</code>（先接住后面的链）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">dummy → 2 → 1 → null
+</span></span><span class="line"><span class="cl">head → 3 → 2 → 1 → null     ← 交接瞬间：head 和 dummy 同时指着 2
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>第 2 步 <code>dummy-&gt;next = head</code>（前面的节点改指新节点）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">dummy → 3 → 2 → 1 → null     ← 插入完成
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><strong>交接瞬间</strong>
+第 1 步执行后的一瞬间，两个指针指向同一个节点，这是刻意的——新节点先&quot;抓住&quot;后面的链，前面的节点才敢&quot;松手&quot;。不是 bug。</p></blockquote>
+<h2 id="顺序为什么不能反" class="headerLink">
+    <a href="#%e9%a1%ba%e5%ba%8f%e4%b8%ba%e4%bb%80%e4%b9%88%e4%b8%8d%e8%83%bd%e5%8f%8d" class="header-mark"></a>3 顺序为什么不能反</h2><p>如果先做 <code>prev-&gt;next = newNode</code>，再做 <code>newNode-&gt;next = prev-&gt;next</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">prev-&gt;next 已经变成 newNode
+</span></span><span class="line"><span class="cl">再执行 newNode-&gt;next = prev-&gt;next 就是 newNode-&gt;next = newNode
+</span></span><span class="line"><span class="cl">→ 自己指向自己，成环
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>所以顺序固定：<strong>先接后面，再改前面</strong>。</p>
+<h2 id="通用套路" class="headerLink">
+    <a href="#%e9%80%9a%e7%94%a8%e5%a5%97%e8%b7%af" class="header-mark"></a>4 通用套路</h2><h3 id="标准插入两步" class="headerLink">
+    <a href="#%e6%a0%87%e5%87%86%e6%8f%92%e5%85%a5%e4%b8%a4%e6%ad%a5" class="header-mark"></a>4.1 标准插入两步</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">newNode</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>   <span class="c1">// ① 新节点接住后面的链
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">newNode</span><span class="p">;</span>         <span class="c1">// ② 前面的节点改指新节点
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="反转链表头插法q206" class="headerLink">
+    <a href="#%e5%8f%8d%e8%bd%ac%e9%93%be%e8%a1%a8%e5%a4%b4%e6%8f%92%e6%b3%95q206" class="header-mark"></a>4.2 反转链表头插法（Q206）</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">ListNode</span><span class="o">*</span> <span class="n">next</span> <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>   <span class="c1">// 先保存下一个，防止断链
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">dummy</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>      <span class="c1">// 接住已反转部分的头
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">dummy</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>            <span class="c1">// 改指新节点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">head</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="两两交换q24-的-swaptwo" class="headerLink">
+    <a href="#%e4%b8%a4%e4%b8%a4%e4%ba%a4%e6%8d%a2q24-%e7%9a%84-swaptwo" class="header-mark"></a>4.3 两两交换（Q24 的 swapTwo）</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">ListNode</span><span class="o">*</span> <span class="n">a</span> <span class="o">=</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">ListNode</span><span class="o">*</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">a</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">b</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>    <span class="c1">// a 先接住 rest
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">b</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>          <span class="c1">// b 指回 a
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>       <span class="c1">// 前面的链接上 b
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="一条总规则" class="headerLink">
+    <a href="#%e4%b8%80%e6%9d%a1%e6%80%bb%e8%a7%84%e5%88%99" class="header-mark"></a>4.4 一条总规则</h3><p>改指针之前，先保证后面的链不会丢：</p>
+<ul>
+<li>要读的旧指针，先存下来（<code>next = cur-&gt;next</code>）；</li>
+<li>新节点要接的链，先接上（<code>head-&gt;next = dummy-&gt;next</code>）。</li>
+</ul>
+<h2 id="记忆" class="headerLink">
+    <a href="#%e8%ae%b0%e5%bf%86" class="header-mark"></a>5 记忆</h2><ul>
+<li>单行赋值 = 复制指针（两个指针指向同一个节点）。</li>
+<li>两步组合 = 插入（先接住，再松手）。</li>
+<li>口诀：<strong>先接后面，再改前面；改指针前，先防断链。</strong></li>
+</ul>
+<h2 id="相关笔记" class="headerLink">
+    <a href="#%e7%9b%b8%e5%85%b3%e7%ac%94%e8%ae%b0" class="header-mark"></a>6 相关笔记</h2><ul>
+<li><a href="/posts/q206-%e5%8f%8d%e8%bd%ac%e9%93%be%e8%a1%a8/" rel="">Q206 反转链表</a>（头插法）</li>
+<li><a href="/posts/q24-%e4%b8%a4%e4%b8%a4%e4%ba%a4%e6%8d%a2%e9%93%be%e8%a1%a8%e4%b8%ad%e7%9a%84%e8%8a%82%e7%82%b9/" rel="">Q24 两两交换链表中的节点</a>（swapTwo）</li>
+<li><a href="/posts/%e7%a9%ba%e6%8c%87%e9%92%88%e4%b8%8e%e8%99%9a%e6%8b%9f%e5%a4%b4%e8%8a%82%e7%82%b9/" rel="">空指针与虚拟头节点</a>（dummy 是什么、为什么需要真实节点）</li>
+</ul>
+<h2 id="自测" class="headerLink">
+    <a href="#%e8%87%aa%e6%b5%8b" class="header-mark"></a>7 自测</h2><ul>
+<li><i class="far fa-square fa-fw"></i> 能说出 <code>head-&gt;next = dummy-&gt;next</code> 执行后，哪两个指针指向同一个节点</li>
+<li><i class="far fa-square fa-fw"></i> 能把&quot;标准插入两步&quot;默写出来</li>
+<li><i class="far fa-square fa-fw"></i> 能解释为什么顺序不能反（会成环）</li>
+<li><i class="far fa-square fa-fw"></i> 能指出反转头插法和 swapTwo 里的&quot;先接后面，再改前面&quot;</li>
+<li><i class="far fa-square fa-fw"></i> 能说出一条总规则：改指针前先防断链</li>
+</ul>
+]]></description></item></channel></rss>

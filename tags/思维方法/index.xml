@@ -1,0 +1,133 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>思维方法 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E6%80%9D%E7%BB%B4%E6%96%B9%E6%B3%95/</link><description>思维方法 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Tue, 04 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E6%80%9D%E7%BB%B4%E6%96%B9%E6%B3%95/" rel="self" type="application/rss+xml"/><item><title>递归与数学归纳法</title><link>https://soybeanmilk.netlify.app/%E9%80%92%E5%BD%92%E4%B8%8E%E6%95%B0%E5%AD%A6%E5%BD%92%E7%BA%B3%E6%B3%95/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/%E9%80%92%E5%BD%92%E4%B8%8E%E6%95%B0%E5%AD%A6%E5%BD%92%E7%BA%B3%E6%B3%95/</guid><description><![CDATA[<blockquote>
+<p><strong>这篇笔记怎么来的</strong>
+学 <a href="/posts/q206-%e5%8f%8d%e8%bd%ac%e9%93%be%e8%a1%a8/" rel="">Q206 反转链表</a> 的递归解法时，卡在&quot;假设小问题正确，当前这步对不对&quot;这句话上。这篇把当时的对话整理成复习材料：这句话到底什么意思、为什么不是循环论证、以及数学归纳法如何给递归兜底。</p></blockquote>
+<h2 id="先解决那句话假设小问题正确当前这步对不对" class="headerLink">
+    <a href="#%e5%85%88%e8%a7%a3%e5%86%b3%e9%82%a3%e5%8f%a5%e8%af%9d%e5%81%87%e8%ae%be%e5%b0%8f%e9%97%ae%e9%a2%98%e6%ad%a3%e7%a1%ae%e5%bd%93%e5%89%8d%e8%bf%99%e6%ad%a5%e5%af%b9%e4%b8%8d%e5%af%b9" class="header-mark"></a>1 先解决那句话：&ldquo;假设小问题正确，当前这步对不对&rdquo;</h2><h3 id="为什么这句话让人懵" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%bf%99%e5%8f%a5%e8%af%9d%e8%ae%a9%e4%ba%ba%e6%87%b5" class="header-mark"></a>1.1 为什么这句话让人懵</h3><p>因为它听起来像&quot;先假设结论是对的，再去验证结论&quot;——像循环论证。但实际上它假设的<strong>不是你要证明的那个问题，而是比它小一号的问题</strong>。</p>
+<h3 id="这句话的真实含义" class="headerLink">
+    <a href="#%e8%bf%99%e5%8f%a5%e8%af%9d%e7%9a%84%e7%9c%9f%e5%ae%9e%e5%90%ab%e4%b9%89" class="header-mark"></a>1.2 这句话的真实含义</h3><p>它是一条&quot;如果……那么……&ldquo;的检查：</p>
+<blockquote>
+<p>如果 <code>reverseList(2→3→4)</code> 已经正确返回 <code>4→3→2</code>（规模 $n-1$），
+那么我接下来这一步（让 2 指回 1、断开 1→2）做完后，<code>1→2→3→4</code> 是不是就变成正确的 <code>4→3→2→1</code>（规模 $n$）？</p></blockquote>
+<p>注意：小问题比大问题<strong>短一截</strong>，而最短的那个（空链表或单节点）是直接返回的，不需要假设。所以这条&quot;如果……那么……&ldquo;链有真正的起点，不会循环。</p>
+<h3 id="用斐波那契把这句话坐实" class="headerLink">
+    <a href="#%e7%94%a8%e6%96%90%e6%b3%a2%e9%82%a3%e5%a5%91%e6%8a%8a%e8%bf%99%e5%8f%a5%e8%af%9d%e5%9d%90%e5%ae%9e" class="header-mark"></a>1.3 用斐波那契把这句话坐实</h3><p>假设小问题正确：<strong>如果 <code>fib(3)=2</code>、<code>fib(4)=3</code>，那么 <code>fib(5)=fib(4)+fib(3)=5</code>，对不对？</strong> 这就是一句加法，可以拿具体数字验证，没有玄学。</p>
+<p>而 <code>fib(3)</code>、<code>fib(4)</code> 又各自依赖更小的 <code>fib(1)=1</code>、<code>fib(2)=1</code>——它们是基例，写在定义里，不需要假设。链条从基例一路推到目标，长度有限。</p>
+<h3 id="为什么跳进栈里逐个看也是对的" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%b7%b3%e8%bf%9b%e6%a0%88%e9%87%8c%e9%80%90%e4%b8%aa%e7%9c%8b%e4%b9%9f%e6%98%af%e5%af%b9%e7%9a%84" class="header-mark"></a>1.4 为什么&quot;跳进栈里逐个看&quot;也是对的</h3><p>直接跳进调用栈一层层看，确实是对的——那相当于把这条&quot;如果……那么……&ldquo;链<strong>完整展开</strong>了。归纳法只是把这个展开压缩成两步检查，不用每次为不同输入重跳一遍栈：</p>
+<ol>
+<li>链条的第一环成立（基例）</li>
+<li>任意一环倒下会推倒下一环（归纳步）</li>
+</ol>
+<p>两个都确认过，整条链就永远成立。跳栈是&quot;展开验证&rdquo;，归纳是&quot;压缩验证&rdquo;，结果一样。</p>
+<h2 id="我自己的判断-sop这次对话的收获" class="headerLink">
+    <a href="#%e6%88%91%e8%87%aa%e5%b7%b1%e7%9a%84%e5%88%a4%e6%96%ad-sop%e8%bf%99%e6%ac%a1%e5%af%b9%e8%af%9d%e7%9a%84%e6%94%b6%e8%8e%b7" class="header-mark"></a>2 我自己的判断 SOP（这次对话的收获）</h2><blockquote>
+<p><strong>用我自己的话说</strong></p>
+<ol>
+<li>拆出小问题，假设它已经被处理好了。例：<code>1→2→3→4→5</code> 的小问题是 <code>2→3→4→5</code>，假设它已经变成 <code>5→4→3→2</code>。</li>
+<li>问自己：我只做&quot;一步&rdquo;（把 1 接到末尾），能不能得到 <code>5→4→3→2→1</code>？</li>
+<li>这一步能实现 → 整个递归就可实现。</li>
+</ol></blockquote>
+<p>用 <code>1→2→3→4</code> 走一遍：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">小问题 2→3→4，假设已变成 4→3→2
+</span></span><span class="line"><span class="cl">一步 = 让 2-&gt;next = 1（并断开 1-&gt;next）
+</span></span><span class="line"><span class="cl">结果 4→3→2→1 ✓
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><strong>别忘了补上基例检查</strong>
+上面的 SOP 只检查了&quot;归纳步&quot;。还差一步：<strong>最小的问题（空链表/单节点）直接给答案，不需要假设</strong>。两步合起来才是完整的归纳法：</p>
+<ol>
+<li>最小问题直接成立（基例）</li>
+<li>假设小问题成立，一步能推出大问题成立（归纳步）</li>
+</ol></blockquote>
+<h2 id="数学归纳法两步" class="headerLink">
+    <a href="#%e6%95%b0%e5%ad%a6%e5%bd%92%e7%ba%b3%e6%b3%95%e4%b8%a4%e6%ad%a5" class="header-mark"></a>3 数学归纳法两步</h2><ol>
+<li><strong>基例</strong>：第 1 个成立。</li>
+<li><strong>归纳步</strong>：假设第 $k$ 个成立，推出第 $k+1$ 个成立。</li>
+</ol>
+<p>多米诺类比：确认第一块会倒 + 确认任意一块倒下会撞倒下一块 → 全部会倒。不需要看完全部骨牌。</p>
+<blockquote>
+<p><strong>归纳假设不是白拿的</strong>
+&ldquo;假设第 $k$ 个成立&quot;不是免费午餐：它最终锚定在基例上，而且每次只向前推一步。这就是它和&quot;循环论证&quot;的本质区别。</p></blockquote>
+<h2 id="递归代码--把归纳定义翻译成代码" class="headerLink">
+    <a href="#%e9%80%92%e5%bd%92%e4%bb%a3%e7%a0%81--%e6%8a%8a%e5%bd%92%e7%ba%b3%e5%ae%9a%e4%b9%89%e7%bf%bb%e8%af%91%e6%88%90%e4%bb%a3%e7%a0%81" class="header-mark"></a>4 递归代码 = 把归纳定义翻译成代码</h2><p>斐波那契的定义本身就是归纳的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">F(1) = 1                        （基例）
+</span></span><span class="line"><span class="cl">F(2) = 1                        （基例）
+</span></span><span class="line"><span class="cl">F(n) = F(n-1) + F(n-2)          （归纳步，n ≥ 3）
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">fib</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">||</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>      <span class="c1">// 基例
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">);</span>      <span class="c1">// 归纳步
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>用归纳法证明&quot;前 $n$ 项和 = $F(n+2) - 1$&quot;：</p>
+<ul>
+<li>$n=1$：和 $=1$，$F(3)-1=1$ ✓</li>
+<li>假设 $n=k$ 成立：$sum(k)=F(k+2)-1$，则 $sum(k+1)=F(k+2)-1+F(k+1)=F(k+3)-1$ ✓</li>
+</ul>
+<h2 id="两种递归写法以反转链表为例" class="headerLink">
+    <a href="#%e4%b8%a4%e7%a7%8d%e9%80%92%e5%bd%92%e5%86%99%e6%b3%95%e4%bb%a5%e5%8f%8d%e8%bd%ac%e9%93%be%e8%a1%a8%e4%b8%ba%e4%be%8b" class="header-mark"></a>5 两种递归写法（以反转链表为例）</h2><ul>
+<li><strong>经典版</strong> <code>reverseList(head)</code>：递归到最深处，回溯时做 <code>head-&gt;next-&gt;next = head</code>。不是尾递归。</li>
+<li><strong>双指针改递归</strong> <code>reverse(pre, cur)</code>：状态全在参数里，递归调用是最后一句（尾递归），展开就是 while 循环。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">ListNode</span><span class="o">*</span> <span class="nf">reverse</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">pre</span><span class="p">,</span> <span class="n">ListNode</span><span class="o">*</span> <span class="n">cur</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">cur</span> <span class="o">==</span> <span class="k">nullptr</span><span class="p">)</span> <span class="k">return</span> <span class="n">pre</span><span class="p">;</span>      <span class="c1">// 循环退出条件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ListNode</span><span class="o">*</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>          <span class="c1">// 保存下一个，防止断链
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">pre</span><span class="p">;</span>                     <span class="c1">// 反转当前指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="n">cur</span><span class="p">,</span> <span class="n">temp</span><span class="p">);</span>           <span class="c1">// 相当于 pre = cur; cur = temp;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">ListNode</span><span class="o">*</span> <span class="nf">reverseList</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">head</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span> <span class="n">head</span><span class="p">);</span>       <span class="c1">// 相当于 pre = nullptr; cur = head;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>展开：<code>reverse(NULL,1) → reverse(1,2) → reverse(2,3) → reverse(3,4) → reverse(4,NULL)</code>，和循环逐轮等价。</p>
+<h2 id="自测" class="headerLink">
+    <a href="#%e8%87%aa%e6%b5%8b" class="header-mark"></a>6 自测</h2><ul>
+<li><i class="far fa-square fa-fw"></i> 能说清&quot;假设小问题正确&quot;为什么不是循环论证</li>
+<li><i class="far fa-square fa-fw"></i> 能用具体数字验证 <code>fib(5)</code> 的&quot;如果……那么……&rdquo;</li>
+<li><i class="far fa-square fa-fw"></i> 用自己的 SOP 讲一遍：拆小问题 → 假设处理完 → 只做一步 → 判断能否得到答案</li>
+<li><i class="far fa-square fa-fw"></i> 能把迭代版机械改写成尾递归版</li>
+<li><i class="far fa-square fa-fw"></i> 能讲出归纳法的两步和多米诺类比</li>
+</ul>
+]]></description></item></channel></rss>

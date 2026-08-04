@@ -1,0 +1,257 @@
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>Q707 设计链表 - 豆浆小屋</title><meta name=Description content="用虚拟头节点和前驱定位实现链表五操作，下标只是查询条件，并非数组式随机访问"><meta property="og:url" content="https://soybeanmilk.netlify.app/q707-%E8%AE%BE%E8%AE%A1%E9%93%BE%E8%A1%A8/">
+<meta property="og:site_name" content="豆浆小屋"><meta property="og:title" content="Q707 设计链表"><meta property="og:description" content="用虚拟头节点和前驱定位实现链表五操作，下标只是查询条件，并非数组式随机访问"><meta property="og:locale" content="zh_CN"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2026-08-04T00:00:00+00:00"><meta property="article:modified_time" content="2026-08-04T00:00:00+00:00"><meta property="article:tag" content="Leetcode"><meta property="article:tag" content="链表"><meta property="article:tag" content="设计"><meta property="article:tag" content="中等"><meta property="og:image" content="https://soybeanmilk.netlify.app/images/avatar.jpg"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://soybeanmilk.netlify.app/images/avatar.jpg"><meta name=twitter:title content="Q707 设计链表"><meta name=twitter:description content="用虚拟头节点和前驱定位实现链表五操作，下标只是查询条件，并非数组式随机访问"><meta name=application-name content="豆浆小屋"><meta name=apple-mobile-web-app-title content="豆浆小屋"><meta name=theme-color content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel=icon href=/favicon.svg><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=canonical href=https://soybeanmilk.netlify.app/q707-%E8%AE%BE%E8%AE%A1%E9%93%BE%E8%A1%A8/><link rel=prev href=https://soybeanmilk.netlify.app/%E5%B7%AE%E5%88%86%E6%95%B0%E7%BB%84%E7%9F%A5%E8%AF%86%E7%82%B9/><link rel=next href=https://soybeanmilk.netlify.app/q24-%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/color.css><link rel=stylesheet href=/css/style.min.css><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/lib/fontawesome-free/all.min.css><noscript><link rel=stylesheet href=/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/lib/animate/animate.min.css><noscript><link rel=stylesheet href=/lib/animate/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Q707 设计链表","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/soybeanmilk.netlify.app\/q707-%E8%AE%BE%E8%AE%A1%E9%93%BE%E8%A1%A8\/"},"image":["https:\/\/soybeanmilk.netlify.app\/images\/avatar.jpg"],"genre":"posts","keywords":"leetcode, 链表, 设计, 中等","wordcount":1782,"url":"https:\/\/soybeanmilk.netlify.app\/q707-%E8%AE%BE%E8%AE%A1%E9%93%BE%E8%A1%A8\/","datePublished":"2026-08-04T00:00:00+00:00","dateModified":"2026-08-04T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.","publisher":{"@type":"Organization","name":"作者"},"author":{"@type":"Person","name":"作者"},"description":"用虚拟头节点和前驱定位实现链表五操作，下标只是查询条件，并非数组式随机访问"}</script><script src=//instant.page/5.1.1 defer type=module integrity=sha384-MWfCL6g1OTGsbSwfuMHc8+8J2u71/LA8dzlIN3ycajckxuZZmF+DNjdm7O6H3PSq></script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>function setTheme(e){document.body.setAttribute("theme",e),document.documentElement.style.setProperty("color-scheme",e==="light"?"light":"dark"),window.theme=e}function saveTheme(e){window.localStorage&&localStorage.setItem("theme",e)}function getMeta(e){const t=document.getElementsByTagName("meta");for(let n=0;n<t.length;n++)if(t[n].getAttribute("name")===e)return t[n];return""}if(window.localStorage&&localStorage.getItem("theme")){let e=localStorage.getItem("theme");e==="light"||e==="dark"||e==="black"?setTheme(e):setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}else"auto"==="light"||"auto"==="dark"||"auto"==="black"?(setTheme("auto"),saveTheme("auto")):(saveTheme("auto"),setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));let metaColors={light:"#f8f8f8",dark:"#252627",black:"#000000"};getMeta("theme-color").content=metaColors[document.body.getAttribute("theme")]</script><div id=back-to-top></div><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title=豆浆小屋><span class=header-title-pre>🥛</span>豆浆小屋</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>所有文章 </a><a class=menu-item href=/tags/>标签 </a><a class=menu-item href=/categories/>分类 </a><a class=menu-item href=/about/>关于 </a><a class=menu-item href=/showcase/>作品 </a><a class=menu-item href=https://github.com/soybeanmilka title=GitHub rel="noopener noreferrer" target=_blank><i class='fab fa-github fa-fw'></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=# class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw"></i>
+</a><a href=# class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw"></i>
+</a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i>
+</span></span><a href=# class="menu-item theme-switch" title=切换主题><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title=豆浆小屋><span class=header-title-pre>🥛</span>豆浆小屋</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=# class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw"></i>
+</a><a href=# class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw"></i>
+</a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=# class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/posts/ title>所有文章</a><a class=menu-item href=/tags/ title>标签</a><a class=menu-item href=/categories/ title>分类</a><a class=menu-item href=/about/ title>关于</a><a class=menu-item href=/showcase/ title>作品</a><a class=menu-item href=https://github.com/soybeanmilka title=GitHub rel="noopener noreferrer" target=_blank><i class='fab fa-github fa-fw'></i></a><a href=# class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto><nav id=TableOfContents><ul><li><a href=#简要回答>简要回答</a></li><li><a href=#详细回答>详细回答</a><ul><li><a href=#我的原始思路>我的原始思路</a></li><li><a href=#为什么会卡住>为什么会卡住</a></li><li><a href=#虚拟头节点到底解决什么>虚拟头节点到底解决什么</a></li><li><a href=#最重要的定位规则>最重要的定位规则</a></li><li><a href=#完整实现>完整实现</a></li><li><a href=#用示例走一遍>用示例走一遍</a></li></ul></li><li><a href=#知识扩展>知识扩展</a><ul><li><a href=#三个必须保持的不变量>三个必须保持的不变量</a></li><li><a href=#易错点>易错点</a></li><li><a href=#还能怎样优化>还能怎样优化</a></li><li><a href=#自测>自测</a></li></ul></li></ul></nav></div></div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC","true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Q707 设计链表</h1><div class=post-meta><div class=post-meta-line><span class=post-author><i class="author fas fa-user-circle fa-fw"></i><a href=/ title=Author rel=author class=author>作者</a>
+</span>&nbsp;<span class=post-category>收录于 </span>&nbsp;<span class=post-category>类别 <a href=/categories/%E7%AE%97%E6%B3%95/><i class="far fa-folder fa-fw"></i>算法</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2026-08-04>2026-08-04</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime=2026-08-04>2026-08-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1782 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#简要回答>简要回答</a></li><li><a href=#详细回答>详细回答</a><ul><li><a href=#我的原始思路>我的原始思路</a></li><li><a href=#为什么会卡住>为什么会卡住</a></li><li><a href=#虚拟头节点到底解决什么>虚拟头节点到底解决什么</a></li><li><a href=#最重要的定位规则>最重要的定位规则</a></li><li><a href=#完整实现>完整实现</a></li><li><a href=#用示例走一遍>用示例走一遍</a></li></ul></li><li><a href=#知识扩展>知识扩展</a><ul><li><a href=#三个必须保持的不变量>三个必须保持的不变量</a></li><li><a href=#易错点>易错点</a></li><li><a href=#还能怎样优化>还能怎样优化</a></li><li><a href=#自测>自测</a></li></ul></li></ul></nav></div></div><div class=content id=content><blockquote><p><strong>题目</strong>：不使用内置链表，实现 <code>get</code>、头插、尾插、指定位置插入和指定位置删除。下标从 <code>0</code> 开始，非法查询返回 <code>-1</code>。</p></blockquote><h2 id=简要回答 class=headerLink><a href=#%e7%ae%80%e8%a6%81%e5%9b%9e%e7%ad%94 class=header-mark></a>1 简要回答</h2><p>使用一个<strong>虚拟头节点 <code>dummyHead_</code></strong> 和一个记录真实节点数量的 <strong><code>size_</code></strong>。虚拟头节点永远存在，但不存题目数据；真正的第一个节点是 <code>dummyHead_->next</code>。</p><p>插入和删除都先找到目标位置的<strong>前驱节点</strong>，再修改 <code>next</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>插入：prev -&gt; next      变成      prev -&gt; newNode -&gt; next
+</span></span><span class=line><span class=cl>删除：prev -&gt; target -&gt; next     变成      prev -------&gt; next
+</span></span></code></pre></td></tr></table></div></div><p><code>size_</code> 只负责判断下标是否合法，不能让链表像数组一样随机访问。访问第 <code>index</code> 个节点仍然需要从头沿着 <code>next</code> 走过去。</p><table><thead><tr><th>操作</th><th>时间复杂度</th></tr></thead><tbody><tr><td><code>get(index)</code></td><td>$O(index)$，最坏 $O(n)$</td></tr><tr><td><code>addAtHead</code></td><td>$O(1)$</td></tr><tr><td><code>addAtTail</code></td><td>$O(n)$</td></tr><tr><td><code>addAtIndex</code></td><td>$O(index)$，最坏 $O(n)$</td></tr><tr><td><code>deleteAtIndex</code></td><td>$O(index)$，最坏 $O(n)$</td></tr></tbody></table><p>总空间复杂度为 $O(n)$。</p><h2 id=详细回答 class=headerLink><a href=#%e8%af%a6%e7%bb%86%e5%9b%9e%e7%ad%94 class=header-mark></a>2 详细回答</h2><h3 id=我的原始思路 class=headerLink><a href=#%e6%88%91%e7%9a%84%e5%8e%9f%e5%a7%8b%e6%80%9d%e8%b7%af class=header-mark></a>2.1 我的原始思路</h3><p>我的思考顺序是：</p><ol><li>先构造只包含 <code>val</code> 和 <code>next</code> 的单链表节点。</li><li>写 <code>get(index)</code> 时意识到需要判断越界，于是引入 <code>numbers</code> 记录节点数量。</li><li>看到 <code>index</code> 后联想到 <code>operator[]</code>，又尝试设计一层 <code>NodeList</code>。</li><li>为了实现按下标查找，一度考虑 <code>vector</code> 和 <code>unordered_map</code>。</li><li>随后发现：用现成容器保存节点，实际上绕开了"自己实现链表"的训练目标。</li><li>回到虚拟头节点，但不知道它应该放在哪里、怎样与真实节点连接。</li></ol><p>当时的核心尝试大致是：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=k>struct</span> <span class=nc>st_node</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>st_val</span><span class=p>{};</span>
+</span></span><span class=line><span class=cl>    <span class=n>st_node</span><span class=o>*</span> <span class=n>st_next</span><span class=p>{};</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>NodeList</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>numbers</span><span class=p>{};</span>
+</span></span><span class=line><span class=cl>    <span class=n>vector</span><span class=o>&lt;</span><span class=n>st_node</span><span class=o>&gt;</span> <span class=n>node_list_</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>unordered_map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>st_node</span><span class=o>&gt;</span> <span class=n>select_table</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p><strong>这段尝试的价值</strong>
+方向虽然绕远了，但成功暴露出一个关键区别：<strong>下标是接口提供的查询条件，不代表底层必须支持数组式随机访问。</strong></p></blockquote><h3 id=为什么会卡住 class=headerLink><a href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e4%bc%9a%e5%8d%a1%e4%bd%8f class=header-mark></a>2.2 为什么会卡住</h3><p>这里其实只需要两层结构：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>MyLinkedList
+</span></span><span class=line><span class=cl>├── dummyHead_：虚拟头节点
+</span></span><span class=line><span class=cl>└── size_：真实节点数量
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Node
+</span></span><span class=line><span class=cl>├── val
+</span></span><span class=line><span class=cl>└── next
+</span></span></code></pre></td></tr></table></div></div><p>不需要再增加 <code>NodeList</code>，也不需要重载 <code>operator[]</code>。</p><p>另外，构造函数里单独写：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=n>st_node</span><span class=p>();</span>
+</span></span></code></pre></td></tr></table></div></div><p>只会创建一个立即销毁的临时对象，并不会初始化链表成员。虚拟头节点必须成为 <code>MyLinkedList</code> 的成员：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=n>MyLinkedList</span><span class=p>()</span> <span class=o>:</span> <span class=n>dummyHead_</span><span class=p>(</span><span class=k>new</span> <span class=n>Node</span><span class=p>()),</span> <span class=n>size_</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=p>{}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=虚拟头节点到底解决什么 class=headerLink><a href=#%e8%99%9a%e6%8b%9f%e5%a4%b4%e8%8a%82%e7%82%b9%e5%88%b0%e5%ba%95%e8%a7%a3%e5%86%b3%e4%bb%80%e4%b9%88 class=header-mark></a>2.3 虚拟头节点到底解决什么</h3><p>没有虚拟头节点时，头部插入和删除通常要单独修改 <code>head</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>head -&gt; A -&gt; B
+</span></span></code></pre></td></tr></table></div></div><p>加入虚拟头节点后：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>dummy -&gt; A -&gt; B -&gt; nullptr
+</span></span></code></pre></td></tr></table></div></div><p>此时 <code>A</code> 也有统一的前驱 <code>dummy</code>。所以在下标 <code>0</code> 处插入、删除，与中间位置的操作完全一样，不需要单独处理真实头节点。</p><h3 id=最重要的定位规则 class=headerLink><a href=#%e6%9c%80%e9%87%8d%e8%a6%81%e7%9a%84%e5%ae%9a%e4%bd%8d%e8%a7%84%e5%88%99 class=header-mark></a>2.4 最重要的定位规则</h3><blockquote><p><strong>记住这一句</strong>
+查询节点时找"目标节点"；插入和删除时找"目标位置的前驱节点"。</p></blockquote><p>假设要在 <code>index = 2</code> 前插入：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>dummy -&gt; 0 -&gt; 1 -&gt; 2
+</span></span><span class=line><span class=cl>                 ↑
+</span></span><span class=line><span class=cl>               prev
+</span></span></code></pre></td></tr></table></div></div><p>从 <code>dummy</code> 出发移动 <code>index</code> 次，正好到达原下标 <code>1</code> 的节点，也就是插入位置的前驱。</p><h3 id=完整实现 class=headerLink><a href=#%e5%ae%8c%e6%95%b4%e5%ae%9e%e7%8e%b0 class=header-mark></a>2.5 完整实现</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=k>class</span> <span class=nc>MyLinkedList</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl><span class=k>private</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=nc>Node</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kt>int</span> <span class=n>val</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=n>Node</span><span class=o>*</span> <span class=n>next</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>Node</span><span class=p>(</span><span class=kt>int</span> <span class=n>value</span> <span class=o>=</span> <span class=mi>0</span><span class=p>,</span> <span class=n>Node</span><span class=o>*</span> <span class=n>nextNode</span> <span class=o>=</span> <span class=k>nullptr</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=o>:</span> <span class=n>val</span><span class=p>(</span><span class=n>value</span><span class=p>),</span> <span class=n>next</span><span class=p>(</span><span class=n>nextNode</span><span class=p>)</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>Node</span><span class=o>*</span> <span class=n>dummyHead_</span><span class=p>;</span>  <span class=c1>// 永远存在，不计入 size_
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>int</span> <span class=n>size_</span><span class=p>;</span>         <span class=c1>// 真实数据节点的数量
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=k>public</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>MyLinkedList</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=o>:</span> <span class=n>dummyHead_</span><span class=p>(</span><span class=k>new</span> <span class=n>Node</span><span class=p>()),</span> <span class=n>size_</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=o>~</span><span class=n>MyLinkedList</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>Node</span><span class=o>*</span> <span class=n>cur</span> <span class=o>=</span> <span class=n>dummyHead_</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>while</span> <span class=p>(</span><span class=n>cur</span> <span class=o>!=</span> <span class=k>nullptr</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>Node</span><span class=o>*</span> <span class=n>next</span> <span class=o>=</span> <span class=n>cur</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>delete</span> <span class=n>cur</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=n>cur</span> <span class=o>=</span> <span class=n>next</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=nf>get</span><span class=p>(</span><span class=kt>int</span> <span class=n>index</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>index</span> <span class=o>&lt;</span> <span class=mi>0</span> <span class=o>||</span> <span class=n>index</span> <span class=o>&gt;=</span> <span class=n>size_</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=o>-</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>Node</span><span class=o>*</span> <span class=n>cur</span> <span class=o>=</span> <span class=n>dummyHead_</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>index</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>cur</span> <span class=o>=</span> <span class=n>cur</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>cur</span><span class=o>-&gt;</span><span class=n>val</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=nf>addAtHead</span><span class=p>(</span><span class=kt>int</span> <span class=n>val</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>addAtIndex</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>val</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=nf>addAtTail</span><span class=p>(</span><span class=kt>int</span> <span class=n>val</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>addAtIndex</span><span class=p>(</span><span class=n>size_</span><span class=p>,</span> <span class=n>val</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=nf>addAtIndex</span><span class=p>(</span><span class=kt>int</span> <span class=n>index</span><span class=p>,</span> <span class=kt>int</span> <span class=n>val</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>index</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>index</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>index</span> <span class=o>&gt;</span> <span class=n>size_</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>Node</span><span class=o>*</span> <span class=n>prev</span> <span class=o>=</span> <span class=n>dummyHead_</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>index</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>prev</span> <span class=o>=</span> <span class=n>prev</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>prev</span><span class=o>-&gt;</span><span class=n>next</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Node</span><span class=p>(</span><span class=n>val</span><span class=p>,</span> <span class=n>prev</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=o>++</span><span class=n>size_</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=nf>deleteAtIndex</span><span class=p>(</span><span class=kt>int</span> <span class=n>index</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>index</span> <span class=o>&lt;</span> <span class=mi>0</span> <span class=o>||</span> <span class=n>index</span> <span class=o>&gt;=</span> <span class=n>size_</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>Node</span><span class=o>*</span> <span class=n>prev</span> <span class=o>=</span> <span class=n>dummyHead_</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>index</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>prev</span> <span class=o>=</span> <span class=n>prev</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>Node</span><span class=o>*</span> <span class=n>target</span> <span class=o>=</span> <span class=n>prev</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=n>prev</span><span class=o>-&gt;</span><span class=n>next</span> <span class=o>=</span> <span class=n>target</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>delete</span> <span class=n>target</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=o>--</span><span class=n>size_</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=用示例走一遍 class=headerLink><a href=#%e7%94%a8%e7%a4%ba%e4%be%8b%e8%b5%b0%e4%b8%80%e9%81%8d class=header-mark></a>2.6 用示例走一遍</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>初始：dummy
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>addAtHead(1)
+</span></span><span class=line><span class=cl>dummy -&gt; 1
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>addAtTail(3)
+</span></span><span class=line><span class=cl>dummy -&gt; 1 -&gt; 3
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>addAtIndex(1, 2)
+</span></span><span class=line><span class=cl>dummy -&gt; 1 -&gt; 2 -&gt; 3
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>deleteAtIndex(1)
+</span></span><span class=line><span class=cl>dummy -&gt; 1 -&gt; 3
+</span></span></code></pre></td></tr></table></div></div><p>每次成功插入后 <code>size_</code> 加一，每次成功删除后 <code>size_</code> 减一。</p><h2 id=知识扩展 class=headerLink><a href=#%e7%9f%a5%e8%af%86%e6%89%a9%e5%b1%95 class=header-mark></a>3 知识扩展</h2><h3 id=三个必须保持的不变量 class=headerLink><a href=#%e4%b8%89%e4%b8%aa%e5%bf%85%e9%a1%bb%e4%bf%9d%e6%8c%81%e7%9a%84%e4%b8%8d%e5%8f%98%e9%87%8f class=header-mark></a>3.1 三个必须保持的不变量</h3><ol><li><code>dummyHead_</code> 永远存在，而且不计入 <code>size_</code>。</li><li><code>size_</code> 必须等于真实数据节点的数量。</li><li>最后一个真实节点的 <code>next</code> 必须是 <code>nullptr</code>。</li></ol><h3 id=易错点 class=headerLink><a href=#%e6%98%93%e9%94%99%e7%82%b9 class=header-mark></a>3.2 易错点</h3><blockquote><p><strong>边界区别</strong>
+<code>addAtIndex</code> 允许 <code>index == size_</code>，因为这代表尾插；但 <code>get</code> 和 <code>deleteAtIndex</code> 要求 <code>index &lt; size_</code>。</p></blockquote><ul><li>插入、删除成功后才修改 <code>size_</code>。</li><li>删除前先保存 <code>target</code>，重新连接后再 <code>delete target</code>。</li><li>虚拟头节点不是下标 <code>0</code>；真实下标 <code>0</code> 是 <code>dummyHead_->next</code>。</li><li><code>vector</code> 和哈希表可以加速按下标访问，但那已经改变了题目要求的数据结构实现方式。</li></ul><h3 id=还能怎样优化 class=headerLink><a href=#%e8%bf%98%e8%83%bd%e6%80%8e%e6%a0%b7%e4%bc%98%e5%8c%96 class=header-mark></a>3.3 还能怎样优化</h3><p>如果额外维护一个尾指针，可以把 <code>addAtTail</code> 优化为 $O(1)$。但删除最后一个节点时也必须正确更新尾指针，维护成本更高。当前版本先把"虚拟头节点 + 前驱定位"掌握牢更重要。</p><h3 id=自测 class=headerLink><a href=#%e8%87%aa%e6%b5%8b class=header-mark></a>3.4 自测</h3><ul><li><i class="far fa-square fa-fw"></i> 能解释为什么 <code>size_</code> 不能实现随机访问</li><li><i class="far fa-square fa-fw"></i> 能画出虚拟头节点与真实头节点的关系</li><li><i class="far fa-square fa-fw"></i> 不看答案写出指定位置插入</li><li><i class="far fa-square fa-fw"></i> 说清楚插入和删除的合法下标范围为什么不同</li></ul></div><h2>相关内容</h2><div class=related-container><div class=related-item-container><h2 class=related-title><a href=/q1314-%E7%9F%A9%E9%98%B5%E5%8C%BA%E5%9F%9F%E5%92%8C/>Q1314 矩阵区域和</a></h2></div><div class=related-item-container><h2 class=related-title><a href=/q142-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8ii/>Q142 环形链表II</a></h2></div><div class=related-item-container><h2 class=related-title><a href=/q160-%E9%93%BE%E8%A1%A8%E7%9B%B8%E4%BA%A4/>Q160 链表相交</a></h2></div><div class=related-item-container><h2 class=related-title><a href=/q19-%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%ACn%E4%B8%AA%E8%8A%82%E7%82%B9/>Q19 删除链表的倒数第N个节点</a></h2></div><div class=related-item-container><h2 class=related-title><a href=/q206-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/>Q206 反转链表</a></h2></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2026-08-04</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-source href=https://github.com/soybeanmilka/my_blog_source/blob/main/content/posts/q707-设计链表/index.md target=_blank rel="noopener noreferrer">查看源代码</a>
+</span><span>|&nbsp;<a class=link-to-edit href=https://github.com/soybeanmilka/my_blog_source/edit/main/content/posts/q707-设计链表/index.md target=_blank rel="noopener noreferrer">编辑此页</a>
+</span><span>|&nbsp;<a class=link-to-report href="https://github.com/soybeanmilka/my_blog_source/issues/new?title=[bug]%20Q707+%E8%AE%BE%E8%AE%A1%E9%93%BE%E8%A1%A8" target=_blank rel="noopener noreferrer">报告问题</a></span></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/leetcode/>Leetcode</a>,&nbsp;<a href=/tags/%E9%93%BE%E8%A1%A8/>链表</a>,&nbsp;<a href=/tags/%E8%AE%BE%E8%AE%A1/>设计</a>,&nbsp;<a href=/tags/%E4%B8%AD%E7%AD%89/>中等</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/%E5%B7%AE%E5%88%86%E6%95%B0%E7%BB%84%E7%9F%A5%E8%AF%86%E7%82%B9/ class=prev rel=prev title=差分数组知识点><i class="fas fa-angle-left fa-fw"></i>差分数组知识点</a>
+<a href=/q24-%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9/ class=next rel=next title="Q24 两两交换链表中的节点">Q24 两两交换链表中的节点<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><meting-js server=netease type=playlist id=5051984626 api="https://meting.qjqq.cn/?server=:server&type=:type&id=:id&r=:r" theme=#f78fb3 fixed=true mini=true order=random mutex=true list-folded=true list-max-height=240px></meting-js></div><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreferrer" title="Hugo 0.143.1">Hugo</a> 强力驱动&nbsp;|&nbsp;托管在 <a title=Netlify href=https://www.netlify.com/ target=_blank rel="noopener noreferrer">Netlify</a> 上&nbsp;|&nbsp;主题 - <a href=https://github.com/HEIGE-PCloud/DoIt target=_blank rel="noopener noreferrer" title="DoIt 0.3.0"><i class="far fa-edit fa-fw"></i> DoIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2026</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer"></a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc-sa/4.0/ target=_blank>CC BY-NC-SA 4.0</a></span></div><div class=footer-line></div><div class=footer-line></div></div></footer></div><div id=fixed-buttons><a href=#back-to-top id=back-to-top-button class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><div class=assets><link rel=stylesheet href=/lib/katex/katex.min.css><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/lib/katex/copy-tex.min.css><noscript><link rel=stylesheet href=/lib/katex/copy-tex.min.css></noscript><link rel=stylesheet href=/css/custom.css><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/lib/aplayer/APlayer.min.css><noscript><link rel=stylesheet href=/lib/aplayer/APlayer.min.css></noscript><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{distance:null,findAllMatches:null,fuseIndexURL:"/index.json",highlightTag:"em",ignoreFieldNorm:null,ignoreLocation:null,isCaseSensitive:null,location:null,maxResultLength:10,minMatchCharLength:null,noResultsFound:"没有找到结果",snippetLength:50,threshold:null,type:"fuse",useExtendedSearch:null},table:{sort:!0}}</script><script type=text/javascript src=/lib/tablesort/tablesort.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/katex/katex.min.js defer></script><script type=text/javascript src=/lib/katex/auto-render.min.js defer></script><script type=text/javascript src=/lib/katex/copy-tex.min.js defer></script><script type=text/javascript src=/lib/katex/mhchem.min.js defer></script><script type=text/javascript src=/js/katex.min.js defer></script><script type=text/javascript src=/lib/aplayer/APlayer.min.js defer></script><script type=text/javascript src=/lib/meting/Meting.min.js defer></script><script type=text/javascript src=/js/custom.js defer></script><script type=text/javascript src=/js/theme.min.js defer></script></div></body></html>

@@ -1,0 +1,393 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>设计 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E8%AE%BE%E8%AE%A1/</link><description>设计 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Tue, 04 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E8%AE%BE%E8%AE%A1/" rel="self" type="application/rss+xml"/><item><title>Q707 设计链表</title><link>https://soybeanmilk.netlify.app/q707-%E8%AE%BE%E8%AE%A1%E9%93%BE%E8%A1%A8/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q707-%E8%AE%BE%E8%AE%A1%E9%93%BE%E8%A1%A8/</guid><description><![CDATA[<blockquote>
+<p><strong>题目</strong>：不使用内置链表，实现 <code>get</code>、头插、尾插、指定位置插入和指定位置删除。下标从 <code>0</code> 开始，非法查询返回 <code>-1</code>。</p></blockquote>
+<h2 id="简要回答" class="headerLink">
+    <a href="#%e7%ae%80%e8%a6%81%e5%9b%9e%e7%ad%94" class="header-mark"></a>1 简要回答</h2><p>使用一个<strong>虚拟头节点 <code>dummyHead_</code></strong> 和一个记录真实节点数量的 <strong><code>size_</code></strong>。虚拟头节点永远存在，但不存题目数据；真正的第一个节点是 <code>dummyHead_-&gt;next</code>。</p>
+<p>插入和删除都先找到目标位置的<strong>前驱节点</strong>，再修改 <code>next</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">插入：prev -&gt; next      变成      prev -&gt; newNode -&gt; next
+</span></span><span class="line"><span class="cl">删除：prev -&gt; target -&gt; next     变成      prev -------&gt; next
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>size_</code> 只负责判断下标是否合法，不能让链表像数组一样随机访问。访问第 <code>index</code> 个节点仍然需要从头沿着 <code>next</code> 走过去。</p>
+<table>
+  <thead>
+      <tr>
+          <th>操作</th>
+          <th>时间复杂度</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>get(index)</code></td>
+          <td>$O(index)$，最坏 $O(n)$</td>
+      </tr>
+      <tr>
+          <td><code>addAtHead</code></td>
+          <td>$O(1)$</td>
+      </tr>
+      <tr>
+          <td><code>addAtTail</code></td>
+          <td>$O(n)$</td>
+      </tr>
+      <tr>
+          <td><code>addAtIndex</code></td>
+          <td>$O(index)$，最坏 $O(n)$</td>
+      </tr>
+      <tr>
+          <td><code>deleteAtIndex</code></td>
+          <td>$O(index)$，最坏 $O(n)$</td>
+      </tr>
+  </tbody>
+</table>
+<p>总空间复杂度为 $O(n)$。</p>
+<h2 id="详细回答" class="headerLink">
+    <a href="#%e8%af%a6%e7%bb%86%e5%9b%9e%e7%ad%94" class="header-mark"></a>2 详细回答</h2><h3 id="我的原始思路" class="headerLink">
+    <a href="#%e6%88%91%e7%9a%84%e5%8e%9f%e5%a7%8b%e6%80%9d%e8%b7%af" class="header-mark"></a>2.1 我的原始思路</h3><p>我的思考顺序是：</p>
+<ol>
+<li>先构造只包含 <code>val</code> 和 <code>next</code> 的单链表节点。</li>
+<li>写 <code>get(index)</code> 时意识到需要判断越界，于是引入 <code>numbers</code> 记录节点数量。</li>
+<li>看到 <code>index</code> 后联想到 <code>operator[]</code>，又尝试设计一层 <code>NodeList</code>。</li>
+<li>为了实现按下标查找，一度考虑 <code>vector</code> 和 <code>unordered_map</code>。</li>
+<li>随后发现：用现成容器保存节点，实际上绕开了&quot;自己实现链表&quot;的训练目标。</li>
+<li>回到虚拟头节点，但不知道它应该放在哪里、怎样与真实节点连接。</li>
+</ol>
+<p>当时的核心尝试大致是：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">st_node</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">st_val</span><span class="p">{};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">st_node</span><span class="o">*</span> <span class="n">st_next</span><span class="p">{};</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">NodeList</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">numbers</span><span class="p">{};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="n">st_node</span><span class="o">&gt;</span> <span class="n">node_list_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">st_node</span><span class="o">&gt;</span> <span class="n">select_table</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><strong>这段尝试的价值</strong>
+方向虽然绕远了，但成功暴露出一个关键区别：<strong>下标是接口提供的查询条件，不代表底层必须支持数组式随机访问。</strong></p></blockquote>
+<h3 id="为什么会卡住" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e4%bc%9a%e5%8d%a1%e4%bd%8f" class="header-mark"></a>2.2 为什么会卡住</h3><p>这里其实只需要两层结构：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">MyLinkedList
+</span></span><span class="line"><span class="cl">├── dummyHead_：虚拟头节点
+</span></span><span class="line"><span class="cl">└── size_：真实节点数量
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Node
+</span></span><span class="line"><span class="cl">├── val
+</span></span><span class="line"><span class="cl">└── next
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>不需要再增加 <code>NodeList</code>，也不需要重载 <code>operator[]</code>。</p>
+<p>另外，构造函数里单独写：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">st_node</span><span class="p">();</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>只会创建一个立即销毁的临时对象，并不会初始化链表成员。虚拟头节点必须成为 <code>MyLinkedList</code> 的成员：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">MyLinkedList</span><span class="p">()</span> <span class="o">:</span> <span class="n">dummyHead_</span><span class="p">(</span><span class="k">new</span> <span class="n">Node</span><span class="p">()),</span> <span class="n">size_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="虚拟头节点到底解决什么" class="headerLink">
+    <a href="#%e8%99%9a%e6%8b%9f%e5%a4%b4%e8%8a%82%e7%82%b9%e5%88%b0%e5%ba%95%e8%a7%a3%e5%86%b3%e4%bb%80%e4%b9%88" class="header-mark"></a>2.3 虚拟头节点到底解决什么</h3><p>没有虚拟头节点时，头部插入和删除通常要单独修改 <code>head</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">head -&gt; A -&gt; B
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>加入虚拟头节点后：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">dummy -&gt; A -&gt; B -&gt; nullptr
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>此时 <code>A</code> 也有统一的前驱 <code>dummy</code>。所以在下标 <code>0</code> 处插入、删除，与中间位置的操作完全一样，不需要单独处理真实头节点。</p>
+<h3 id="最重要的定位规则" class="headerLink">
+    <a href="#%e6%9c%80%e9%87%8d%e8%a6%81%e7%9a%84%e5%ae%9a%e4%bd%8d%e8%a7%84%e5%88%99" class="header-mark"></a>2.4 最重要的定位规则</h3><blockquote>
+<p><strong>记住这一句</strong>
+查询节点时找&quot;目标节点&quot;；插入和删除时找&quot;目标位置的前驱节点&quot;。</p></blockquote>
+<p>假设要在 <code>index = 2</code> 前插入：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">dummy -&gt; 0 -&gt; 1 -&gt; 2
+</span></span><span class="line"><span class="cl">                 ↑
+</span></span><span class="line"><span class="cl">               prev
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>从 <code>dummy</code> 出发移动 <code>index</code> 次，正好到达原下标 <code>1</code> 的节点，也就是插入位置的前驱。</p>
+<h3 id="完整实现" class="headerLink">
+    <a href="#%e5%ae%8c%e6%95%b4%e5%ae%9e%e7%8e%b0" class="header-mark"></a>2.5 完整实现</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MyLinkedList</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="nc">Node</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Node</span><span class="o">*</span> <span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Node</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Node</span><span class="o">*</span> <span class="n">nextNode</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="o">:</span> <span class="n">val</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">next</span><span class="p">(</span><span class="n">nextNode</span><span class="p">)</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Node</span><span class="o">*</span> <span class="n">dummyHead_</span><span class="p">;</span>  <span class="c1">// 永远存在，不计入 size_
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">size_</span><span class="p">;</span>         <span class="c1">// 真实数据节点的数量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">MyLinkedList</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="o">:</span> <span class="n">dummyHead_</span><span class="p">(</span><span class="k">new</span> <span class="n">Node</span><span class="p">()),</span> <span class="n">size_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">MyLinkedList</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Node</span><span class="o">*</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">dummyHead_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="n">cur</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Node</span><span class="o">*</span> <span class="n">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">delete</span> <span class="n">cur</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cur</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">get</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">size_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Node</span><span class="o">*</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">dummyHead_</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">index</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">addAtHead</span><span class="p">(</span><span class="kt">int</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">addAtIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">addAtTail</span><span class="p">(</span><span class="kt">int</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">addAtIndex</span><span class="p">(</span><span class="n">size_</span><span class="p">,</span> <span class="n">val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">addAtIndex</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="kt">int</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&gt;</span> <span class="n">size_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Node</span><span class="o">*</span> <span class="n">prev</span> <span class="o">=</span> <span class="n">dummyHead_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">index</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">++</span><span class="n">size_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">deleteAtIndex</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">size_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Node</span><span class="o">*</span> <span class="n">prev</span> <span class="o">=</span> <span class="n">dummyHead_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">index</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Node</span><span class="o">*</span> <span class="n">target</span> <span class="o">=</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">target</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">delete</span> <span class="n">target</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">--</span><span class="n">size_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="用示例走一遍" class="headerLink">
+    <a href="#%e7%94%a8%e7%a4%ba%e4%be%8b%e8%b5%b0%e4%b8%80%e9%81%8d" class="header-mark"></a>2.6 用示例走一遍</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">初始：dummy
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">addAtHead(1)
+</span></span><span class="line"><span class="cl">dummy -&gt; 1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">addAtTail(3)
+</span></span><span class="line"><span class="cl">dummy -&gt; 1 -&gt; 3
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">addAtIndex(1, 2)
+</span></span><span class="line"><span class="cl">dummy -&gt; 1 -&gt; 2 -&gt; 3
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">deleteAtIndex(1)
+</span></span><span class="line"><span class="cl">dummy -&gt; 1 -&gt; 3
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>每次成功插入后 <code>size_</code> 加一，每次成功删除后 <code>size_</code> 减一。</p>
+<h2 id="知识扩展" class="headerLink">
+    <a href="#%e7%9f%a5%e8%af%86%e6%89%a9%e5%b1%95" class="header-mark"></a>3 知识扩展</h2><h3 id="三个必须保持的不变量" class="headerLink">
+    <a href="#%e4%b8%89%e4%b8%aa%e5%bf%85%e9%a1%bb%e4%bf%9d%e6%8c%81%e7%9a%84%e4%b8%8d%e5%8f%98%e9%87%8f" class="header-mark"></a>3.1 三个必须保持的不变量</h3><ol>
+<li><code>dummyHead_</code> 永远存在，而且不计入 <code>size_</code>。</li>
+<li><code>size_</code> 必须等于真实数据节点的数量。</li>
+<li>最后一个真实节点的 <code>next</code> 必须是 <code>nullptr</code>。</li>
+</ol>
+<h3 id="易错点" class="headerLink">
+    <a href="#%e6%98%93%e9%94%99%e7%82%b9" class="header-mark"></a>3.2 易错点</h3><blockquote>
+<p><strong>边界区别</strong>
+<code>addAtIndex</code> 允许 <code>index == size_</code>，因为这代表尾插；但 <code>get</code> 和 <code>deleteAtIndex</code> 要求 <code>index &lt; size_</code>。</p></blockquote>
+<ul>
+<li>插入、删除成功后才修改 <code>size_</code>。</li>
+<li>删除前先保存 <code>target</code>，重新连接后再 <code>delete target</code>。</li>
+<li>虚拟头节点不是下标 <code>0</code>；真实下标 <code>0</code> 是 <code>dummyHead_-&gt;next</code>。</li>
+<li><code>vector</code> 和哈希表可以加速按下标访问，但那已经改变了题目要求的数据结构实现方式。</li>
+</ul>
+<h3 id="还能怎样优化" class="headerLink">
+    <a href="#%e8%bf%98%e8%83%bd%e6%80%8e%e6%a0%b7%e4%bc%98%e5%8c%96" class="header-mark"></a>3.3 还能怎样优化</h3><p>如果额外维护一个尾指针，可以把 <code>addAtTail</code> 优化为 $O(1)$。但删除最后一个节点时也必须正确更新尾指针，维护成本更高。当前版本先把&quot;虚拟头节点 + 前驱定位&quot;掌握牢更重要。</p>
+<h3 id="自测" class="headerLink">
+    <a href="#%e8%87%aa%e6%b5%8b" class="header-mark"></a>3.4 自测</h3><ul>
+<li><i class="far fa-square fa-fw"></i> 能解释为什么 <code>size_</code> 不能实现随机访问</li>
+<li><i class="far fa-square fa-fw"></i> 能画出虚拟头节点与真实头节点的关系</li>
+<li><i class="far fa-square fa-fw"></i> 不看答案写出指定位置插入</li>
+<li><i class="far fa-square fa-fw"></i> 说清楚插入和删除的合法下标范围为什么不同</li>
+</ul>
+]]></description></item></channel></rss>

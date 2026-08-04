@@ -1,4 +1,181 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>中等 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E4%B8%AD%E7%AD%89/</link><description>中等 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Tue, 04 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E4%B8%AD%E7%AD%89/" rel="self" type="application/rss+xml"/><item><title>Q142 环形链表II</title><link>https://soybeanmilk.netlify.app/q142-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8ii/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q142-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8ii/</guid><description><![CDATA[<blockquote>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>中等 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E4%B8%AD%E7%AD%89/</link><description>中等 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Tue, 04 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E4%B8%AD%E7%AD%89/" rel="self" type="application/rss+xml"/><item><title>Q1314 矩阵区域和</title><link>https://soybeanmilk.netlify.app/q1314-%E7%9F%A9%E9%98%B5%E5%8C%BA%E5%9F%9F%E5%92%8C/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q1314-%E7%9F%A9%E9%98%B5%E5%8C%BA%E5%9F%9F%E5%92%8C/</guid><description><![CDATA[<p>![](Pasted image 20260605194937.png)</p>
+<p>题目类型：前缀和</p>
+<p>当你发现是在求某个大的集合下一<strong>系列</strong>具体的子集时，你可以考虑下前缀和，它可以把遍历，变成值相减。</p>
+<p>我的写法是：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp"> </span><span class="c1">// for std::max, std::min
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 二维前缀和类，用于快速计算任意矩形子矩阵的和
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">class</span> <span class="nc">SumMatrix</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// preSum[i][j] 表示原始矩阵中前 i 行、前 j 列（即区域 [0, i) × [0, j)）所有元素的和
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 维度为 (m+1) x (n+1)，其中 m、n 为原始矩阵的行数和列数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">preSum</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 构造函数：根据原始矩阵 matrix 构建前缀和数组
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">SumMatrix</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">matrix</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>          <span class="c1">// 原始矩阵的行数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">size</span><span class="p">();</span>       <span class="c1">// 原始矩阵的列数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 初始化前缀和数组，多一行一列用于简化边界处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">preSum</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 计算前缀和：preSum[i][j] = preSum[i-1][j] + preSum[i][j-1] - preSum[i-1][j-1] + matrix[i-1][j-1]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">m</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">preSum</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">preSum</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">preSum</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">                               <span class="o">+</span> <span class="n">matrix</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">preSum</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 计算原始矩阵中闭区间 [x1, x2] 行、[y1, y2] 列所围成的子矩阵的和
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 注意：x1, x2, y1, y2 都是原始矩阵的有效索引（0-based）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="nf">Addmatrix</span><span class="p">(</span><span class="kt">int</span> <span class="n">x1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x2</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y2</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 利用前缀和公式：sum = preSum[x2+1][y2+1] - preSum[x1][y2+1] - preSum[x2+1][y1] + preSum[x1][y1]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 因为 preSum 的行/列索引比原始矩阵大 1，所以需要 +1 转换
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">preSum</span><span class="p">[</span><span class="n">x2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">y2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">preSum</span><span class="p">[</span><span class="n">x1</span><span class="p">][</span><span class="n">y2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">               <span class="o">-</span> <span class="n">preSum</span><span class="p">[</span><span class="n">x2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">y1</span><span class="p">]</span> <span class="o">+</span> <span class="n">preSum</span><span class="p">[</span><span class="n">x1</span><span class="p">][</span><span class="n">y1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 计算矩阵区域和：对于每个位置 (i, j)，求以该位置为中心、边长为 2k+1 的正方形区域的和
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// （边界超出矩阵时只取有效部分）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">matrixBlockSum</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">mat</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="n">mat</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>      <span class="c1">// 矩阵行数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">size</span><span class="p">();</span>   <span class="c1">// 矩阵列数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 结果矩阵，大小与原始矩阵相同
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">answer</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 构建原始矩阵的前缀和对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">SumMatrix</span> <span class="n">mt</span> <span class="o">=</span> <span class="n">SumMatrix</span><span class="p">(</span><span class="n">mat</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 遍历每个位置 (i, j)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">m</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 计算以 (i, j) 为中心、半径为 k 的矩形区域的边界（需限制在矩阵范围内）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="kt">int</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">k</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>        <span class="c1">// 上边界（行最小索引）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="kt">int</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">k</span><span class="p">,</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>    <span class="c1">// 下边界（行最大索引）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="kt">int</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="n">k</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>        <span class="c1">// 左边界（列最小索引）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="kt">int</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>    <span class="c1">// 右边界（列最大索引）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 通过前缀和快速得到该区域的和，并填入结果矩阵
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">answer</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">mt</span><span class="p">.</span><span class="n">Addmatrix</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p>这题说白了就是：给你一个矩阵，对于每个格子 <code>(i,j)</code>，把它周围 k 圈范围内的所有数加起来，填回去。</p>
+<p>暴力做法也简单，每个格子都去遍历它的 k 邻域，但那是 $O(m \cdot n \cdot k^2)$，k 一大直接炸。</p>
+<p>关键思路就是——<strong>前缀和把遍历变成值相减</strong>。</p>
+<p>二维前缀和的构造其实就一句话：<code>preSum[i][j]</code> 表示从 <code>(0,0)</code> 到 <code>(i-1, j-1)</code> 这片矩形区域的和。多开一圈 <code>m+1 × n+1</code> 是为了省掉边界判空。</p>
+<p>构造公式拆开看很直观：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">preSum[i][j] = preSum[i-1][j]        // 上面那块
+</span></span><span class="line"><span class="cl">             + preSum[i][j-1]        // 左边那块
+</span></span><span class="line"><span class="cl">             + matrix[i-1][j-1]      // 当前这个数
+</span></span><span class="line"><span class="cl">             - preSum[i-1][j-1]      // 左上角被算了两次，扣掉
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>画个图就是：<strong>上加左，减重叠，加自己。</strong></p>
+<p>查子矩阵和也一个道理。想求 <code>(x1,y1)</code> 到 <code>(x2,y2)</code> 这个矩形（闭区间，0-index）的和：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">sum = preSum[x2+1][y2+1]      // 整块从原点到右下
+</span></span><span class="line"><span class="cl">    - preSum[x1][y2+1]        // 砍掉上面
+</span></span><span class="line"><span class="cl">    - preSum[x2+1][y1]        // 砍掉左边
+</span></span><span class="line"><span class="cl">    + preSum[x1][y1]          // 左上角被砍了两次，补回来
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>就是<strong>大减小，补重叠</strong>，对称得很。</p>
+<p>最后一步，每个格子的 k 邻域怎么定界？用 <code>max</code>/<code>min</code> 把越界的部分夹住就行——左边界不能小于 0，右边界不能超过 <code>m-1</code>，上下同理。这样每个格子 O(1) 就能出结果，总复杂度 $O(m \cdot n)$。</p>
+<p>一句话总结：<strong>构造一次前缀和，然后每个格子的答案就是四次查表加减</strong>。前缀和的本质就是预计算，用空间换掉内层遍历。</p>
+]]></description></item><item><title>Q142 环形链表II</title><link>https://soybeanmilk.netlify.app/q142-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8ii/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q142-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8ii/</guid><description><![CDATA[<blockquote>
 <p><strong>题目</strong>：给定一个链表的头节点 <code>head</code>，返回链表开始入环的第一个节点。如果链表无环，返回 <code>null</code>。</p></blockquote>
 <h2 id="我的想法" class="headerLink">
     <a href="#%e6%88%91%e7%9a%84%e6%83%b3%e6%b3%95" class="header-mark"></a>1 我的想法</h2><p>最容易踩的坑：以为快慢指针第一次相遇就是答案。<strong>第一次相遇点不是环入口</strong>——相遇后还要从头再走一遍：让 <code>cur</code>（从 head 出发）和 <code>fast</code>（停在相遇点）同步各走 1 步，两者相遇的位置才是环入口。</p>
@@ -105,6 +282,293 @@
 <li>第二阶段不需要判空：已确认有环，<code>cur</code> 和 <code>fast</code> 必然相遇。</li>
 <li>无环判断必须覆盖 <code>fast == nullptr</code> 和 <code>fast-&gt;next == nullptr</code> 两种。</li>
 <li>第一阶段别把 slow 写成走 2 步——快慢都走 2 步永远追不上。</li>
+</ul>
+]]></description></item><item><title>Q19 删除链表的倒数第N个节点</title><link>https://soybeanmilk.netlify.app/q19-%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%ACn%E4%B8%AA%E8%8A%82%E7%82%B9/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q19-%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%ACn%E4%B8%AA%E8%8A%82%E7%82%B9/</guid><description><![CDATA[<blockquote>
+<p><strong>题目</strong>：给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。</p></blockquote>
+<blockquote>
+<p><strong>我的想法</strong>
+自己独立做出来了。过程中解决了两个疑问：</p>
+<ul>
+<li>fast 先走会不会越界？模拟后确认不会——fast 恰好走到 nullptr 这个合法终点就停。</li>
+<li>删除后 return 不好 return？因为头可能被删，答案必须从 dummy-&gt;next 拿；而且顺序是：先重接、再删除；先读答案、再删 dummy。</li>
+</ul></blockquote>
+<blockquote>
+<p><strong>这篇笔记的核心</strong>
+虚拟头 + 快慢指针：fast 先走 n+1 步，再快慢一起走，slow 正好停在&quot;目标节点的前驱&quot;。删除顺序：<strong>先重接，再删除；先读答案，再删 dummy。</strong></p></blockquote>
+<h2 id="简要回答" class="headerLink">
+    <a href="#%e7%ae%80%e8%a6%81%e5%9b%9e%e7%ad%94" class="header-mark"></a>1 简要回答</h2><ol>
+<li><code>fast</code> 从 dummy 出发先走 n+1 步。</li>
+<li><code>fast</code>、<code>slow</code> 一起走，直到 <code>fast == nullptr</code>。此时 <code>slow</code> 是倒数第 n 个节点的前驱。</li>
+<li>重接链表、删除目标节点，返回 <code>dummy-&gt;next</code>。</li>
+</ol>
+<ul>
+<li>时间复杂度 $O(n)$，空间复杂度 $O(1)$。</li>
+</ul>
+<h2 id="详细回答" class="headerLink">
+    <a href="#%e8%af%a6%e7%bb%86%e5%9b%9e%e7%ad%94" class="header-mark"></a>2 详细回答</h2><h3 id="为什么-fast-先走-n1-步不会越界" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88-fast-%e5%85%88%e8%b5%b0-n1-%e6%ad%a5%e4%b8%8d%e4%bc%9a%e8%b6%8a%e7%95%8c" class="header-mark"></a>2.1 为什么 fast 先走 n+1 步不会越界</h3><p>假设链表长度是 L，n 最大等于 L。从 dummy 出发走 n+1 步，最多走 L+1 步：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">dummy(0) → 1(1) → 2(2) → … → nodeL(L) → nullptr(L+1)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>最后一步是在 nodeL 上执行 <code>fast = fast-&gt;next</code>，结果是 nullptr——<strong>nullptr 是合法终点，不是越界</strong>。真正的越界只发生在对 nullptr 解引用时（比如 fast 已经是 nullptr 还写 <code>fast-&gt;next</code>）。只要步数设计成&quot;恰好停在 nullptr&quot;，并且后续循环先检查 <code>fast != nullptr</code>，就不会崩。</p>
+<h3 id="代码" class="headerLink">
+    <a href="#%e4%bb%a3%e7%a0%81" class="header-mark"></a>2.2 代码</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">ListNode</span><span class="o">*</span> <span class="nf">removeNthFromEnd</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">head</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ListNode</span><span class="o">*</span> <span class="n">dummy</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">head</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ListNode</span><span class="o">*</span> <span class="n">fast</span> <span class="o">=</span> <span class="n">dummy</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ListNode</span><span class="o">*</span> <span class="n">slow</span> <span class="o">=</span> <span class="n">dummy</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>   <span class="c1">// fast 先走 n+1 步
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">fast</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span> <span class="p">{</span>        <span class="c1">// 快慢一起走
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 现在 slow 是目标节点的前驱
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ListNode</span><span class="o">*</span> <span class="n">target</span> <span class="o">=</span> <span class="n">slow</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>   <span class="c1">// ① 记住要删的节点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">slow</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">slow</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>   <span class="c1">// ② 先重接链表（摘下来）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">delete</span> <span class="n">target</span><span class="p">;</span>                   <span class="c1">// ③ 再删除目标
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="n">ListNode</span><span class="o">*</span> <span class="n">result</span> <span class="o">=</span> <span class="n">dummy</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>  <span class="c1">// ④ 先读答案
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">delete</span> <span class="n">dummy</span><span class="p">;</span>                    <span class="c1">// ⑤ 再删 dummy（可选）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="我的实现验证通过" class="headerLink">
+    <a href="#%e6%88%91%e7%9a%84%e5%ae%9e%e7%8e%b0%e9%aa%8c%e8%af%81%e9%80%9a%e8%bf%87" class="header-mark"></a>2.3 我的实现（验证通过）</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">ListNode</span><span class="o">*</span> <span class="nf">removeNthFromEnd</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">head</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ListNode</span><span class="o">*</span> <span class="n">dummyhead</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">head</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ListNode</span><span class="o">*</span> <span class="n">fast</span> <span class="o">=</span> <span class="n">dummyhead</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ListNode</span><span class="o">*</span> <span class="n">slow</span> <span class="o">=</span> <span class="n">dummyhead</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>                 <span class="c1">// 先手动走 1 步
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>      <span class="c1">// 再走 n 步，合计 n+1 步
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">fast</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">auto</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">slow</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">slow</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">slow</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">delete</span> <span class="n">temp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">dummyhead</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>和标准写法等价：手动 <code>fast = fast-&gt;next</code> + for 循环 n 步 = 从 dummy 一共走 n+1 步。</li>
+<li>没 <code>delete dummyhead</code> 也没关系（LeetCode 不检查泄漏）；如果要删，先 <code>result = dummyhead-&gt;next</code> 再删。</li>
+</ul>
+<h3 id="删除与返回的顺序我卡过的地方" class="headerLink">
+    <a href="#%e5%88%a0%e9%99%a4%e4%b8%8e%e8%bf%94%e5%9b%9e%e7%9a%84%e9%a1%ba%e5%ba%8f%e6%88%91%e5%8d%a1%e8%bf%87%e7%9a%84%e5%9c%b0%e6%96%b9" class="header-mark"></a>2.4 删除与返回的顺序（我卡过的地方）</h3><ul>
+<li><strong>先重接，再删除</strong>：必须先把 <code>slow-&gt;next</code> 指向目标的下一个，目标才能从链表里摘下来；先 <code>delete target</code> 的话，链表还挂着指向已释放内存的指针 → use-after-free（之前见过的 ASan 报错）。</li>
+<li><strong>先读答案，再删 dummy</strong>：<code>result = dummy-&gt;next</code> 必须在 <code>delete dummy</code> 之前；顺序反了就是读已释放内存。不删 dummy 也不会错（LeetCode 不检查泄漏），删了是好习惯。</li>
+<li><strong>为什么答案从 dummy-&gt;next 拿</strong>：当 n == 链表长度时，删除的是原头节点，<code>head</code> 指向的节点已经没了；而 <code>dummy-&gt;next</code> 在重接时自动更新成新头，所以它永远是&quot;当前真实头&quot;。</li>
+</ul>
+<h2 id="知识扩展" class="headerLink">
+    <a href="#%e7%9f%a5%e8%af%86%e6%89%a9%e5%b1%95" class="header-mark"></a>3 知识扩展</h2><blockquote>
+<p><strong>易错点</strong></p>
+<ul>
+<li>删除目标节点前，必须先重接链表。</li>
+<li>n 等于链表长度时，删的是头：此时 <code>slow</code> 就是 dummy，<code>dummy-&gt;next</code> 自动变成原第二个节点。</li>
+<li>先走 n 步还是 n+1 步，取决于循环条件：n+1 步 + <code>while (fast)</code> 和 n 步 + <code>while (fast-&gt;next)</code> 等价，选一种记熟。</li>
+<li>空链表（head 为 null）时循环条件要能安全退出。</li>
+</ul></blockquote>
+<h3 id="相关笔记" class="headerLink">
+    <a href="#%e7%9b%b8%e5%85%b3%e7%ac%94%e8%ae%b0" class="header-mark"></a>3.1 相关笔记</h3><ul>
+<li><a href="/posts/q206-%e5%8f%8d%e8%bd%ac%e9%93%be%e8%a1%a8/" rel="">Q206 反转链表</a>（dummy 的用法）</li>
+<li><a href="/posts/q24-%e4%b8%a4%e4%b8%a4%e4%ba%a4%e6%8d%a2%e9%93%be%e8%a1%a8%e4%b8%ad%e7%9a%84%e8%8a%82%e7%82%b9/" rel="">Q24 两两交换链表中的节点</a>（先重接再删除/交换）</li>
+<li><a href="/posts/%e7%a9%ba%e6%8c%87%e9%92%88%e4%b8%8e%e8%99%9a%e6%8b%9f%e5%a4%b4%e8%8a%82%e7%82%b9/" rel="">空指针与虚拟头节点</a>（dummy 站岗，dummy-&gt;next 交卷）</li>
+<li><a href="/posts/%e6%8c%87%e9%92%88%e4%ba%a4%e6%8e%a5%e7%9e%ac%e9%97%b4/" rel="">指针交接瞬间</a>（改指针前先防断链）</li>
+<li>链表常用操作总结</li>
+</ul>
+<h3 id="自测" class="headerLink">
+    <a href="#%e8%87%aa%e6%b5%8b" class="header-mark"></a>3.2 自测</h3><ul>
+<li><i class="far fa-square fa-fw"></i> 能解释 fast 先走 n+1 步为什么不会越界</li>
+<li><i class="far fa-square fa-fw"></i> 能说出删除三步的顺序：记住目标 → 重接 → 删除</li>
+<li><i class="far fa-square fa-fw"></i> 能解释为什么答案必须从 dummy-&gt;next 拿</li>
+<li><i class="far fa-square fa-fw"></i> 能说出 n == 链表长度时，slow 停在哪里</li>
+<li><i class="far fa-square fa-fw"></i> 手写一遍完整代码</li>
+</ul>
+]]></description></item><item><title>Q238 除自身以外数组的乘积</title><link>https://soybeanmilk.netlify.app/q238-%E9%99%A4%E8%87%AA%E8%BA%AB%E4%BB%A5%E5%A4%96%E6%95%B0%E7%BB%84%E7%9A%84%E4%B9%98%E7%A7%AF/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q238-%E9%99%A4%E8%87%AA%E8%BA%AB%E4%BB%A5%E5%A4%96%E6%95%B0%E7%BB%84%E7%9A%84%E4%B9%98%E7%A7%AF/</guid><description><![CDATA[<h2 id="题目类型前缀和" class="headerLink">
+    <a href="#%e9%a2%98%e7%9b%ae%e7%b1%bb%e5%9e%8b%e5%89%8d%e7%bc%80%e5%92%8c" class="header-mark"></a>1 题目类型：前缀和</h2><p>本题本质上是 <strong>前缀积 + 后缀积</strong> 问题，属于前缀和思想在乘法上的扩展。</p>
+<p>![](Pasted image 20260605202341.png)</p>
+<p>这也是道前缀和类型的题，准确的说，这是一道<strong>前缀乘积</strong>。</p>
+<p>我们看题，可以得到，他想要的效果其实就是把除了自身以外的数的积求出。</p>
+<p>假设某个数组为 <code>[a, b, c, d, e]</code><br>
+要求 <code>answer[c]</code>，则有<br>
+<code>answer[c] = a * b * d * e</code><br>
+即 <strong>前缀乘积 × 后缀乘积</strong>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">PrefixSuffixProduct</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">prefix</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">suffix</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">PrefixSuffixProduct</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">prefix</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">sz</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">suffix</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">sz</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">sz</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">prefix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">sz</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">--</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">suffix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">suffix</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">plus_matrix</span><span class="p">(</span><span class="kt">int</span> <span class="n">x1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">prefix</span><span class="p">[</span><span class="n">x1</span><span class="p">]</span> <span class="o">*</span> <span class="n">suffix</span><span class="p">[</span><span class="n">x1</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">productExceptSelf</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">PrefixSuffixProduct</span> <span class="nf">am</span><span class="p">(</span><span class="n">nums</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">res</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">sz</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">sz</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">           <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">am</span><span class="p">.</span><span class="n">plus_matrix</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="优化说明与复杂度分析" class="headerLink">
+    <a href="#%e4%bc%98%e5%8c%96%e8%af%b4%e6%98%8e%e4%b8%8e%e5%a4%8d%e6%9d%82%e5%ba%a6%e5%88%86%e6%9e%90" class="header-mark"></a>2 优化说明与复杂度分析</h2><p><strong>算法思想</strong></p>
+<ul>
+<li><code>prefix[i]</code> 表示 <code>nums[0] * nums[1] * ... * nums[i-1]</code>（前 i 个元素的乘积）</li>
+<li><code>suffix[i]</code> 表示 <code>nums[i] * nums[i+1] * ... * nums[n-1]</code>（从 i 到末尾的乘积）</li>
+<li>对于下标 <code>i</code>，答案 = <code>prefix[i] * suffix[i+1]</code>，即左边所有数的乘积 × 右边所有数的乘积。</li>
+</ul>
+<p><strong>时间复杂度</strong></p>
+<ul>
+<li>构建前缀/后缀数组：O(n)</li>
+<li>计算每个位置的答案：O(n)</li>
+<li>总复杂度：<strong>O(n)</strong></li>
+</ul>
+<p><strong>空间复杂度</strong></p>
+<ul>
+<li>前缀/后缀数组各 O(n)，结果数组 O(n)（不计入输出时可选 O(1) 额外空间）</li>
+<li>当前实现：<strong>O(n)</strong></li>
+</ul>
+<p><strong>改进建议</strong></p>
+<ul>
+<li>可以只用一个输出数组，先从左到右累乘，再从右到左乘一次，将空间优化到 <strong>O(1)</strong>（不含输出数组）。</li>
+</ul>
+<p><strong>示例验证</strong><br>
+输入：<code>nums = [1,2,3,4]</code></p>
+<ul>
+<li><code>prefix</code> = [1, 1, 2, 6, 24]</li>
+<li><code>suffix</code> = [24, 24, 12, 4, 1]<br>
+计算结果：
+<ul>
+<li>i=0 → 1 * 24 = 24</li>
+<li>i=1 → 1 * 12 = 12</li>
+<li>i=2 → 2 * 4  = 8</li>
+<li>i=3 → 6 * 1  = 6<br>
+输出 <code>[24,12,8,6]</code>，正确。</li>
+</ul>
+</li>
 </ul>
 ]]></description></item><item><title>Q24 两两交换链表中的节点</title><link>https://soybeanmilk.netlify.app/q24-%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q24-%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9/</guid><description><![CDATA[<blockquote>
 <p><strong>题目</strong>：给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。不能只改节点内部的值，必须实际交换节点。输入：<code>1 → 2 → 3 → 4</code>，输出：<code>2 → 1 → 4 → 3</code>。</p></blockquote>
@@ -297,6 +761,398 @@
 <li>交换后 <code>prev = prev-&gt;next-&gt;next</code>，即这一对的新尾巴 a；写错位置会漏节点或死循环。</li>
 <li>不要只交换 val：题目明确要求实际交换节点。</li>
 <li>返回 <code>dummy-&gt;next</code>，不是 <code>head</code>（head 可能已经被换到第二位了）。</li>
+</ul>
+]]></description></item><item><title>Q707 设计链表</title><link>https://soybeanmilk.netlify.app/q707-%E8%AE%BE%E8%AE%A1%E9%93%BE%E8%A1%A8/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q707-%E8%AE%BE%E8%AE%A1%E9%93%BE%E8%A1%A8/</guid><description><![CDATA[<blockquote>
+<p><strong>题目</strong>：不使用内置链表，实现 <code>get</code>、头插、尾插、指定位置插入和指定位置删除。下标从 <code>0</code> 开始，非法查询返回 <code>-1</code>。</p></blockquote>
+<h2 id="简要回答" class="headerLink">
+    <a href="#%e7%ae%80%e8%a6%81%e5%9b%9e%e7%ad%94" class="header-mark"></a>1 简要回答</h2><p>使用一个<strong>虚拟头节点 <code>dummyHead_</code></strong> 和一个记录真实节点数量的 <strong><code>size_</code></strong>。虚拟头节点永远存在，但不存题目数据；真正的第一个节点是 <code>dummyHead_-&gt;next</code>。</p>
+<p>插入和删除都先找到目标位置的<strong>前驱节点</strong>，再修改 <code>next</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">插入：prev -&gt; next      变成      prev -&gt; newNode -&gt; next
+</span></span><span class="line"><span class="cl">删除：prev -&gt; target -&gt; next     变成      prev -------&gt; next
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>size_</code> 只负责判断下标是否合法，不能让链表像数组一样随机访问。访问第 <code>index</code> 个节点仍然需要从头沿着 <code>next</code> 走过去。</p>
+<table>
+  <thead>
+      <tr>
+          <th>操作</th>
+          <th>时间复杂度</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>get(index)</code></td>
+          <td>$O(index)$，最坏 $O(n)$</td>
+      </tr>
+      <tr>
+          <td><code>addAtHead</code></td>
+          <td>$O(1)$</td>
+      </tr>
+      <tr>
+          <td><code>addAtTail</code></td>
+          <td>$O(n)$</td>
+      </tr>
+      <tr>
+          <td><code>addAtIndex</code></td>
+          <td>$O(index)$，最坏 $O(n)$</td>
+      </tr>
+      <tr>
+          <td><code>deleteAtIndex</code></td>
+          <td>$O(index)$，最坏 $O(n)$</td>
+      </tr>
+  </tbody>
+</table>
+<p>总空间复杂度为 $O(n)$。</p>
+<h2 id="详细回答" class="headerLink">
+    <a href="#%e8%af%a6%e7%bb%86%e5%9b%9e%e7%ad%94" class="header-mark"></a>2 详细回答</h2><h3 id="我的原始思路" class="headerLink">
+    <a href="#%e6%88%91%e7%9a%84%e5%8e%9f%e5%a7%8b%e6%80%9d%e8%b7%af" class="header-mark"></a>2.1 我的原始思路</h3><p>我的思考顺序是：</p>
+<ol>
+<li>先构造只包含 <code>val</code> 和 <code>next</code> 的单链表节点。</li>
+<li>写 <code>get(index)</code> 时意识到需要判断越界，于是引入 <code>numbers</code> 记录节点数量。</li>
+<li>看到 <code>index</code> 后联想到 <code>operator[]</code>，又尝试设计一层 <code>NodeList</code>。</li>
+<li>为了实现按下标查找，一度考虑 <code>vector</code> 和 <code>unordered_map</code>。</li>
+<li>随后发现：用现成容器保存节点，实际上绕开了&quot;自己实现链表&quot;的训练目标。</li>
+<li>回到虚拟头节点，但不知道它应该放在哪里、怎样与真实节点连接。</li>
+</ol>
+<p>当时的核心尝试大致是：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">st_node</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">st_val</span><span class="p">{};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">st_node</span><span class="o">*</span> <span class="n">st_next</span><span class="p">{};</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">NodeList</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">numbers</span><span class="p">{};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="n">st_node</span><span class="o">&gt;</span> <span class="n">node_list_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">st_node</span><span class="o">&gt;</span> <span class="n">select_table</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><strong>这段尝试的价值</strong>
+方向虽然绕远了，但成功暴露出一个关键区别：<strong>下标是接口提供的查询条件，不代表底层必须支持数组式随机访问。</strong></p></blockquote>
+<h3 id="为什么会卡住" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e4%bc%9a%e5%8d%a1%e4%bd%8f" class="header-mark"></a>2.2 为什么会卡住</h3><p>这里其实只需要两层结构：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">MyLinkedList
+</span></span><span class="line"><span class="cl">├── dummyHead_：虚拟头节点
+</span></span><span class="line"><span class="cl">└── size_：真实节点数量
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Node
+</span></span><span class="line"><span class="cl">├── val
+</span></span><span class="line"><span class="cl">└── next
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>不需要再增加 <code>NodeList</code>，也不需要重载 <code>operator[]</code>。</p>
+<p>另外，构造函数里单独写：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">st_node</span><span class="p">();</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>只会创建一个立即销毁的临时对象，并不会初始化链表成员。虚拟头节点必须成为 <code>MyLinkedList</code> 的成员：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">MyLinkedList</span><span class="p">()</span> <span class="o">:</span> <span class="n">dummyHead_</span><span class="p">(</span><span class="k">new</span> <span class="n">Node</span><span class="p">()),</span> <span class="n">size_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="虚拟头节点到底解决什么" class="headerLink">
+    <a href="#%e8%99%9a%e6%8b%9f%e5%a4%b4%e8%8a%82%e7%82%b9%e5%88%b0%e5%ba%95%e8%a7%a3%e5%86%b3%e4%bb%80%e4%b9%88" class="header-mark"></a>2.3 虚拟头节点到底解决什么</h3><p>没有虚拟头节点时，头部插入和删除通常要单独修改 <code>head</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">head -&gt; A -&gt; B
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>加入虚拟头节点后：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">dummy -&gt; A -&gt; B -&gt; nullptr
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>此时 <code>A</code> 也有统一的前驱 <code>dummy</code>。所以在下标 <code>0</code> 处插入、删除，与中间位置的操作完全一样，不需要单独处理真实头节点。</p>
+<h3 id="最重要的定位规则" class="headerLink">
+    <a href="#%e6%9c%80%e9%87%8d%e8%a6%81%e7%9a%84%e5%ae%9a%e4%bd%8d%e8%a7%84%e5%88%99" class="header-mark"></a>2.4 最重要的定位规则</h3><blockquote>
+<p><strong>记住这一句</strong>
+查询节点时找&quot;目标节点&quot;；插入和删除时找&quot;目标位置的前驱节点&quot;。</p></blockquote>
+<p>假设要在 <code>index = 2</code> 前插入：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">dummy -&gt; 0 -&gt; 1 -&gt; 2
+</span></span><span class="line"><span class="cl">                 ↑
+</span></span><span class="line"><span class="cl">               prev
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>从 <code>dummy</code> 出发移动 <code>index</code> 次，正好到达原下标 <code>1</code> 的节点，也就是插入位置的前驱。</p>
+<h3 id="完整实现" class="headerLink">
+    <a href="#%e5%ae%8c%e6%95%b4%e5%ae%9e%e7%8e%b0" class="header-mark"></a>2.5 完整实现</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MyLinkedList</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="nc">Node</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Node</span><span class="o">*</span> <span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Node</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Node</span><span class="o">*</span> <span class="n">nextNode</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="o">:</span> <span class="n">val</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">next</span><span class="p">(</span><span class="n">nextNode</span><span class="p">)</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Node</span><span class="o">*</span> <span class="n">dummyHead_</span><span class="p">;</span>  <span class="c1">// 永远存在，不计入 size_
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">size_</span><span class="p">;</span>         <span class="c1">// 真实数据节点的数量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">MyLinkedList</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="o">:</span> <span class="n">dummyHead_</span><span class="p">(</span><span class="k">new</span> <span class="n">Node</span><span class="p">()),</span> <span class="n">size_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">MyLinkedList</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Node</span><span class="o">*</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">dummyHead_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="n">cur</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Node</span><span class="o">*</span> <span class="n">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">delete</span> <span class="n">cur</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cur</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">get</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">size_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Node</span><span class="o">*</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">dummyHead_</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">index</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">addAtHead</span><span class="p">(</span><span class="kt">int</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">addAtIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">addAtTail</span><span class="p">(</span><span class="kt">int</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">addAtIndex</span><span class="p">(</span><span class="n">size_</span><span class="p">,</span> <span class="n">val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">addAtIndex</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="kt">int</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&gt;</span> <span class="n">size_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Node</span><span class="o">*</span> <span class="n">prev</span> <span class="o">=</span> <span class="n">dummyHead_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">index</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">++</span><span class="n">size_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">deleteAtIndex</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">size_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Node</span><span class="o">*</span> <span class="n">prev</span> <span class="o">=</span> <span class="n">dummyHead_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">index</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Node</span><span class="o">*</span> <span class="n">target</span> <span class="o">=</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">target</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">delete</span> <span class="n">target</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">--</span><span class="n">size_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="用示例走一遍" class="headerLink">
+    <a href="#%e7%94%a8%e7%a4%ba%e4%be%8b%e8%b5%b0%e4%b8%80%e9%81%8d" class="header-mark"></a>2.6 用示例走一遍</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">初始：dummy
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">addAtHead(1)
+</span></span><span class="line"><span class="cl">dummy -&gt; 1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">addAtTail(3)
+</span></span><span class="line"><span class="cl">dummy -&gt; 1 -&gt; 3
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">addAtIndex(1, 2)
+</span></span><span class="line"><span class="cl">dummy -&gt; 1 -&gt; 2 -&gt; 3
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">deleteAtIndex(1)
+</span></span><span class="line"><span class="cl">dummy -&gt; 1 -&gt; 3
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>每次成功插入后 <code>size_</code> 加一，每次成功删除后 <code>size_</code> 减一。</p>
+<h2 id="知识扩展" class="headerLink">
+    <a href="#%e7%9f%a5%e8%af%86%e6%89%a9%e5%b1%95" class="header-mark"></a>3 知识扩展</h2><h3 id="三个必须保持的不变量" class="headerLink">
+    <a href="#%e4%b8%89%e4%b8%aa%e5%bf%85%e9%a1%bb%e4%bf%9d%e6%8c%81%e7%9a%84%e4%b8%8d%e5%8f%98%e9%87%8f" class="header-mark"></a>3.1 三个必须保持的不变量</h3><ol>
+<li><code>dummyHead_</code> 永远存在，而且不计入 <code>size_</code>。</li>
+<li><code>size_</code> 必须等于真实数据节点的数量。</li>
+<li>最后一个真实节点的 <code>next</code> 必须是 <code>nullptr</code>。</li>
+</ol>
+<h3 id="易错点" class="headerLink">
+    <a href="#%e6%98%93%e9%94%99%e7%82%b9" class="header-mark"></a>3.2 易错点</h3><blockquote>
+<p><strong>边界区别</strong>
+<code>addAtIndex</code> 允许 <code>index == size_</code>，因为这代表尾插；但 <code>get</code> 和 <code>deleteAtIndex</code> 要求 <code>index &lt; size_</code>。</p></blockquote>
+<ul>
+<li>插入、删除成功后才修改 <code>size_</code>。</li>
+<li>删除前先保存 <code>target</code>，重新连接后再 <code>delete target</code>。</li>
+<li>虚拟头节点不是下标 <code>0</code>；真实下标 <code>0</code> 是 <code>dummyHead_-&gt;next</code>。</li>
+<li><code>vector</code> 和哈希表可以加速按下标访问，但那已经改变了题目要求的数据结构实现方式。</li>
+</ul>
+<h3 id="还能怎样优化" class="headerLink">
+    <a href="#%e8%bf%98%e8%83%bd%e6%80%8e%e6%a0%b7%e4%bc%98%e5%8c%96" class="header-mark"></a>3.3 还能怎样优化</h3><p>如果额外维护一个尾指针，可以把 <code>addAtTail</code> 优化为 $O(1)$。但删除最后一个节点时也必须正确更新尾指针，维护成本更高。当前版本先把&quot;虚拟头节点 + 前驱定位&quot;掌握牢更重要。</p>
+<h3 id="自测" class="headerLink">
+    <a href="#%e8%87%aa%e6%b5%8b" class="header-mark"></a>3.4 自测</h3><ul>
+<li><i class="far fa-square fa-fw"></i> 能解释为什么 <code>size_</code> 不能实现随机访问</li>
+<li><i class="far fa-square fa-fw"></i> 能画出虚拟头节点与真实头节点的关系</li>
+<li><i class="far fa-square fa-fw"></i> 不看答案写出指定位置插入</li>
+<li><i class="far fa-square fa-fw"></i> 说清楚插入和删除的合法下标范围为什么不同</li>
 </ul>
 ]]></description></item><item><title>Q525 连续数组（前缀和 + 哈希）</title><link>https://soybeanmilk.netlify.app/q525-%E8%BF%9E%E7%BB%AD%E6%95%B0%E7%BB%84%E5%89%8D%E7%BC%80%E5%92%8C%E5%93%88%E5%B8%8C/</link><pubDate>Fri, 17 Jul 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q525-%E8%BF%9E%E7%BB%AD%E6%95%B0%E7%BB%84%E5%89%8D%E7%BC%80%E5%92%8C%E5%93%88%E5%B8%8C/</guid><description><![CDATA[<div class="featured-image">
                 <img src="/q525-%E8%BF%9E%E7%BB%AD%E6%95%B0%E7%BB%84%E5%89%8D%E7%BC%80%E5%92%8C%E5%93%88%E5%B8%8C/featured-image.png" referrerpolicy="no-referrer">

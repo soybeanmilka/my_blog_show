@@ -1,0 +1,333 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>单调栈 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E5%8D%95%E8%B0%83%E6%A0%88/</link><description>单调栈 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Tue, 04 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E5%8D%95%E8%B0%83%E6%A0%88/" rel="self" type="application/rss+xml"/><item><title>单调栈知识点</title><link>https://soybeanmilk.netlify.app/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9F%A5%E8%AF%86%E7%82%B9/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/%E5%8D%95%E8%B0%83%E6%A0%88%E7%9F%A5%E8%AF%86%E7%82%B9/</guid><description><![CDATA[<h2 id="核心思想" class="headerLink">
+    <a href="#%e6%a0%b8%e5%bf%83%e6%80%9d%e6%83%b3" class="header-mark"></a>1 核心思想</h2><p><strong>单调栈 = 保持栈内元素单调递增或单调递减的栈。</strong></p>
+<p>专门解决「找左边/右边第一个比当前大/小的元素」这类问题。</p>
+<hr>
+<h2 id="一什么时候用单调栈" class="headerLink">
+    <a href="#%e4%b8%80%e4%bb%80%e4%b9%88%e6%97%b6%e5%80%99%e7%94%a8%e5%8d%95%e8%b0%83%e6%a0%88" class="header-mark"></a>2 一、什么时候用单调栈？</h2><p>看到以下特征，直接想单调栈：</p>
+<ol>
+<li><strong>找下一个更大元素</strong>（Next Greater Element）</li>
+<li><strong>找下一个更小元素</strong>（Next Smaller Element）</li>
+<li><strong>找前一个更大/更小元素</strong></li>
+<li><strong>柱状图中最大矩形</strong>、<strong>接雨水</strong> 这类经典题</li>
+</ol>
+<p><strong>时间复杂度：</strong> O(n)，每个元素入栈出栈各一次。</p>
+<hr>
+<h2 id="二四种基本题型" class="headerLink">
+    <a href="#%e4%ba%8c%e5%9b%9b%e7%a7%8d%e5%9f%ba%e6%9c%ac%e9%a2%98%e5%9e%8b" class="header-mark"></a>3 二、四种基本题型</h2><h3 id="模板找右边第一个更大的元素" class="headerLink">
+    <a href="#%e6%a8%a1%e6%9d%bf%e6%89%be%e5%8f%b3%e8%be%b9%e7%ac%ac%e4%b8%80%e4%b8%aa%e6%9b%b4%e5%a4%a7%e7%9a%84%e5%85%83%e7%b4%a0" class="header-mark"></a>3.1 模板：找右边第一个更大的元素</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 输入 nums，返回每个元素右边第一个比它大的元素值，没有返回 -1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">nextGreaterElement</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">res</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">st</span><span class="p">;</span>  <span class="c1">// 存下标，不是值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 从后往前遍历
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 栈顶比当前小，肯定不是答案，弹出
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">nums</span><span class="p">[</span><span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">()]</span> <span class="o">&lt;=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">st</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 此时栈顶就是右边第一个更大的
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">()];</span>
+</span></span><span class="line"><span class="cl">        <span class="n">st</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="四种情况速记" class="headerLink">
+    <a href="#%e5%9b%9b%e7%a7%8d%e6%83%85%e5%86%b5%e9%80%9f%e8%ae%b0" class="header-mark"></a>3.2 四种情况速记</h3><table>
+  <thead>
+      <tr>
+          <th>目标</th>
+          <th>遍历方向</th>
+          <th>弹出条件</th>
+          <th>单调性</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>右边第一个更大</td>
+          <td>从后往前</td>
+          <td><code>&lt;= 当前</code></td>
+          <td>栈底→栈顶 递减</td>
+      </tr>
+      <tr>
+          <td>右边第一个更小</td>
+          <td>从后往前</td>
+          <td><code>&gt;= 当前</code></td>
+          <td>栈底→栈顶 递增</td>
+      </tr>
+      <tr>
+          <td>左边第一个更大</td>
+          <td>从前往后</td>
+          <td><code>&lt;= 当前</code></td>
+          <td>栈底→栈顶 递减</td>
+      </tr>
+      <tr>
+          <td>左边第一个更小</td>
+          <td>从前往后</td>
+          <td><code>&gt;= 当前</code></td>
+          <td>栈底→栈顶 递增</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p>口诀：<strong>找大就弹小，找小就弹大</strong></p></blockquote>
+<hr>
+<h2 id="三经典题目" class="headerLink">
+    <a href="#%e4%b8%89%e7%bb%8f%e5%85%b8%e9%a2%98%e7%9b%ae" class="header-mark"></a>4 三、经典题目</h2><h3 id="1-每日温度leetcode-739" class="headerLink">
+    <a href="#1-%e6%af%8f%e6%97%a5%e6%b8%a9%e5%ba%a6leetcode-739" class="header-mark"></a>4.1 1. 每日温度（LeetCode 739）</h3><p>找右边第一个更高温度的天数差。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">dailyTemperatures</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">temperatures</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">temperatures</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">res</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">st</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">temperatures</span><span class="p">[</span><span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">()]</span> <span class="o">&lt;=</span> <span class="n">temperatures</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">st</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">-</span> <span class="n">i</span><span class="p">;</span>  <span class="c1">// 存下标，算天数差
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">st</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-下一个更大元素-ii循环数组leetcode-503" class="headerLink">
+    <a href="#2-%e4%b8%8b%e4%b8%80%e4%b8%aa%e6%9b%b4%e5%a4%a7%e5%85%83%e7%b4%a0-ii%e5%be%aa%e7%8e%af%e6%95%b0%e7%bb%84leetcode-503" class="header-mark"></a>4.2 2. 下一个更大元素 II（循环数组，LeetCode 503）</h3><p>数组是环形的，把数组翻倍（遍历 2n 次，下标取模）即可。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">nextGreaterElements</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">res</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">st</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="n">n</span><span class="p">])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">st</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">st</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="n">n</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-柱状图中最大的矩形leetcode-84" class="headerLink">
+    <a href="#3-%e6%9f%b1%e7%8a%b6%e5%9b%be%e4%b8%ad%e6%9c%80%e5%a4%a7%e7%9a%84%e7%9f%a9%e5%bd%a2leetcode-84" class="header-mark"></a>4.3 3. 柱状图中最大的矩形（LeetCode 84）⭐</h3><p><strong>经典中的经典</strong>，核心：对每个柱子，找左右第一个比它矮的，宽度 = 右-左-1</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">largestRectangleArea</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">heights</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">heights</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">left</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>   <span class="c1">// 左边第一个更小的下标
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">right</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>   <span class="c1">// 右边第一个更小的下标
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">st</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 找左边第一个更小
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">heights</span><span class="p">[</span><span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">()]</span> <span class="o">&gt;=</span> <span class="n">heights</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">st</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="n">left</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">st</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 清空栈，找右边第一个更小
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="n">st</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">heights</span><span class="p">[</span><span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">()]</span> <span class="o">&gt;=</span> <span class="n">heights</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">st</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="n">right</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">st</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 计算面积
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ans</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">heights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">right</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">left</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-接雨水leetcode-42" class="headerLink">
+    <a href="#4-%e6%8e%a5%e9%9b%a8%e6%b0%b4leetcode-42" class="header-mark"></a>4.4 4. 接雨水（LeetCode 42）</h3><p>也可以用单调栈做（也有双指针解法）。</p>
+<hr>
+<h2 id="四单调栈解题步骤" class="headerLink">
+    <a href="#%e5%9b%9b%e5%8d%95%e8%b0%83%e6%a0%88%e8%a7%a3%e9%a2%98%e6%ad%a5%e9%aa%a4" class="header-mark"></a>5 四、单调栈解题步骤</h2><ol>
+<li><strong>判断类型</strong>：找大还是找小？左边还是右边？</li>
+<li><strong>确定遍历方向</strong>：找右边从后往前，找左边从前往后</li>
+<li><strong>确定弹出条件</strong>：找大弹小（&lt;=），找小弹大（&gt;=）</li>
+<li><strong>栈存什么</strong>：通常存下标（方便算距离），也可以存值</li>
+<li><strong>初始化答案</strong>：默认 -1 或 0 或 n</li>
+</ol>
+<hr>
+<h2 id="五注意事项" class="headerLink">
+    <a href="#%e4%ba%94%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" class="header-mark"></a>6 五、注意事项</h2><ol>
+<li>
+<p><strong>等号要不要加？</strong></p>
+<ul>
+<li>严格更大：用 <code>&lt;=</code> 弹出（相等的也弹掉）</li>
+<li>大于等于：用 <code>&lt;</code> 弹出</li>
+<li>看题目要求，「更大」还是「大于等于」</li>
+</ul>
+</li>
+<li>
+<p><strong>存下标还是存值？</strong></p>
+<ul>
+<li>需要算距离/索引 → 存下标</li>
+<li>只需要值 → 存值也可以</li>
+</ul>
+</li>
+<li>
+<p><strong>循环数组</strong>：遍历 2n 次，下标取模 n</p>
+</li>
+<li>
+<p><strong>栈为空时</strong>：说明没有符合条件的元素，答案为 -1（或边界值）</p>
+</li>
+</ol>
+<hr>
+<h2 id="六相关题目" class="headerLink">
+    <a href="#%e5%85%ad%e7%9b%b8%e5%85%b3%e9%a2%98%e7%9b%ae" class="header-mark"></a>7 六、相关题目</h2><table>
+  <thead>
+      <tr>
+          <th>题目</th>
+          <th>类型</th>
+          <th>难度</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>496. 下一个更大元素 I</td>
+          <td>模板题</td>
+          <td>简单</td>
+      </tr>
+      <tr>
+          <td>739. 每日温度</td>
+          <td>模板题</td>
+          <td>中等</td>
+      </tr>
+      <tr>
+          <td>503. 下一个更大元素 II</td>
+          <td>循环数组</td>
+          <td>中等</td>
+      </tr>
+      <tr>
+          <td>84. 柱状图中最大的矩形</td>
+          <td>经典难题</td>
+          <td>困难</td>
+      </tr>
+      <tr>
+          <td>42. 接雨水</td>
+          <td>多种方法</td>
+          <td>困难</td>
+      </tr>
+      <tr>
+          <td>901. 股票价格跨度</td>
+          <td>左边第一个更大</td>
+          <td>中等</td>
+      </tr>
+      <tr>
+          <td>316. 去除重复字母</td>
+          <td>单调栈+贪心</td>
+          <td>中等</td>
+      </tr>
+      <tr>
+          <td>402. 移掉 K 位数字</td>
+          <td>单调栈+贪心</td>
+          <td>中等</td>
+      </tr>
+  </tbody>
+</table>
+]]></description></item></channel></rss>

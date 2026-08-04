@@ -1,4 +1,558 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>数组 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E6%95%B0%E7%BB%84/</link><description>数组 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Sat, 01 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E6%95%B0%E7%BB%84/" rel="self" type="application/rss+xml"/><item><title>Q209 长度最小的子数组</title><link>https://soybeanmilk.netlify.app/q209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/</link><pubDate>Sat, 01 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/</guid><description><![CDATA[<blockquote>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>数组 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E6%95%B0%E7%BB%84/</link><description>数组 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Tue, 04 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E6%95%B0%E7%BB%84/" rel="self" type="application/rss+xml"/><item><title>Q1314 矩阵区域和</title><link>https://soybeanmilk.netlify.app/q1314-%E7%9F%A9%E9%98%B5%E5%8C%BA%E5%9F%9F%E5%92%8C/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q1314-%E7%9F%A9%E9%98%B5%E5%8C%BA%E5%9F%9F%E5%92%8C/</guid><description><![CDATA[<p>![](Pasted image 20260605194937.png)</p>
+<p>题目类型：前缀和</p>
+<p>当你发现是在求某个大的集合下一<strong>系列</strong>具体的子集时，你可以考虑下前缀和，它可以把遍历，变成值相减。</p>
+<p>我的写法是：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp"> </span><span class="c1">// for std::max, std::min
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 二维前缀和类，用于快速计算任意矩形子矩阵的和
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">class</span> <span class="nc">SumMatrix</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// preSum[i][j] 表示原始矩阵中前 i 行、前 j 列（即区域 [0, i) × [0, j)）所有元素的和
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 维度为 (m+1) x (n+1)，其中 m、n 为原始矩阵的行数和列数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">preSum</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 构造函数：根据原始矩阵 matrix 构建前缀和数组
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">SumMatrix</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">matrix</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>          <span class="c1">// 原始矩阵的行数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">size</span><span class="p">();</span>       <span class="c1">// 原始矩阵的列数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 初始化前缀和数组，多一行一列用于简化边界处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">preSum</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 计算前缀和：preSum[i][j] = preSum[i-1][j] + preSum[i][j-1] - preSum[i-1][j-1] + matrix[i-1][j-1]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">m</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">preSum</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">preSum</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">preSum</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">                               <span class="o">+</span> <span class="n">matrix</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">preSum</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 计算原始矩阵中闭区间 [x1, x2] 行、[y1, y2] 列所围成的子矩阵的和
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 注意：x1, x2, y1, y2 都是原始矩阵的有效索引（0-based）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="nf">Addmatrix</span><span class="p">(</span><span class="kt">int</span> <span class="n">x1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x2</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y2</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 利用前缀和公式：sum = preSum[x2+1][y2+1] - preSum[x1][y2+1] - preSum[x2+1][y1] + preSum[x1][y1]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 因为 preSum 的行/列索引比原始矩阵大 1，所以需要 +1 转换
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">preSum</span><span class="p">[</span><span class="n">x2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">y2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">preSum</span><span class="p">[</span><span class="n">x1</span><span class="p">][</span><span class="n">y2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">               <span class="o">-</span> <span class="n">preSum</span><span class="p">[</span><span class="n">x2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">y1</span><span class="p">]</span> <span class="o">+</span> <span class="n">preSum</span><span class="p">[</span><span class="n">x1</span><span class="p">][</span><span class="n">y1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 计算矩阵区域和：对于每个位置 (i, j)，求以该位置为中心、边长为 2k+1 的正方形区域的和
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// （边界超出矩阵时只取有效部分）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">matrixBlockSum</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">mat</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="n">mat</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>      <span class="c1">// 矩阵行数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">size</span><span class="p">();</span>   <span class="c1">// 矩阵列数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 结果矩阵，大小与原始矩阵相同
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">answer</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 构建原始矩阵的前缀和对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">SumMatrix</span> <span class="n">mt</span> <span class="o">=</span> <span class="n">SumMatrix</span><span class="p">(</span><span class="n">mat</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 遍历每个位置 (i, j)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">m</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 计算以 (i, j) 为中心、半径为 k 的矩形区域的边界（需限制在矩阵范围内）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="kt">int</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">k</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>        <span class="c1">// 上边界（行最小索引）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="kt">int</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">k</span><span class="p">,</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>    <span class="c1">// 下边界（行最大索引）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="kt">int</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="n">k</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>        <span class="c1">// 左边界（列最小索引）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="kt">int</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>    <span class="c1">// 右边界（列最大索引）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 通过前缀和快速得到该区域的和，并填入结果矩阵
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">answer</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">mt</span><span class="p">.</span><span class="n">Addmatrix</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<p>这题说白了就是：给你一个矩阵，对于每个格子 <code>(i,j)</code>，把它周围 k 圈范围内的所有数加起来，填回去。</p>
+<p>暴力做法也简单，每个格子都去遍历它的 k 邻域，但那是 $O(m \cdot n \cdot k^2)$，k 一大直接炸。</p>
+<p>关键思路就是——<strong>前缀和把遍历变成值相减</strong>。</p>
+<p>二维前缀和的构造其实就一句话：<code>preSum[i][j]</code> 表示从 <code>(0,0)</code> 到 <code>(i-1, j-1)</code> 这片矩形区域的和。多开一圈 <code>m+1 × n+1</code> 是为了省掉边界判空。</p>
+<p>构造公式拆开看很直观：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">preSum[i][j] = preSum[i-1][j]        // 上面那块
+</span></span><span class="line"><span class="cl">             + preSum[i][j-1]        // 左边那块
+</span></span><span class="line"><span class="cl">             + matrix[i-1][j-1]      // 当前这个数
+</span></span><span class="line"><span class="cl">             - preSum[i-1][j-1]      // 左上角被算了两次，扣掉
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>画个图就是：<strong>上加左，减重叠，加自己。</strong></p>
+<p>查子矩阵和也一个道理。想求 <code>(x1,y1)</code> 到 <code>(x2,y2)</code> 这个矩形（闭区间，0-index）的和：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">sum = preSum[x2+1][y2+1]      // 整块从原点到右下
+</span></span><span class="line"><span class="cl">    - preSum[x1][y2+1]        // 砍掉上面
+</span></span><span class="line"><span class="cl">    - preSum[x2+1][y1]        // 砍掉左边
+</span></span><span class="line"><span class="cl">    + preSum[x1][y1]          // 左上角被砍了两次，补回来
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>就是<strong>大减小，补重叠</strong>，对称得很。</p>
+<p>最后一步，每个格子的 k 邻域怎么定界？用 <code>max</code>/<code>min</code> 把越界的部分夹住就行——左边界不能小于 0，右边界不能超过 <code>m-1</code>，上下同理。这样每个格子 O(1) 就能出结果，总复杂度 $O(m \cdot n)$。</p>
+<p>一句话总结：<strong>构造一次前缀和，然后每个格子的答案就是四次查表加减</strong>。前缀和的本质就是预计算，用空间换掉内层遍历。</p>
+]]></description></item><item><title>Q238 除自身以外数组的乘积</title><link>https://soybeanmilk.netlify.app/q238-%E9%99%A4%E8%87%AA%E8%BA%AB%E4%BB%A5%E5%A4%96%E6%95%B0%E7%BB%84%E7%9A%84%E4%B9%98%E7%A7%AF/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q238-%E9%99%A4%E8%87%AA%E8%BA%AB%E4%BB%A5%E5%A4%96%E6%95%B0%E7%BB%84%E7%9A%84%E4%B9%98%E7%A7%AF/</guid><description><![CDATA[<h2 id="题目类型前缀和" class="headerLink">
+    <a href="#%e9%a2%98%e7%9b%ae%e7%b1%bb%e5%9e%8b%e5%89%8d%e7%bc%80%e5%92%8c" class="header-mark"></a>1 题目类型：前缀和</h2><p>本题本质上是 <strong>前缀积 + 后缀积</strong> 问题，属于前缀和思想在乘法上的扩展。</p>
+<p>![](Pasted image 20260605202341.png)</p>
+<p>这也是道前缀和类型的题，准确的说，这是一道<strong>前缀乘积</strong>。</p>
+<p>我们看题，可以得到，他想要的效果其实就是把除了自身以外的数的积求出。</p>
+<p>假设某个数组为 <code>[a, b, c, d, e]</code><br>
+要求 <code>answer[c]</code>，则有<br>
+<code>answer[c] = a * b * d * e</code><br>
+即 <strong>前缀乘积 × 后缀乘积</strong>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">PrefixSuffixProduct</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">prefix</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">suffix</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">PrefixSuffixProduct</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">prefix</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">sz</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">suffix</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">sz</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">sz</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">prefix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">sz</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">--</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">suffix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">suffix</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">plus_matrix</span><span class="p">(</span><span class="kt">int</span> <span class="n">x1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">prefix</span><span class="p">[</span><span class="n">x1</span><span class="p">]</span> <span class="o">*</span> <span class="n">suffix</span><span class="p">[</span><span class="n">x1</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">productExceptSelf</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">PrefixSuffixProduct</span> <span class="nf">am</span><span class="p">(</span><span class="n">nums</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">res</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">sz</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">sz</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">           <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">am</span><span class="p">.</span><span class="n">plus_matrix</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="优化说明与复杂度分析" class="headerLink">
+    <a href="#%e4%bc%98%e5%8c%96%e8%af%b4%e6%98%8e%e4%b8%8e%e5%a4%8d%e6%9d%82%e5%ba%a6%e5%88%86%e6%9e%90" class="header-mark"></a>2 优化说明与复杂度分析</h2><p><strong>算法思想</strong></p>
+<ul>
+<li><code>prefix[i]</code> 表示 <code>nums[0] * nums[1] * ... * nums[i-1]</code>（前 i 个元素的乘积）</li>
+<li><code>suffix[i]</code> 表示 <code>nums[i] * nums[i+1] * ... * nums[n-1]</code>（从 i 到末尾的乘积）</li>
+<li>对于下标 <code>i</code>，答案 = <code>prefix[i] * suffix[i+1]</code>，即左边所有数的乘积 × 右边所有数的乘积。</li>
+</ul>
+<p><strong>时间复杂度</strong></p>
+<ul>
+<li>构建前缀/后缀数组：O(n)</li>
+<li>计算每个位置的答案：O(n)</li>
+<li>总复杂度：<strong>O(n)</strong></li>
+</ul>
+<p><strong>空间复杂度</strong></p>
+<ul>
+<li>前缀/后缀数组各 O(n)，结果数组 O(n)（不计入输出时可选 O(1) 额外空间）</li>
+<li>当前实现：<strong>O(n)</strong></li>
+</ul>
+<p><strong>改进建议</strong></p>
+<ul>
+<li>可以只用一个输出数组，先从左到右累乘，再从右到左乘一次，将空间优化到 <strong>O(1)</strong>（不含输出数组）。</li>
+</ul>
+<p><strong>示例验证</strong><br>
+输入：<code>nums = [1,2,3,4]</code></p>
+<ul>
+<li><code>prefix</code> = [1, 1, 2, 6, 24]</li>
+<li><code>suffix</code> = [24, 24, 12, 4, 1]<br>
+计算结果：
+<ul>
+<li>i=0 → 1 * 24 = 24</li>
+<li>i=1 → 1 * 12 = 12</li>
+<li>i=2 → 2 * 4  = 8</li>
+<li>i=3 → 6 * 1  = 6<br>
+输出 <code>[24,12,8,6]</code>，正确。</li>
+</ul>
+</li>
+</ul>
+]]></description></item><item><title>数组理论基础</title><link>https://soybeanmilk.netlify.app/%E6%95%B0%E7%BB%84%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/%E6%95%B0%E7%BB%84%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/</guid><description><![CDATA[<h1 id="数组理论基础" class="headerLink">
+    <a href="#%e6%95%b0%e7%bb%84%e7%90%86%e8%ae%ba%e5%9f%ba%e7%a1%80" class="header-mark"></a>数组理论基础</h1><blockquote>
+<p><strong>一句话概括</strong>
+数组是存放在一段连续内存空间中的同类型数据集合，因此支持按下标 $O(1)$ 随机访问，但在中间插入或删除时通常需要移动后续元素，时间复杂度为 $O(n)$。</p></blockquote>
+<h2 id="简易回答" class="headerLink">
+    <a href="#%e7%ae%80%e6%98%93%e5%9b%9e%e7%ad%94" class="header-mark"></a>1 简易回答</h2><p>数组有三个核心特点：</p>
+<ol>
+<li>元素类型相同。</li>
+<li>内存空间连续。</li>
+<li>可以通过从 <code>0</code> 开始的下标直接访问元素。</li>
+</ol>
+<p>连续内存让数组可以根据&quot;首地址 + 偏移量&quot;直接定位元素，所以随机访问是 $O(1)$；代价是中间插入或删除会破坏原有顺序，需要移动其他元素，通常是 $O(n)$。</p>
+<h2 id="详细回答" class="headerLink">
+    <a href="#%e8%af%a6%e7%bb%86%e5%9b%9e%e7%ad%94" class="header-mark"></a>2 详细回答</h2><h3 id="1-数组如何存储" class="headerLink">
+    <a href="#1-%e6%95%b0%e7%bb%84%e5%a6%82%e4%bd%95%e5%ad%98%e5%82%a8" class="header-mark"></a>2.1 1. 数组如何存储</h3><p>假设有一个 <code>int</code> 数组：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">nums</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>它在内存中可以理解为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">下标：   0      1      2      3      4
+</span></span><span class="line"><span class="cl">      ┌─────┬─────┬─────┬─────┬─────┐
+</span></span><span class="line"><span class="cl">元素：│  10 │  20 │  30 │  40 │  50 │
+</span></span><span class="line"><span class="cl">      └─────┴─────┴─────┴─────┴─────┘
+</span></span><span class="line"><span class="cl">地址： 1000   1004   1008   1012   1016
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果一个 <code>int</code> 占 4 字节，那么：</p>
+<p>$$
+\text{nums}[i]\text{ 的地址}=\text{首地址}+i\times 4
+$$</p>
+<p>更一般地：</p>
+<p>$$
+\operatorname{addr}(a[i])=\operatorname{base}(a)+i\times \operatorname{sizeof}(T)
+$$</p>
+<p>这就是数组能够通过下标在 $O(1)$ 时间内访问任意元素的原因。</p>
+<h3 id="2-为什么下标从-0-开始" class="headerLink">
+    <a href="#2-%e4%b8%ba%e4%bb%80%e4%b9%88%e4%b8%8b%e6%a0%87%e4%bb%8e-0-%e5%bc%80%e5%a7%8b" class="header-mark"></a>2.2 2. 为什么下标从 0 开始</h3><p>下标可以看成元素相对首地址的<strong>偏移量</strong>：</p>
+<ul>
+<li><code>a[0]</code>：从首地址偏移 0 个元素。</li>
+<li><code>a[1]</code>：从首地址偏移 1 个元素。</li>
+<li><code>a[i]</code>：从首地址偏移 $i$ 个元素。</li>
+</ul>
+<p>因此从 <code>0</code> 开始可以直接使用 <code>base + i × sizeof(T)</code> 计算地址。</p>
+<h3 id="3-插入和删除为什么慢" class="headerLink">
+    <a href="#3-%e6%8f%92%e5%85%a5%e5%92%8c%e5%88%a0%e9%99%a4%e4%b8%ba%e4%bb%80%e4%b9%88%e6%85%a2" class="header-mark"></a>2.3 3. 插入和删除为什么慢</h3><p>假设要删除下标 <code>2</code> 的元素，并保持其他元素的相对顺序：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">删除前：10  20  30  40  50
+</span></span><span class="line"><span class="cl">删除后：10  20  40  50
+</span></span><span class="line"><span class="cl">                 ←   ←
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>原来位于后面的 <code>40</code>、<code>50</code> 都要向前移动。因此：</p>
+<ul>
+<li>访问指定下标：$O(1)$</li>
+<li>修改指定下标：$O(1)$</li>
+<li>尾部插入：固定数组视实现而定；<code>vector</code> 通常均摊 $O(1)$</li>
+<li>中间插入或删除：$O(n)$</li>
+<li>按值查找（无序数组）：$O(n)$</li>
+</ul>
+<blockquote>
+<p><strong>&ldquo;数组不能删除元素&quot;怎么理解</strong>
+固定长度数组的内存块和长度不会因为一次删除操作自动缩短。所谓&quot;删除&rdquo;，一般是覆盖目标元素、移动后续元素，再用一个逻辑长度表示有效范围。<code>vector::erase</code> 能提供删除接口，但底层仍需要移动元素。</p></blockquote>
+<h3 id="4-c-中的数组与-vector" class="headerLink">
+    <a href="#4-c-%e4%b8%ad%e7%9a%84%e6%95%b0%e7%bb%84%e4%b8%8e-vector" class="header-mark"></a>2.4 4. C++ 中的数组与 vector</h3><table>
+  <thead>
+      <tr>
+          <th>对比项</th>
+          <th>原生数组 <code>T a[N]</code></th>
+          <th><code>std::array&lt;T, N&gt;</code></th>
+          <th><code>std::vector&lt;T&gt;</code></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>长度</td>
+          <td>编译期固定</td>
+          <td>编译期固定</td>
+          <td>运行期可变</td>
+      </tr>
+      <tr>
+          <td>内存</td>
+          <td>连续</td>
+          <td>连续</td>
+          <td>连续</td>
+      </tr>
+      <tr>
+          <td>自动扩容</td>
+          <td>否</td>
+          <td>否</td>
+          <td>是</td>
+      </tr>
+      <tr>
+          <td>获取长度</td>
+          <td>需额外处理</td>
+          <td><code>.size()</code></td>
+          <td><code>.size()</code></td>
+      </tr>
+      <tr>
+          <td>边界检查</td>
+          <td><code>[]</code> 不检查</td>
+          <td><code>.at()</code> 可检查</td>
+          <td><code>.at()</code> 可检查</td>
+      </tr>
+  </tbody>
+</table>
+<p><code>vector</code> 是一个动态顺序容器，底层使用连续内存管理元素。扩容时通常需要申请新空间并移动或复制旧元素，相关迭代器、指针和引用可能失效。详见 vector深度解析。</p>
+<h3 id="5-二维数组的内存布局" class="headerLink">
+    <a href="#5-%e4%ba%8c%e7%bb%b4%e6%95%b0%e7%bb%84%e7%9a%84%e5%86%85%e5%ad%98%e5%b8%83%e5%b1%80" class="header-mark"></a>2.5 5. 二维数组的内存布局</h3><h4 id="c-原生二维数组" class="headerLink">
+    <a href="#c-%e5%8e%9f%e7%94%9f%e4%ba%8c%e7%bb%b4%e6%95%b0%e7%bb%84" class="header-mark"></a>2.5.1 C++ 原生二维数组</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>C++ 原生二维数组按行连续存储，可以把它理解为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">matrix[0][0] → matrix[0][1] → matrix[0][2]
+</span></span><span class="line"><span class="cl">                                      ↓
+</span></span><span class="line"><span class="cl">matrix[1][0] → matrix[1][1] → matrix[1][2]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>对一个有 <code>cols</code> 列的二维数组，行优先布局下：</p>
+<p>$$
+\operatorname{addr}(a[i][j])
+=\operatorname{base}(a)+(i\times cols+j)\times \operatorname{sizeof}(T)
+$$</p>
+<h4 id="java-二维数组" class="headerLink">
+    <a href="#java-%e4%ba%8c%e7%bb%b4%e6%95%b0%e7%bb%84" class="header-mark"></a>2.5.2 Java 二维数组</h4><p>Java 的 <code>int[][]</code> 本质上是&quot;数组的数组&quot;：外层数组保存对各行数组的引用，各行可以分别创建，长度也可以不同。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kt">int</span><span class="o">[][]</span><span class="w"> </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="n">1</span><span class="p">,</span><span class="w"> </span><span class="n">2</span><span class="p">,</span><span class="w"> </span><span class="n">3</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="n">4</span><span class="p">,</span><span class="w"> </span><span class="n">5</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="n">6</span><span class="p">,</span><span class="w"> </span><span class="n">7</span><span class="p">,</span><span class="w"> </span><span class="n">8</span><span class="p">,</span><span class="w"> </span><span class="n">9</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">};</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>因此不能假设不同行在内存中彼此连续；而且 Java 不向程序员暴露可直接运算的真实内存地址。</p>
+<h2 id="知识扩展" class="headerLink">
+    <a href="#%e7%9f%a5%e8%af%86%e6%89%a9%e5%b1%95" class="header-mark"></a>3 知识扩展</h2><h3 id="1-连续内存为什么通常更快" class="headerLink">
+    <a href="#1-%e8%bf%9e%e7%bb%ad%e5%86%85%e5%ad%98%e4%b8%ba%e4%bb%80%e4%b9%88%e9%80%9a%e5%b8%b8%e6%9b%b4%e5%bf%ab" class="header-mark"></a>3.1 1. 连续内存为什么通常更快</h3><p>数组元素相邻，CPU 读取一个元素时通常会把附近的一块数据一起加载到缓存中。顺序遍历数组时，后续数据很可能已经在缓存里，因此具有较好的<strong>缓存局部性</strong>。</p>
+<h3 id="2-数组与链表的核心取舍" class="headerLink">
+    <a href="#2-%e6%95%b0%e7%bb%84%e4%b8%8e%e9%93%be%e8%a1%a8%e7%9a%84%e6%a0%b8%e5%bf%83%e5%8f%96%e8%88%8d" class="header-mark"></a>3.2 2. 数组与链表的核心取舍</h3><table>
+  <thead>
+      <tr>
+          <th>特性</th>
+          <th>数组</th>
+          <th>链表</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>内存布局</td>
+          <td>连续</td>
+          <td>通常不连续</td>
+      </tr>
+      <tr>
+          <td>按下标访问</td>
+          <td>$O(1)$</td>
+          <td>$O(n)$</td>
+      </tr>
+      <tr>
+          <td>已知节点后的插入删除</td>
+          <td>通常 $O(n)$，需要移动</td>
+          <td>$O(1)$，修改指针</td>
+      </tr>
+      <tr>
+          <td>缓存友好性</td>
+          <td>较好</td>
+          <td>较差</td>
+      </tr>
+      <tr>
+          <td>额外空间</td>
+          <td>少</td>
+          <td>需要保存指针</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="3-越界访问" class="headerLink">
+    <a href="#3-%e8%b6%8a%e7%95%8c%e8%ae%bf%e9%97%ae" class="header-mark"></a>3.3 3. 越界访问</h3><p>C++ 原生数组和 <code>vector::operator[]</code> 不会自动检查越界。越界访问属于未定义行为，可能读到错误数据，也可能导致程序崩溃。调试时可使用 <code>vector::at()</code> 获得边界检查。</p>
+<h3 id="易错点" class="headerLink">
+    <a href="#%e6%98%93%e9%94%99%e7%82%b9" class="header-mark"></a>3.4 易错点</h3><ul>
+<li>把 <code>vector</code> 直接等同于原生数组：二者都使用连续内存，但抽象层级和能力不同。</li>
+<li>认为数组中间删除是 $O(1)$：定位可以是 $O(1)$，移动元素仍是 $O(n)$。</li>
+<li>认为所有语言的二维数组布局都一样：C++ 原生二维数组与 Java 的数组嵌套模型不同。</li>
+<li>忘记下标范围是 <code>[0, size - 1]</code>。</li>
+<li>混淆&quot;物理长度&quot;和&quot;逻辑长度&quot;。</li>
+</ul>
+<h3 id="自测" class="headerLink">
+    <a href="#%e8%87%aa%e6%b5%8b" class="header-mark"></a>3.5 自测</h3><ol>
+<li>为什么数组可以在 $O(1)$ 时间内访问第 $i$ 个元素？</li>
+<li>删除数组中间的元素为什么通常是 $O(n)$？</li>
+<li>C++ 原生二维数组和 Java <code>int[][]</code> 的内存模型有什么区别？</li>
+<li><code>vector</code> 扩容后，旧指针、引用和迭代器为什么可能失效？</li>
+<li>连续内存除了支持随机访问，还带来了什么性能优势？</li>
+</ol>
+<h3 id="我的补充" class="headerLink">
+    <a href="#%e6%88%91%e7%9a%84%e8%a1%a5%e5%85%85" class="header-mark"></a>3.6 我的补充</h3><blockquote>
+<p><strong>用自己的话重写</strong>
+注意，某些<strong>列优先</strong>（Column-Major，如 Fortran）语言和 C++ 相反，先存完一列再存下一列，顺序是：
+<code>[0][0]→[1][0]→[0][1]→[1][1]→[0][2]→[1][2]</code>
+C/C++/Python 都是行优先，只有少数科学计算语言用列优先。</p></blockquote>
+<h3 id="相关笔记" class="headerLink">
+    <a href="#%e7%9b%b8%e5%85%b3%e7%ac%94%e8%ae%b0" class="header-mark"></a>3.7 相关笔记</h3><ul>
+<li><a href="/posts/%e4%ba%8c%e5%88%86%e6%9f%a5%e6%89%be%e6%a8%a1%e6%9d%bf/" rel="">二分查找模板</a></li>
+<li>链表常用操作总结</li>
+</ul>
+]]></description></item><item><title>Q209 长度最小的子数组</title><link>https://soybeanmilk.netlify.app/q209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/</link><pubDate>Sat, 01 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/</guid><description><![CDATA[<blockquote>
 <p><strong>题目</strong>：给定一个含有 n 个正整数的数组和一个正整数 s，找出该数组中满足其和 ≥ s 的长度最小的<strong>连续</strong>子数组，并返回其长度。如果不存在符合条件的子数组，返回 0。</p></blockquote>
 <h2 id="我的想法" class="headerLink">
     <a href="#%e6%88%91%e7%9a%84%e6%83%b3%e6%b3%95" class="header-mark"></a>1 我的想法</h2><p>我看到这个问题，首先发现它是连续的、并且要求区间大小，会想到用前缀和操作——前缀和可以快速求出连续元素的值，但我对它的时间复杂度了解程度不够好。</p>

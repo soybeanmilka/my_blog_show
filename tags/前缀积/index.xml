@@ -1,0 +1,130 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>前缀积 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E5%89%8D%E7%BC%80%E7%A7%AF/</link><description>前缀积 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Tue, 04 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E5%89%8D%E7%BC%80%E7%A7%AF/" rel="self" type="application/rss+xml"/><item><title>Q238 除自身以外数组的乘积</title><link>https://soybeanmilk.netlify.app/q238-%E9%99%A4%E8%87%AA%E8%BA%AB%E4%BB%A5%E5%A4%96%E6%95%B0%E7%BB%84%E7%9A%84%E4%B9%98%E7%A7%AF/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/q238-%E9%99%A4%E8%87%AA%E8%BA%AB%E4%BB%A5%E5%A4%96%E6%95%B0%E7%BB%84%E7%9A%84%E4%B9%98%E7%A7%AF/</guid><description><![CDATA[<h2 id="题目类型前缀和" class="headerLink">
+    <a href="#%e9%a2%98%e7%9b%ae%e7%b1%bb%e5%9e%8b%e5%89%8d%e7%bc%80%e5%92%8c" class="header-mark"></a>1 题目类型：前缀和</h2><p>本题本质上是 <strong>前缀积 + 后缀积</strong> 问题，属于前缀和思想在乘法上的扩展。</p>
+<p>![](Pasted image 20260605202341.png)</p>
+<p>这也是道前缀和类型的题，准确的说，这是一道<strong>前缀乘积</strong>。</p>
+<p>我们看题，可以得到，他想要的效果其实就是把除了自身以外的数的积求出。</p>
+<p>假设某个数组为 <code>[a, b, c, d, e]</code><br>
+要求 <code>answer[c]</code>，则有<br>
+<code>answer[c] = a * b * d * e</code><br>
+即 <strong>前缀乘积 × 后缀乘积</strong>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">PrefixSuffixProduct</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">prefix</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">suffix</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">PrefixSuffixProduct</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">prefix</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">sz</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">suffix</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">sz</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">sz</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">prefix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">sz</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">--</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">suffix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">suffix</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">plus_matrix</span><span class="p">(</span><span class="kt">int</span> <span class="n">x1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">prefix</span><span class="p">[</span><span class="n">x1</span><span class="p">]</span> <span class="o">*</span> <span class="n">suffix</span><span class="p">[</span><span class="n">x1</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">productExceptSelf</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">PrefixSuffixProduct</span> <span class="nf">am</span><span class="p">(</span><span class="n">nums</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">res</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">sz</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">sz</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">           <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">am</span><span class="p">.</span><span class="n">plus_matrix</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="优化说明与复杂度分析" class="headerLink">
+    <a href="#%e4%bc%98%e5%8c%96%e8%af%b4%e6%98%8e%e4%b8%8e%e5%a4%8d%e6%9d%82%e5%ba%a6%e5%88%86%e6%9e%90" class="header-mark"></a>2 优化说明与复杂度分析</h2><p><strong>算法思想</strong></p>
+<ul>
+<li><code>prefix[i]</code> 表示 <code>nums[0] * nums[1] * ... * nums[i-1]</code>（前 i 个元素的乘积）</li>
+<li><code>suffix[i]</code> 表示 <code>nums[i] * nums[i+1] * ... * nums[n-1]</code>（从 i 到末尾的乘积）</li>
+<li>对于下标 <code>i</code>，答案 = <code>prefix[i] * suffix[i+1]</code>，即左边所有数的乘积 × 右边所有数的乘积。</li>
+</ul>
+<p><strong>时间复杂度</strong></p>
+<ul>
+<li>构建前缀/后缀数组：O(n)</li>
+<li>计算每个位置的答案：O(n)</li>
+<li>总复杂度：<strong>O(n)</strong></li>
+</ul>
+<p><strong>空间复杂度</strong></p>
+<ul>
+<li>前缀/后缀数组各 O(n)，结果数组 O(n)（不计入输出时可选 O(1) 额外空间）</li>
+<li>当前实现：<strong>O(n)</strong></li>
+</ul>
+<p><strong>改进建议</strong></p>
+<ul>
+<li>可以只用一个输出数组，先从左到右累乘，再从右到左乘一次，将空间优化到 <strong>O(1)</strong>（不含输出数组）。</li>
+</ul>
+<p><strong>示例验证</strong><br>
+输入：<code>nums = [1,2,3,4]</code></p>
+<ul>
+<li><code>prefix</code> = [1, 1, 2, 6, 24]</li>
+<li><code>suffix</code> = [24, 24, 12, 4, 1]<br>
+计算结果：
+<ul>
+<li>i=0 → 1 * 24 = 24</li>
+<li>i=1 → 1 * 12 = 12</li>
+<li>i=2 → 2 * 4  = 8</li>
+<li>i=3 → 6 * 1  = 6<br>
+输出 <code>[24,12,8,6]</code>，正确。</li>
+</ul>
+</li>
+</ul>
+]]></description></item></channel></rss>

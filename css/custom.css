@@ -1,0 +1,280 @@
+/* ================================================================
+   豆浆小屋 · 二次元粉彩美化
+   适用主题：DoIt v0.4.0（浅色/深色均兼容，暗色用 body[theme="dark"]）
+   ================================================================ */
+
+/* ---------- 基础：滚动条 & 选中 ---------- */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ffc3d6, #a8d8ff);
+  border-radius: 8px;
+}
+body[theme="dark"] ::-webkit-scrollbar-thumb,
+body[theme="black"] ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7a4a5c, #415d84);
+}
+::selection { background: rgba(255, 182, 213, 0.45); }
+body[theme="dark"] ::selection { background: rgba(255, 130, 175, 0.35); }
+
+/* ---------- 主页：整体网格 ---------- */
+.page.home.posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+  align-items: stretch;
+}
+.page.home.posts > .home-profile,
+.page.home.posts > div.single,
+.page.home.posts > .pagination { grid-column: 1 / -1; }
+@media (max-width: 720px) {
+  .page.home.posts { grid-template-columns: 1fr; }
+}
+
+/* ---------- 作者卡片（左头像 + 右侧信息） ---------- */
+.home-profile {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 1.6rem 1.8rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 163, 199, 0.35);
+  background: linear-gradient(120deg, rgba(255, 214, 231, 0.5), rgba(197, 222, 255, 0.5));
+  box-shadow: 0 4px 18px rgba(190, 160, 220, 0.12);
+  backdrop-filter: blur(4px);
+}
+body[theme="dark"] .home-profile,
+body[theme="black"] .home-profile {
+  background: linear-gradient(120deg, rgba(90, 55, 75, 0.55), rgba(50, 70, 105, 0.55));
+  border-color: rgba(255, 163, 199, 0.25);
+}
+.home-profile .home-avatar {
+  flex: 0 0 auto;
+}
+.home-profile .home-avatar img {
+  width: 96px !important;
+  height: 96px !important;
+  border-radius: 50% !important;
+  border: 3px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 6px 18px rgba(247, 143, 179, 0.45);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s;
+}
+.home-profile .home-avatar:hover img {
+  transform: scale(1.08) rotate(8deg);
+  box-shadow: 0 10px 26px rgba(247, 143, 179, 0.6);
+}
+.home-profile-info { flex: 1 1 260px; min-width: 0; }
+.home-profile .home-title { margin: 0; font-size: 1.5rem; font-weight: 700; }
+.home-profile .home-subtitle { margin: 0.35rem 0 0; font-size: 0.98rem; font-weight: 400; opacity: 0.8; }
+.home-profile .home-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.7rem; }
+.home-profile .chip {
+  font-size: 0.76rem;
+  line-height: 1.5;
+  padding: 0.12rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(247, 143, 179, 0.4);
+  color: inherit;
+}
+body[theme="dark"] .home-profile .chip,
+body[theme="black"] .home-profile .chip {
+  background: rgba(30, 30, 45, 0.5);
+  border-color: rgba(255, 160, 195, 0.35);
+}
+.home-profile .links { margin-top: 0.7rem; display: flex; gap: 0.9rem; flex-wrap: wrap; }
+.home-profile .links a { font-size: 1.05rem; opacity: 0.85; transition: transform 0.25s, opacity 0.25s; }
+.home-profile .links a:hover { opacity: 1; transform: translateY(-2px) scale(1.15); }
+.home-profile .home-disclaimer { margin: 0.7rem 0 0; font-size: 0.85rem; opacity: 0.65; }
+
+/* ---------- 主页欢迎语横幅 ---------- */
+.page.home.posts > div.single {
+  padding: 1.3rem 1.6rem;
+  border-radius: 18px;
+  border: 1px dashed rgba(255, 163, 199, 0.5);
+  background: rgba(255, 245, 250, 0.65);
+}
+body[theme="dark"] .page.home.posts > div.single,
+body[theme="black"] .page.home.posts > div.single {
+  background: rgba(55, 45, 60, 0.55);
+  border-color: rgba(255, 163, 199, 0.3);
+}
+.page.home.posts > div.single .content { font-size: 0.98rem; }
+
+/* ---------- 文章卡片 ---------- */
+.single.summary {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(190, 205, 255, 0.35);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 3px 12px rgba(150, 160, 220, 0.1);
+  transition: transform 0.28s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.28s, border-color 0.28s;
+  animation: cardIn 0.6s both;
+}
+body[theme="dark"] .single.summary,
+body[theme="black"] .single.summary {
+  background: rgba(44, 44, 60, 0.78);
+  border-color: rgba(150, 130, 180, 0.3);
+}
+.single.summary:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(247, 143, 179, 0.28);
+  border-color: rgba(247, 143, 179, 0.6);
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.single.summary:nth-child(4n+2) { animation-delay: 0.06s; }
+.single.summary:nth-child(4n+3) { animation-delay: 0.12s; }
+.single.summary:nth-child(4n+4) { animation-delay: 0.18s; }
+
+/* 卡片头部：渐变 + 大 emoji */
+.summary .summary-cover {
+  height: 104px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+.summary .cover-emoji {
+  font-size: 2.9rem;
+  line-height: 1;
+  filter: drop-shadow(0 3px 6px rgba(120, 90, 150, 0.25));
+  animation: floaty 3.2s ease-in-out infinite;
+}
+@keyframes floaty {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-7px) rotate(5deg); }
+}
+.summary:hover .cover-emoji { animation-duration: 1.4s; }
+.card-g0 { background: linear-gradient(135deg, #ffd3e0, #c9e4ff); }
+.card-g1 { background: linear-gradient(135deg, #d8f3dc, #c7e2ff); }
+.card-g2 { background: linear-gradient(135deg, #ffe8cc, #ffd3e0); }
+.card-g3 { background: linear-gradient(135deg, #e0d7ff, #d4f0ff); }
+.card-g4 { background: linear-gradient(135deg, #fff3c4, #ffd9ec); }
+.card-g5 { background: linear-gradient(135deg, #d1f6e8, #e6dcff); }
+
+/* 卡片正文 */
+.summary .summary-body { padding: 1rem 1.2rem 1.15rem; display: flex; flex-direction: column; gap: 0.55rem; flex: 1; }
+.summary .single-title { margin: 0; font-size: 1.14rem; font-weight: 700; line-height: 1.45; }
+.summary .single-title a { text-decoration: none; transition: color 0.25s; }
+.summary .single-title a:hover { color: #f06a9c; }
+.summary .post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.78rem; opacity: 0.78; }
+.summary .post-meta .post-tags { display: inline-flex; flex-wrap: wrap; gap: 0.3rem; }
+.summary .post-tag {
+  font-size: 0.72rem;
+  padding: 0.05rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(247, 143, 179, 0.14);
+  border: 1px solid rgba(247, 143, 179, 0.35);
+  transition: background 0.25s, transform 0.25s;
+}
+.summary .post-tag:hover { background: rgba(247, 143, 179, 0.3); transform: translateY(-1px); }
+.summary .content {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  opacity: 0.85;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.summary .content p { margin: 0; }
+.summary .post-footer { margin-top: auto; padding-top: 0.4rem; }
+.summary .post-footer a.read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  padding: 0.32rem 0.9rem;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #ffb6cf, #a8c8ff);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 3px 8px rgba(247, 143, 179, 0.35);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.summary .post-footer a.read-more:hover { transform: translateX(3px) scale(1.04); box-shadow: 0 5px 14px rgba(247, 143, 179, 0.5); }
+.summary .post-footer a.read-more i { font-size: 0.72rem; }
+
+/* ---------- 分页 ---------- */
+.page.home .pagination .page-link {
+  border-radius: 10px !important;
+  transition: background 0.25s, transform 0.25s;
+}
+.page.home .pagination .page-link:hover { transform: translateY(-2px); }
+.page.home .pagination .active .page-link {
+  background: linear-gradient(120deg, #ffb6cf, #a8c8ff);
+  border-color: transparent;
+}
+
+/* ---------- 文章列表页（/posts/）轻美化 ---------- */
+.page.archive .group-title { position: relative; padding-left: 0.9rem; }
+.page.archive .group-title::before {
+  content: "🌸";
+  position: absolute;
+  left: -0.4rem;
+  top: 0.1rem;
+  font-size: 0.85rem;
+}
+.page.archive .archive-item-link { transition: color 0.25s, padding-left 0.25s; }
+.page.archive .archive-item-link:hover { color: #f06a9c; padding-left: 0.5rem; }
+
+/* ---------- 全局链接 hover 色 ---------- */
+a { transition: color 0.2s; }
+
+/* ---------- 音乐播放器（悬浮小窗） ---------- */
+.aplayer.aplayer-fixed { z-index: 60; }
+.aplayer.aplayer-fixed .aplayer-body { border-radius: 14px; overflow: hidden; box-shadow: 0 6px 24px rgba(150, 110, 180, 0.35); }
+.aplayer { background: rgba(255, 255, 255, 0.93) !important; }
+body[theme="dark"] .aplayer,
+body[theme="black"] .aplayer { background: rgba(38, 38, 55, 0.94) !important; }
+body[theme="dark"] .aplayer .aplayer-info,
+body[theme="black"] .aplayer .aplayer-info { color: #ddd; }
+body[theme="dark"] .aplayer .aplayer-list,
+body[theme="black"] .aplayer .aplayer-list { color: #ccc; background: rgba(30, 30, 45, 0.95) !important; }
+body[theme="dark"] .aplayer .aplayer-list ol li:hover,
+body[theme="black"] .aplayer .aplayer-list ol li:hover { background: rgba(255, 255, 255, 0.06) !important; }
+
+/* ---------- 飘落的花瓣 ---------- */
+.petal {
+  position: fixed;
+  top: -8vh;
+  z-index: 45;
+  pointer-events: none;
+  animation: petal-fall linear infinite;
+  will-change: transform, opacity;
+}
+@keyframes petal-fall {
+  0%   { transform: translate3d(0, -8vh, 0) rotate(0deg); }
+  25%  { transform: translate3d(calc(var(--drift, 2) * 0.6vw), 24vh, 0) rotate(90deg); }
+  50%  { transform: translate3d(calc(var(--drift, 2) * 1.1vw), 50vh, 0) rotate(180deg); }
+  75%  { transform: translate3d(calc(var(--drift, 2) * 0.4vw), 76vh, 0) rotate(270deg); }
+  100% { transform: translate3d(calc(var(--drift, 2) * -0.8vw), 110vh, 0) rotate(360deg); }
+}
+
+/* ---------- 点击头像冒出的爱心 ---------- */
+.heart-burst {
+  position: fixed;
+  z-index: 80;
+  pointer-events: none;
+  font-size: 1.1rem;
+  animation: heartUp 0.9s ease-out forwards;
+}
+@keyframes heartUp {
+  0%   { opacity: 1; transform: translateY(0) scale(0.6); }
+  100% { opacity: 0; transform: translateY(-90px) scale(1.3) rotate(15deg); }
+}
+
+/* ---------- 小屏适配 ---------- */
+@media (max-width: 720px) {
+  .home-profile { padding: 1.1rem; gap: 1rem; justify-content: center; text-align: center; }
+  .home-profile-info { flex: 1 1 100%; }
+  .home-profile .links { justify-content: center; }
+  .summary .summary-cover { height: 84px; }
+  .summary .cover-emoji { font-size: 2.3rem; }
+}
