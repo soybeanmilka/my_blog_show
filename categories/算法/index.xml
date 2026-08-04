@@ -1,16 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>豆浆小屋</title><link>https://soybeanmilka.github.io/my_blog_show/</link><description>Recent content on 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>豆浆小屋</copyright><lastBuildDate>Tue, 04 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilka.github.io/my_blog_show/index.xml" rel="self" type="application/rss+xml"/><item><title>关于我</title><link>https://soybeanmilka.github.io/my_blog_show/%E5%85%B3%E4%BA%8E%E6%88%91/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><guid>https://soybeanmilka.github.io/my_blog_show/%E5%85%B3%E4%BA%8E%E6%88%91/</guid><description>&lt;p&gt;你好呀，欢迎来到&lt;strong&gt;豆浆小屋&lt;/strong&gt; 🥛&lt;/p&gt;
-&lt;p&gt;这里是我的个人博客，主要记录：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;📝 算法刷题笔记（代码随想录 + labuladong 的学习总结）&lt;/li&gt;
-&lt;li&gt;🔧 C++ 学习与项目心得&lt;/li&gt;
-&lt;li&gt;🎨 我的个人作品展示&lt;/li&gt;
-&lt;li&gt;☕ 一些生活随笔&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;目前主要是一名 C++ 选手，正在努力把算法基础打扎实。这个博客用 &lt;a class="link" href="https://gohugo.io" target="_blank" rel="noopener"
-&gt;Hugo&lt;/a&gt; + Stack 主题搭建，部署在 GitHub Pages 上，免费又省心。&lt;/p&gt;
-&lt;p&gt;有什么想交流的，欢迎在 GitHub 上找我。&lt;/p&gt;</description></item><item><title>归档</title><link>https://soybeanmilka.github.io/my_blog_show/archives/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><guid>https://soybeanmilka.github.io/my_blog_show/archives/</guid><description/></item><item><title>友链</title><link>https://soybeanmilka.github.io/my_blog_show/links/</link><pubDate>Tue, 04 Aug 2026 00:00:00 +0000</pubDate><guid>https://soybeanmilka.github.io/my_blog_show/links/</guid><description>&lt;blockquote&gt;
-&lt;p&gt;还没有友链，等你来交换呀 🌟&lt;/p&gt;
-&lt;/blockquote&gt;</description></item><item><title>Q525 连续数组（前缀和 + 哈希）</title><link>https://soybeanmilka.github.io/my_blog_show/p/q525-%E8%BF%9E%E7%BB%AD%E6%95%B0%E7%BB%84%E5%89%8D%E7%BC%80%E5%92%8C--%E5%93%88%E5%B8%8C/</link><pubDate>Fri, 17 Jul 2026 00:00:00 +0000</pubDate><guid>https://soybeanmilka.github.io/my_blog_show/p/q525-%E8%BF%9E%E7%BB%AD%E6%95%B0%E7%BB%84%E5%89%8D%E7%BC%80%E5%92%8C--%E5%93%88%E5%B8%8C/</guid><description>&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>算法 on 豆浆小屋</title><link>https://soybeanmilka.github.io/my_blog_show/categories/%E7%AE%97%E6%B3%95/</link><description>Recent content in 算法 on 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>豆浆小屋</copyright><lastBuildDate>Tue, 04 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilka.github.io/my_blog_show/categories/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml"/><item><title>Q525 连续数组（前缀和 + 哈希）</title><link>https://soybeanmilka.github.io/my_blog_show/p/q525-%E8%BF%9E%E7%BB%AD%E6%95%B0%E7%BB%84%E5%89%8D%E7%BC%80%E5%92%8C--%E5%93%88%E5%B8%8C/</link><pubDate>Fri, 17 Jul 2026 00:00:00 +0000</pubDate><guid>https://soybeanmilka.github.io/my_blog_show/p/q525-%E8%BF%9E%E7%BB%AD%E6%95%B0%E7%BB%84%E5%89%8D%E7%BC%80%E5%92%8C--%E5%93%88%E5%B8%8C/</guid><description>&lt;blockquote&gt;
 &lt;p&gt;[!note] 来源
 本题是 LeetCode 525，前缀和 + 哈希表的典型应用。这篇是我从 Obsidian 笔记整理过来的第一篇博客文章。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -160,4 +148,4 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>搜索</title><link>https://soybeanmilka.github.io/my_blog_show/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://soybeanmilka.github.io/my_blog_show/search/</guid><description/></item></channel></rss>
+&lt;/div&gt;</description></item></channel></rss>
