@@ -112,6 +112,74 @@
     }
   }
 
+  /* ---------- 切页续播：保存 / 恢复播放进度 ---------- */
+  var PLAYER_STORAGE = 'doujiang_player_state'
+
+  function savePlayerState () {
+    try {
+      var el = document.querySelector('meting-js')
+      var player = el && el.aplayer
+      if (!player || !player.list || !player.list.audios) return
+      var audio = player.audio
+      if (!audio || isNaN(audio.currentTime)) return
+      var current = player.list.audios[player.index] || {}
+      localStorage.setItem(PLAYER_STORAGE, JSON.stringify({
+        url: current.url || audio.currentSrc || '',
+        name: current.name || '',
+        time: audio.currentTime,
+        playing: !audio.paused
+      }))
+    } catch (e) {}
+  }
+
+  function applyPlayerRestore (player, state) {
+    var audios = player.list.audios
+    var index = -1
+    for (var i = 0; i < audios.length; i++) {
+      if (audios[i].url === state.url) { index = i; break }
+    }
+    if (index === -1) return
+    if (index !== player.index) player.list.switch(index)
+    var audio = player.audio
+    var seek = function () {
+      try {
+        if (state.time > 1 && state.time < audio.duration - 1) {
+          audio.currentTime = state.time
+        }
+      } catch (e) {}
+      if (state.playing) {
+        var p = player.play()
+        if (p && p.catch) p.catch(function () {})
+      }
+    }
+    if (audio.readyState >= 1) {
+      seek()
+    } else {
+      audio.addEventListener('loadedmetadata', seek, { once: true })
+    }
+  }
+
+  function restorePlayerState () {
+    var el = document.querySelector('meting-js')
+    if (!el) return
+    var raw = null
+    try { raw = localStorage.getItem(PLAYER_STORAGE) } catch (e) {}
+    if (!raw) return
+    var state = null
+    try { state = JSON.parse(raw) } catch (e) {}
+    if (!state || typeof state.url !== 'string') return
+    var tries = 0
+    var timer = setInterval(function () {
+      var player = el.aplayer
+      if (player && player.list && player.list.audios && player.list.audios.length) {
+        clearInterval(timer)
+        applyPlayerRestore(player, state)
+      } else if (++tries > 60) {
+        clearInterval(timer)
+      }
+    }, 300)
+  }
+
   /* ---------- 点击头像冒出小爱心 ---------- */
   function initHeartBurst () {
     var avatar = document.querySelector('.home-avatar a')
@@ -135,16 +203,21 @@
     })
   }
 
+  window.addEventListener('pagehide', savePlayerState)
+  window.addEventListener('beforeunload', savePlayerState)
+
   /* 页面加载完成后执行 */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
       initGlowBg()
       initPetals()
       initHeartBurst()
+      restorePlayerState()
     })
   } else {
     initGlowBg()
     initPetals()
     initHeartBurst()
+    restorePlayerState()
   }
 })()
