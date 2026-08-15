@@ -112,13 +112,91 @@
     }
   }
 
-  /* ---------- 切页续播：保存 / 恢复播放进度 ---------- */
+  /* ---------- 切页续播：歌单缓存 + 保存/恢复播放进度 ---------- */
   var PLAYER_STORAGE = 'doujiang_player_state'
+  var PLAYLIST_STORAGE = 'doujiang_playlist_cache'
+  var PLAYLIST_TTL = 4 * 60 * 60 * 1000   // 歌单缓存 4 小时
+  var playerEl = null
+  var playerInst = null
+
+  function getPlayerEl () {
+    if (!playerEl) playerEl = document.querySelector('#music-player')
+    return playerEl
+  }
+
+  function buildApiUrl (el) {
+    var api = el.getAttribute('data-api') || 'https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r'
+    return api
+      .replace(':server', el.getAttribute('data-server') || 'netease')
+      .replace(':type', el.getAttribute('data-type') || 'playlist')
+      .replace(':id', el.getAttribute('data-id') || '')
+      .replace(':r', Math.random())
+  }
+
+  function toAudio (song) {
+    return {
+      name: song.name || '',
+      artist: song.artist || '',
+      url: song.url || '',
+      cover: song.pic || song.cover || ''
+    }
+  }
+
+  function createPlayer (el, list) {
+    var opts = {
+      container: el,
+      fixed: true,
+      mini: true,
+      mutex: true,
+      theme: el.getAttribute('data-theme') || '#f78fb3',
+      order: el.getAttribute('data-order') || 'random',
+      listFolded: true,
+      listMaxHeight: '240px',
+      audio: list.map(toAudio)
+    }
+    playerInst = new APlayer(opts)
+    el.aplayer = playerInst
+  }
+
+  /* 读歌单：先试缓存（秒开），没有再请求 API 并写缓存 */
+  function initMusicPlayer (done) {
+    var el = getPlayerEl()
+    if (!el || !window.APlayer || el.aplayer) return
+    var cached = null
+    try {
+      var raw = localStorage.getItem(PLAYLIST_STORAGE)
+      if (raw) {
+        var data = JSON.parse(raw)
+        if (data && Array.isArray(data.list) && data.list.length &&
+            Date.now() - (data.ts || 0) < PLAYLIST_TTL) {
+          cached = data.list
+        }
+      }
+    } catch (e) {}
+
+    if (cached) {
+      createPlayer(el, cached)
+      if (done) done()
+      /* 后台静默刷新缓存（防止歌曲 URL 过期） */
+      fetch(buildApiUrl(el)).then(function (r) { return r.json() }).then(function (list) {
+        if (list && list.length) {
+          try { localStorage.setItem(PLAYLIST_STORAGE, JSON.stringify({ ts: Date.now(), list: list })) } catch (e) {}
+        }
+      }).catch(function () {})
+      return
+    }
+
+    fetch(buildApiUrl(el)).then(function (r) { return r.json() }).then(function (list) {
+      if (!list || !list.length) return
+      try { localStorage.setItem(PLAYLIST_STORAGE, JSON.stringify({ ts: Date.now(), list: list })) } catch (e) {}
+      createPlayer(el, list)
+      if (done) done()
+    }).catch(function () {})
+  }
 
   function savePlayerState () {
     try {
-      var el = document.querySelector('meting-js')
-      var player = el && el.aplayer
+      var player = playerInst
       if (!player || !player.list || !player.list.audios) return
       var audio = player.audio
       if (!audio || isNaN(audio.currentTime)) return
@@ -160,8 +238,6 @@
   }
 
   function restorePlayerState () {
-    var el = document.querySelector('meting-js')
-    if (!el) return
     var raw = null
     try { raw = localStorage.getItem(PLAYER_STORAGE) } catch (e) {}
     if (!raw) return
@@ -170,7 +246,7 @@
     if (!state || typeof state.url !== 'string') return
     var tries = 0
     var timer = setInterval(function () {
-      var player = el.aplayer
+      var player = playerInst
       if (player && player.list && player.list.audios && player.list.audios.length) {
         clearInterval(timer)
         applyPlayerRestore(player, state)
@@ -207,17 +283,18 @@
   window.addEventListener('beforeunload', savePlayerState)
 
   /* 页面加载完成后执行 */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      initGlowBg()
-      initPetals()
-      initHeartBurst()
-      restorePlayerState()
-    })
-  } else {
+  function onReady () {
     initGlowBg()
     initPetals()
     initHeartBurst()
-    restorePlayerState()
+    initMusicPlayer(function () {
+      restorePlayerState()
+    })
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', onReady)
+  } else {
+    onReady()
   }
 })()
