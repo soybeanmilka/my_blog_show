@@ -1,0 +1,427 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>速查表 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E9%80%9F%E6%9F%A5%E8%A1%A8/</link><description>速查表 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Fri, 17 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E9%80%9F%E6%9F%A5%E8%A1%A8/" rel="self" type="application/rss+xml"/><item><title>STL 常用容器速查表</title><link>https://soybeanmilk.netlify.app/stl%E5%AE%B9%E5%99%A8%E9%80%9F%E6%9F%A5%E8%A1%A8/</link><pubDate>Fri, 17 Jul 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/stl%E5%AE%B9%E5%99%A8%E9%80%9F%E6%9F%A5%E8%A1%A8/</guid><description><![CDATA[<h2 id="一序列容器" class="headerLink">
+    <a href="#%e4%b8%80%e5%ba%8f%e5%88%97%e5%ae%b9%e5%99%a8" class="header-mark"></a>1 一、序列容器</h2><h3 id="vector--动态数组-" class="headerLink">
+    <a href="#vector--%e5%8a%a8%e6%80%81%e6%95%b0%e7%bb%84-" class="header-mark"></a>1.1 vector — 动态数组 ⭐</h3><table>
+  <thead>
+      <tr>
+          <th>操作</th>
+          <th>用法</th>
+          <th>时间</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>尾插</td>
+          <td><code>v.push_back(x)</code></td>
+          <td>O(1) 均摊</td>
+      </tr>
+      <tr>
+          <td>尾删</td>
+          <td><code>v.pop_back()</code></td>
+          <td>O(1)</td>
+      </tr>
+      <tr>
+          <td>插入</td>
+          <td><code>v.insert(it, x)</code></td>
+          <td>O(n)</td>
+      </tr>
+      <tr>
+          <td>删除</td>
+          <td><code>v.erase(it)</code></td>
+          <td>O(n)</td>
+      </tr>
+      <tr>
+          <td>访问</td>
+          <td><code>v[i]</code> / <code>v.at(i)</code></td>
+          <td>O(1)</td>
+      </tr>
+      <tr>
+          <td>大小</td>
+          <td><code>v.size()</code> / <code>v.capacity()</code></td>
+          <td>O(1)</td>
+      </tr>
+      <tr>
+          <td>清空</td>
+          <td><code>v.clear()</code></td>
+          <td>O(n)</td>
+      </tr>
+      <tr>
+          <td>预留</td>
+          <td><code>v.reserve(n)</code></td>
+          <td>O(n)</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>特点：</strong> 连续内存，随机访问快，中间插入慢，尾插最快</p>
+<hr>
+<h3 id="deque--双端队列" class="headerLink">
+    <a href="#deque--%e5%8f%8c%e7%ab%af%e9%98%9f%e5%88%97" class="header-mark"></a>1.2 deque — 双端队列</h3><table>
+  <thead>
+      <tr>
+          <th>操作</th>
+          <th>用法</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>头插</td>
+          <td><code>dq.push_front(x)</code></td>
+      </tr>
+      <tr>
+          <td>头删</td>
+          <td><code>dq.pop_front()</code></td>
+      </tr>
+      <tr>
+          <td>尾插</td>
+          <td><code>dq.push_back(x)</code></td>
+      </tr>
+      <tr>
+          <td>尾删</td>
+          <td><code>dq.pop_back()</code></td>
+      </tr>
+      <tr>
+          <td>访问</td>
+          <td><code>dq[i]</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>特点：</strong> 头尾都能 O(1) 插入删除，随机访问比 vector 慢一点</p>
+<hr>
+<h3 id="list--双向链表" class="headerLink">
+    <a href="#list--%e5%8f%8c%e5%90%91%e9%93%be%e8%a1%a8" class="header-mark"></a>1.3 list — 双向链表</h3><table>
+  <thead>
+      <tr>
+          <th>操作</th>
+          <th>用法</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>插入</td>
+          <td><code>lst.insert(it, x)</code></td>
+      </tr>
+      <tr>
+          <td>删除</td>
+          <td><code>lst.erase(it)</code></td>
+      </tr>
+      <tr>
+          <td>头插</td>
+          <td><code>lst.push_front(x)</code></td>
+      </tr>
+      <tr>
+          <td>尾插</td>
+          <td><code>lst.push_back(x)</code></td>
+      </tr>
+      <tr>
+          <td>排序</td>
+          <td><code>lst.sort()</code></td>
+      </tr>
+      <tr>
+          <td>反转</td>
+          <td><code>lst.reverse()</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>特点：</strong> 任意位置 O(1) 插入删除，但不能随机访问，用得少</p>
+<hr>
+<h2 id="二关联容器" class="headerLink">
+    <a href="#%e4%ba%8c%e5%85%b3%e8%81%94%e5%ae%b9%e5%99%a8" class="header-mark"></a>2 二、关联容器</h2><h3 id="map--unordered_map--字典-" class="headerLink">
+    <a href="#map--unordered_map--%e5%ad%97%e5%85%b8-" class="header-mark"></a>2.1 map / unordered_map — 字典 ⭐</h3><table>
+  <thead>
+      <tr>
+          <th>特性</th>
+          <th>map</th>
+          <th>unordered_map</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>底层</td>
+          <td>红黑树</td>
+          <td>哈希表</td>
+      </tr>
+      <tr>
+          <td>有序</td>
+          <td>✅ 按 key 排序</td>
+          <td>❌ 无序</td>
+      </tr>
+      <tr>
+          <td>插入</td>
+          <td>O(log n)</td>
+          <td>O(1) 均摊</td>
+      </tr>
+      <tr>
+          <td>查询</td>
+          <td>O(log n)</td>
+          <td>O(1) 均摊</td>
+      </tr>
+      <tr>
+          <td>遍历</td>
+          <td>有序输出</td>
+          <td>无序</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>常用操作：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">mp</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span>       <span class="c1">// 插入/修改
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">mp</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>       <span class="c1">// 是否存在
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">mp</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>        <span class="c1">// 返回迭代器
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">mp</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>       <span class="c1">// 删除
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span> <span class="o">:</span> <span class="n">mp</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>  <span class="c1">// C++17 结构化绑定
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h3 id="set--unordered_set--集合" class="headerLink">
+    <a href="#set--unordered_set--%e9%9b%86%e5%90%88" class="header-mark"></a>2.2 set / unordered_set — 集合</h3><table>
+  <thead>
+      <tr>
+          <th>特性</th>
+          <th>set</th>
+          <th>unordered_set</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>底层</td>
+          <td>红黑树</td>
+          <td>哈希表</td>
+      </tr>
+      <tr>
+          <td>有序</td>
+          <td>✅</td>
+          <td>❌</td>
+      </tr>
+      <tr>
+          <td>去重</td>
+          <td>✅</td>
+          <td>✅</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>常用操作：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">st</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">st</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">st</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>    <span class="c1">// 0 或 1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">st</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h3 id="multiset--multimap" class="headerLink">
+    <a href="#multiset--multimap" class="header-mark"></a>2.3 multiset / multimap</h3><p>允许重复 key 的版本，用法基本一样。</p>
+<p><strong>multiset 注意：</strong> <code>erase(val)</code> 会删掉所有等于 val 的元素，删单个要用 <code>erase(iterator)</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">ms</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">it</span> <span class="o">!=</span> <span class="n">ms</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="n">ms</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">it</span><span class="p">);</span>  <span class="c1">// 只删一个
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="三容器适配器" class="headerLink">
+    <a href="#%e4%b8%89%e5%ae%b9%e5%99%a8%e9%80%82%e9%85%8d%e5%99%a8" class="header-mark"></a>3 三、容器适配器</h2><h3 id="stack--栈后进先出" class="headerLink">
+    <a href="#stack--%e6%a0%88%e5%90%8e%e8%bf%9b%e5%85%88%e5%87%ba" class="header-mark"></a>3.1 stack — 栈（后进先出）</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">st</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">st</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>    <span class="c1">// 压栈
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">st</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>      <span class="c1">// 弹栈（无返回值）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>      <span class="c1">// 栈顶
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">st</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>底层默认是 deque。</p>
+<hr>
+<h3 id="queue--队列先进先出" class="headerLink">
+    <a href="#queue--%e9%98%9f%e5%88%97%e5%85%88%e8%bf%9b%e5%85%88%e5%87%ba" class="header-mark"></a>3.2 queue — 队列（先进先出）</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">q</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>     <span class="c1">// 入队
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">q</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>       <span class="c1">// 出队（无返回值）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">q</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>     <span class="c1">// 队首
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">q</span><span class="p">.</span><span class="n">back</span><span class="p">();</span>      <span class="c1">// 队尾
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">q</span><span class="p">.</span><span class="n">empty</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">q</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h3 id="priority_queue--优先队列堆" class="headerLink">
+    <a href="#priority_queue--%e4%bc%98%e5%85%88%e9%98%9f%e5%88%97%e5%a0%86" class="header-mark"></a>3.3 priority_queue — 优先队列（堆）⭐</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 默认大顶堆
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">priority_queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">pq</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 小顶堆
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">priority_queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">greater</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">minHeap</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">pq</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>    <span class="c1">// 插入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">pq</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>      <span class="c1">// 弹出堆顶
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">pq</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>      <span class="c1">// 堆顶元素
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">pq</span><span class="p">.</span><span class="n">empty</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">pq</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>默认是大顶堆</strong>，用 less&lt;int&gt; 比较。</p>
+<hr>
+<h2 id="四容器选择指南" class="headerLink">
+    <a href="#%e5%9b%9b%e5%ae%b9%e5%99%a8%e9%80%89%e6%8b%a9%e6%8c%87%e5%8d%97" class="header-mark"></a>4 四、容器选择指南</h2><table>
+  <thead>
+      <tr>
+          <th>需求</th>
+          <th>推荐容器</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>随机访问多，尾插尾删</td>
+          <td>vector</td>
+      </tr>
+      <tr>
+          <td>头尾都要插入删除</td>
+          <td>deque</td>
+      </tr>
+      <tr>
+          <td>频繁中间插入删除</td>
+          <td>list（很少用）</td>
+      </tr>
+      <tr>
+          <td>key-value 查找，需要有序</td>
+          <td>map</td>
+      </tr>
+      <tr>
+          <td>key-value 查找，追求速度</td>
+          <td>unordered_map</td>
+      </tr>
+      <tr>
+          <td>去重 + 有序</td>
+          <td>set</td>
+      </tr>
+      <tr>
+          <td>去重 + 速度</td>
+          <td>unordered_set</td>
+      </tr>
+      <tr>
+          <td>栈操作</td>
+          <td>stack</td>
+      </tr>
+      <tr>
+          <td>队列操作</td>
+          <td>queue</td>
+      </tr>
+      <tr>
+          <td>求最大/最小值</td>
+          <td>priority_queue</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="五常用算法" class="headerLink">
+    <a href="#%e4%ba%94%e5%b8%b8%e7%94%a8%e7%ae%97%e6%b3%95" class="header-mark"></a>5 五、常用算法</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">sort</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>           <span class="c1">// 排序
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">sort</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">rbegin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">rend</span><span class="p">());</span>         <span class="c1">// 降序
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">reverse</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>        <span class="c1">// 反转
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span>                         <span class="c1">// 交换
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">*</span><span class="n">max_element</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>   <span class="c1">// 最大值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">*</span><span class="n">min_element</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>   <span class="c1">// 最小值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">accumulate</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>  <span class="c1">// 求和（需 include &lt;numeric&gt;）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">lower_bound</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">x</span><span class="p">);</span> <span class="c1">// 第一个 &gt;= x
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">upper_bound</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">x</span><span class="p">);</span> <span class="c1">// 第一个 &gt; x
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">next_permutation</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">());</span> <span class="c1">// 下一个排列
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">fill</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">val</span><span class="p">);</span>      <span class="c1">// 填充
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="六迭代器失效速记" class="headerLink">
+    <a href="#%e5%85%ad%e8%bf%ad%e4%bb%a3%e5%99%a8%e5%a4%b1%e6%95%88%e9%80%9f%e8%ae%b0" class="header-mark"></a>6 六、迭代器失效速记</h2><table>
+  <thead>
+      <tr>
+          <th>容器</th>
+          <th>插入</th>
+          <th>删除</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>vector</td>
+          <td>扩容全部失效；否则插入点之后失效</td>
+          <td>删除点及之后失效</td>
+      </tr>
+      <tr>
+          <td>deque</td>
+          <td>头尾插入只失效所有迭代器，引用不失效；中间插入全部失效</td>
+          <td>中间删除全部失效；头尾删除对应端失效</td>
+      </tr>
+      <tr>
+          <td>list / map / set</td>
+          <td>不失效</td>
+          <td>只有被删的失效</td>
+      </tr>
+  </tbody>
+</table>
+]]></description></item></channel></rss>

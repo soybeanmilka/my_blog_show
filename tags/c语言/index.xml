@@ -1,0 +1,120 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>C语言 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/c%E8%AF%AD%E8%A8%80/</link><description>C语言 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Fri, 17 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/c%E8%AF%AD%E8%A8%80/" rel="self" type="application/rss+xml"/><item><title>C 字符串与内存操作函数速查</title><link>https://soybeanmilk.netlify.app/c%E8%AF%AD%E8%A8%80%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8E%E5%86%85%E5%AD%98%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0/</link><pubDate>Fri, 17 Jul 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/c%E8%AF%AD%E8%A8%80%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8E%E5%86%85%E5%AD%98%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0/</guid><description><![CDATA[<h2 id="字符串内存操作函数速查" class="headerLink">
+    <a href="#%e5%ad%97%e7%ac%a6%e4%b8%b2%e5%86%85%e5%ad%98%e6%93%8d%e4%bd%9c%e5%87%bd%e6%95%b0%e9%80%9f%e6%9f%a5" class="header-mark"></a>1 字符串/内存操作函数速查</h2><table>
+  <thead>
+      <tr>
+          <th>函数</th>
+          <th>参数说明</th>
+          <th>作用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>strlen(str)</code></td>
+          <td><code>str</code> — 目标字符串</td>
+          <td>计算字符串长度，不包含 <code>'\0'</code></td>
+      </tr>
+      <tr>
+          <td><code>memmove(dst, src, n)</code></td>
+          <td><code>dst</code> — 目标地址（destination）<br><code>src</code> — 源地址（source）<br><code>n</code> — 要移动的字节数</td>
+          <td>移动 <code>n</code> 字节，<strong>允许内存区域重叠</strong></td>
+      </tr>
+      <tr>
+          <td><code>memcpy(dst, src, n)</code></td>
+          <td><code>dst</code> — 目标地址（destination）<br><code>src</code> — 源地址（source）<br><code>n</code> — 要复制的字节数</td>
+          <td>复制 <code>n</code> 字节，<strong>不允许内存区域重叠</strong>（重叠时行为未定义）</td>
+      </tr>
+      <tr>
+          <td><code>memset(dst, value, n)</code></td>
+          <td><code>dst</code> — 目标地址（destination）<br><code>value</code> — 要填充的值（转为 unsigned char）<br><code>n</code> — 要填充的字节数</td>
+          <td>将一段内存的每个字节填充为指定值</td>
+      </tr>
+      <tr>
+          <td><code>strcpy(dst, src)</code></td>
+          <td><code>dst</code> — 目标缓冲区（destination）<br><code>src</code> — 源字符串（source）</td>
+          <td>复制 C 风格字符串，包括结尾的 <code>'\0'</code></td>
+      </tr>
+      <tr>
+          <td><code>strcmp(a, b)</code></td>
+          <td><code>a</code> — 字符串 A<br><code>b</code> — 字符串 B</td>
+          <td>比较两个 C 风格字符串，相等返回 0</td>
+      </tr>
+      <tr>
+          <td><code>strchr(str, ch)</code></td>
+          <td><code>str</code> — 被搜索的字符串<br><code>ch</code> — 要查找的字符</td>
+          <td>在字符串中查找字符，返回首次出现的位置指针</td>
+      </tr>
+      <tr>
+          <td><code>strstr(str, sub)</code></td>
+          <td><code>str</code> — 被搜索的字符串（haystack）<br><code>sub</code> — 要查找的子串（needle）</td>
+          <td>在字符串中查找子串，返回首次出现的位置指针</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p><strong>⚠️ 注意：</strong> <code>memmove</code> 和 <code>memcpy</code> 的区别——当 <code>src</code> 和 <code>dst</code> 的内存区域有重叠时，必须用 <code>memmove</code>，因为它会先拷贝到临时缓冲区再写入，保证正确性；<code>memcpy</code> 不处理重叠情况，可能导致数据损坏。</p></blockquote>
+<table>
+  <thead>
+      <tr>
+          <th>函数名</th>
+          <th>全称拆分</th>
+          <th>英文原意</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>strlen</strong></td>
+          <td>str = string；len = length</td>
+          <td><strong>string length</strong> 字符串长度</td>
+      </tr>
+      <tr>
+          <td><strong>memmove</strong></td>
+          <td>mem = memory；move</td>
+          <td><strong>memory move</strong> 内存移动</td>
+      </tr>
+      <tr>
+          <td><strong>memcpy</strong></td>
+          <td>mem = memory；cpy = copy</td>
+          <td><strong>memory copy</strong> 内存复制</td>
+      </tr>
+      <tr>
+          <td><strong>memset</strong></td>
+          <td>mem = memory；set</td>
+          <td><strong>memory set</strong> 内存填充</td>
+      </tr>
+      <tr>
+          <td><strong>strcpy</strong></td>
+          <td>str = string；cpy = copy</td>
+          <td><strong>string copy</strong> 字符串复制</td>
+      </tr>
+      <tr>
+          <td><strong>strcmp</strong></td>
+          <td>str = string；cmp = compare</td>
+          <td><strong>string compare</strong> 字符串比较</td>
+      </tr>
+      <tr>
+          <td><strong>strchr</strong></td>
+          <td>str = string；chr = character</td>
+          <td><strong>string character</strong> 在字符串查找字符</td>
+      </tr>
+      <tr>
+          <td><strong>strstr</strong></td>
+          <td>str = string；第二个 str = substring</td>
+          <td><strong>string substring</strong> 在字符串查找子串</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="补充规律方便记忆" class="headerLink">
+    <a href="#%e8%a1%a5%e5%85%85%e8%a7%84%e5%be%8b%e6%96%b9%e4%be%bf%e8%ae%b0%e5%bf%86" class="header-mark"></a>2 补充规律（方便记忆）</h2><ol>
+<li><strong><code>str</code> 开头 → 只处理「C 风格字符串」</strong>，依赖 <code>\0</code> 结束标记；</li>
+<li><strong><code>mem</code> 开头 → 纯粹操作内存块</strong>，不识别字符串结束符，按字节数量处理；</li>
+<li>通用缩写约定：
+<ul>
+<li><code>cpy</code> = copy</li>
+<li><code>cmp</code> = compare</li>
+<li><code>chr</code> = character</li>
+<li><code>len</code> = length</li>
+<li><code>sub</code> = substring</li>
+</ul>
+</li>
+</ol>
+]]></description></item></channel></rss>

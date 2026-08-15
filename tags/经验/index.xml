@@ -1,0 +1,49 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>经验 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E7%BB%8F%E9%AA%8C/</link><description>经验 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Thu, 13 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E7%BB%8F%E9%AA%8C/" rel="self" type="application/rss+xml"/><item><title>自学编程一年，我总结的几条血泪经验</title><link>https://soybeanmilk.netlify.app/%E8%87%AA%E5%AD%A6%E7%BC%96%E7%A8%8B%E4%B8%80%E5%B9%B4%E7%9A%84%E8%A1%80%E6%B3%AA%E7%BB%8F%E9%AA%8C/</link><pubDate>Thu, 13 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/%E8%87%AA%E5%AD%A6%E7%BC%96%E7%A8%8B%E4%B8%80%E5%B9%B4%E7%9A%84%E8%A1%80%E6%B3%AA%E7%BB%8F%E9%AA%8C/</guid><description><![CDATA[<blockquote>
+<p>不是什么高大上的方法论，就是自己踩坑踩出来的几条，一条一条列给你看。</p></blockquote>
+<h2 id="先说说心态" class="headerLink">
+    <a href="#%e5%85%88%e8%af%b4%e8%af%b4%e5%bf%83%e6%80%81" class="header-mark"></a>1 先说说心态</h2><ul>
+<li>遇到问题，<strong>多去搜索</strong>，别硬憋。</li>
+<li><strong>非阻塞的问题不要陷进去</strong>，卡住半天出不来最亏。</li>
+<li>什么东西都学点，得到一个程序员的思维，就很好了。</li>
+</ul>
+<h2 id="学习路上最大的阻碍" class="headerLink">
+    <a href="#%e5%ad%a6%e4%b9%a0%e8%b7%af%e4%b8%8a%e6%9c%80%e5%a4%a7%e7%9a%84%e9%98%bb%e7%a2%8d" class="header-mark"></a>2 学习路上最大的阻碍</h2><ul>
+<li>知识枯燥，容易<strong>陷入细节</strong>出不来。</li>
+<li>知识其实分<strong>场景、原理、细节</strong>三层。</li>
+<li>基础薄弱的时候，重点看<strong>场景和原理</strong>，之后再回归细节——顺序很重要。</li>
+</ul>
+<h2 id="怎么对抗打断" class="headerLink">
+    <a href="#%e6%80%8e%e4%b9%88%e5%af%b9%e6%8a%97%e6%89%93%e6%96%ad" class="header-mark"></a>3 怎么对抗打断</h2><ul>
+<li>自驱力有限？那就别硬扛。<strong>手机放一边</strong>，网络关掉。</li>
+<li>现实打断多？<strong>去图书馆</strong>，物理隔离最有效。</li>
+<li>给自己<strong>及时的奖励</strong>，用番茄钟，学 25 分钟歇 5 分钟。</li>
+<li>找个<strong>队友</strong>，加个群，有人一起走才走得远。</li>
+<li>目标要明确：<strong>可衡量、具体、可实现、有时限</strong>。</li>
+</ul>
+<h2 id="学习方法" class="headerLink">
+    <a href="#%e5%ad%a6%e4%b9%a0%e6%96%b9%e6%b3%95" class="header-mark"></a>4 学习方法</h2><ul>
+<li>不了解的模块直接<strong>上手</strong>，先跑起来再说。</li>
+<li>学一个东西先问四件事：<strong>是什么？解决什么问题？有哪些重要特性？面试重点是什么？</strong></li>
+<li>先有<strong>整体思路</strong>，再深入某个点，别一上来就钻。</li>
+</ul>
+<h2 id="刷题技巧" class="headerLink">
+    <a href="#%e5%88%b7%e9%a2%98%e6%8a%80%e5%b7%a7" class="header-mark"></a>5 刷题技巧</h2><ul>
+<li>核心就一个字：<strong>坚持</strong>。</li>
+<li>前期像乌龟，慢慢来；中期像兔子，速度起来；后期龟兔切换，稳中带快。</li>
+</ul>
+<h2 id="两个不要" class="headerLink">
+    <a href="#%e4%b8%a4%e4%b8%aa%e4%b8%8d%e8%a6%81" class="header-mark"></a>6 两个&quot;不要&quot;</h2><ul>
+<li>&ldquo;抓大放小&quot;不是很好——<strong>进度 &gt; 细节，原理 &gt; 源码</strong>，但不是啥都不看。</li>
+<li>学完就忘？很正常，所有人都是。</li>
+</ul>
+<h2 id="忘光了怎么办" class="headerLink">
+    <a href="#%e5%bf%98%e5%85%89%e4%ba%86%e6%80%8e%e4%b9%88%e5%8a%9e" class="header-mark"></a>7 忘光了怎么办</h2><ul>
+<li><strong>三遍学习法</strong>：第一遍鸟瞰式（看全貌），第二遍牛耕式（慢慢啃），第三遍消化式（输出内化）。</li>
+<li><strong>费曼学习法</strong>：把学到的讲给别人听，讲不明白的地方就是你没懂的地方。</li>
+</ul>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>8 最后</h2><ul>
+<li>上面这些不一定全对，但都是我自己试过的。</li>
+<li>学习是场长跑，别急着一天跑完，<strong>跑得久比跑得快重要</strong>。</li>
+</ul>
+]]></description></item></channel></rss>

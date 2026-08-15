@@ -1,0 +1,63 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Attention - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/attention/</link><description>Attention - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Sat, 08 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/attention/" rel="self" type="application/rss+xml"/><item><title>从零理解 Attention 和 Transformer（学习笔记）</title><link>https://soybeanmilk.netlify.app/transformer%E5%92%8Cattention%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link><pubDate>Sat, 08 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/transformer%E5%92%8Cattention%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid><description><![CDATA[<h2 id="我的想法--卡点" class="headerLink">
+    <a href="#%e6%88%91%e7%9a%84%e6%83%b3%e6%b3%95--%e5%8d%a1%e7%82%b9" class="header-mark"></a>1 我的想法 / 卡点</h2><p>之前对 AI 的底层原理理解很模糊，一堆术语堆在一起分不清。今天从对话里一步步拆明白了。</p>
+<p>主要卡点：</p>
+<ol>
+<li>模型的&quot;权重&quot;到底是静态的还是动态的 → 两种都有</li>
+<li>Decoder-only 为什么不需要 Encoder → Decoder 自己就能看自己</li>
+<li>Attention 里的 Q、K、V 到底是什么 → 每个 token 乘三个矩阵算出来的</li>
+</ol>
+<h2 id="最终理解" class="headerLink">
+    <a href="#%e6%9c%80%e7%bb%88%e7%90%86%e8%a7%a3" class="header-mark"></a>2 最终理解</h2><h3 id="两种权重别搞混" class="headerLink">
+    <a href="#%e4%b8%a4%e7%a7%8d%e6%9d%83%e9%87%8d%e5%88%ab%e6%90%9e%e6%b7%b7" class="header-mark"></a>2.1 两种权重别搞混</h3><table>
+  <thead>
+      <tr>
+          <th>类型</th>
+          <th>什么时候变</th>
+          <th>作用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>模型静态权重</strong></td>
+          <td>训完就固定</td>
+          <td>模型的&quot;知识&quot;，比如知道&quot;的&quot;后面常跟&quot;名&quot;</td>
+      </tr>
+      <tr>
+          <td><strong>注意力权重</strong></td>
+          <td>每次输入动态算</td>
+          <td>这句话里哪个词跟当前输出最相关</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="attention-三步用今天天气很好生成好为例" class="headerLink">
+    <a href="#attention-%e4%b8%89%e6%ad%a5%e7%94%a8%e4%bb%8a%e5%a4%a9%e5%a4%a9%e6%b0%94%e5%be%88%e5%a5%bd%e7%94%9f%e6%88%90%e5%a5%bd%e4%b8%ba%e4%be%8b" class="header-mark"></a>2.2 Attention 三步（用&quot;今天天气很好&quot;生成&quot;好&quot;为例）</h3><p>每个 token 变成向量后，乘三个矩阵（W_q、W_k、W_v），得到三样东西：</p>
+<ul>
+<li><strong>Q（查询）</strong>：我要找什么信息</li>
+<li><strong>K（键值）</strong>：我身上有什么标签</li>
+<li><strong>V（价值）</strong>：我身上有什么信息</li>
+</ul>
+<p>然后：当前位置的 Q × 每个位置的 K → 得出得分 → softmax 归一化 → 用归一化后的分数加权取 V → 最终输出。</p>
+<p>关键是自己在注意力计算时<strong>能看自己</strong>，不是只看前面的词。</p>
+<h3 id="transformer--注意力--前馈叠-n-层" class="headerLink">
+    <a href="#transformer--%e6%b3%a8%e6%84%8f%e5%8a%9b--%e5%89%8d%e9%a6%88%e5%8f%a0-n-%e5%b1%82" class="header-mark"></a>2.3 Transformer = 注意力 + 前馈，叠 N 层</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">输入文字
+</span></span><span class="line"><span class="cl">   → Token Embedding + 位置编码
+</span></span><span class="line"><span class="cl">   → [Self-Attention（看全局）→ 前馈网络（消化信息）] × N 层
+</span></span><span class="line"><span class="cl">   → 线性层 → 预测下一个字
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="为什么现在的大模型都是-decoder-only" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e7%8e%b0%e5%9c%a8%e7%9a%84%e5%a4%a7%e6%a8%a1%e5%9e%8b%e9%83%bd%e6%98%af-decoder-only" class="header-mark"></a>2.4 为什么现在的大模型都是 Decoder-only</h3><p>原始 Transformer 有 Encoder + Decoder，但聊天场景下输入和输出天然在一条序列里，Decoder 的 self-attention 自己就能回看所有 token，不需要 Encoder 额外&quot;翻译&quot;。</p>
+<h2 id="联系之前的问题" class="headerLink">
+    <a href="#%e8%81%94%e7%b3%bb%e4%b9%8b%e5%89%8d%e7%9a%84%e9%97%ae%e9%a2%98" class="header-mark"></a>3 联系之前的问题</h2><ul>
+<li>缓存为什么便宜：每个 token 的 K、V 上轮已经算好了，直接复用不用重算</li>
+<li>多模态为什么多一个编码器：图像被打包成视觉 token 送进同一个 Transformer</li>
+</ul>
+]]></description></item></channel></rss>

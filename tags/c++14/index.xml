@@ -1,0 +1,239 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>C++14 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/c++14/</link><description>C++14 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Fri, 17 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/c++14/" rel="self" type="application/rss+xml"/><item><title>C++14 新特性</title><link>https://soybeanmilk.netlify.app/cpp14%E6%96%B0%E7%89%B9%E6%80%A7/</link><pubDate>Fri, 17 Jul 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/cpp14%E6%96%B0%E7%89%B9%E6%80%A7/</guid><description><![CDATA[<blockquote>
+<p>C++14 是 C++11 的小版本更新，主要是完善和补充，核心特性不多但很实用。</p></blockquote>
+<hr>
+<h2 id="一函数返回值类型推导" class="headerLink">
+    <a href="#%e4%b8%80%e5%87%bd%e6%95%b0%e8%bf%94%e5%9b%9e%e5%80%bc%e7%b1%bb%e5%9e%8b%e6%8e%a8%e5%af%bc" class="header-mark"></a>1 一、函数返回值类型推导</h2><p>C++11 只有 lambda 可以用 <code>auto</code> 推导返回值，C++14 扩展到所有函数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// C++14：自动推导返回 int
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">auto</span> <span class="nf">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 多个 return 必须类型一致
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">auto</span> <span class="nf">f</span><span class="p">(</span><span class="kt">bool</span> <span class="n">flag</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">flag</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>    <span class="c1">// int
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">else</span> <span class="k">return</span> <span class="mi">2</span><span class="p">;</span>         <span class="c1">// OK，都是 int
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// return 3.14;        // ERROR，类型不一致
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>注意：</strong></p>
+<ul>
+<li>递归函数不能用 auto 返回值推导（除非先有前置声明）</li>
+<li>有多个 return 语句时，所有 return 的类型必须相同</li>
+</ul>
+<hr>
+<h2 id="二泛型-lambdageneric-lambda" class="headerLink">
+    <a href="#%e4%ba%8c%e6%b3%9b%e5%9e%8b-lambdageneric-lambda" class="header-mark"></a>2 二、泛型 lambda（Generic Lambda）</h2><p>C++11 的 lambda 参数必须写具体类型，C++14 可以用 <code>auto</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// C++14：参数用 auto，相当于模板函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">auto</span> <span class="n">add</span> <span class="o">=</span> <span class="p">[](</span><span class="k">auto</span> <span class="n">a</span><span class="p">,</span> <span class="k">auto</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>       <span class="c1">// int
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">add</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">);</span>   <span class="c1">// double
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">add</span><span class="p">(</span><span class="n">string</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">),</span> <span class="n">string</span><span class="p">(</span><span class="s">&#34;b&#34;</span><span class="p">));</span>  <span class="c1">// string
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>本质：</strong> 编译器自动生成一个模板函数对象。</p>
+<hr>
+<h2 id="三变量模板variable-templates" class="headerLink">
+    <a href="#%e4%b8%89%e5%8f%98%e9%87%8f%e6%a8%a1%e6%9d%bfvariable-templates" class="header-mark"></a>3 三、变量模板（Variable Templates）</h2><p>之前只有类模板、函数模板，C++14 新增变量模板：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 定义一个 pi 变量模板
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">constexpr</span> <span class="n">T</span> <span class="n">pi</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="mf">3.1415926535897932385</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 使用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">float</span>  <span class="n">r1</span> <span class="o">=</span> <span class="n">pi</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">double</span> <span class="n">r2</span> <span class="o">=</span> <span class="n">pi</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>最经典的应用：<code>std::is_same_v&lt;T, U&gt;</code> 就是 C++17 基于变量模板做的。</p>
+<hr>
+<h2 id="四聚合初始化增强" class="headerLink">
+    <a href="#%e5%9b%9b%e8%81%9a%e5%90%88%e5%88%9d%e5%a7%8b%e5%8c%96%e5%a2%9e%e5%bc%ba" class="header-mark"></a>4 四、聚合初始化增强</h2><p>C++14 允许聚合体中含有默认成员初始化器时，仍然可以用花括号初始化：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">Point</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Point</span> <span class="n">p1</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">};</span>  <span class="c1">// C++11 不允许，C++14 可以
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Point</span> <span class="n">p2</span><span class="p">{};</span>      <span class="c1">// x=0, y=0，用默认值
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="五decltypeauto" class="headerLink">
+    <a href="#%e4%ba%94decltypeauto" class="header-mark"></a>5 五、<code>decltype(auto)</code></h2><p>解决转发函数的返回值问题：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 用 auto 会丢失引用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">auto</span> <span class="nf">f1</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="k">decltype</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">expr</span><span class="p">;</span> <span class="p">}</span>  <span class="c1">// C++11 写法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// C++14 简化写法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">decltype</span><span class="p">(</span><span class="k">auto</span><span class="p">)</span> <span class="n">f2</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">expr</span><span class="p">;</span> <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>区别：</strong></p>
+<ul>
+<li><code>auto</code>：会去掉引用和顶层 const</li>
+<li><code>decltype(auto)</code>：完美保留表达式的原始类型</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span><span class="o">&amp;</span> <span class="n">ref</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">ref</span><span class="p">;</span>            <span class="c1">// int
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">decltype</span><span class="p">(</span><span class="k">auto</span><span class="p">)</span> <span class="n">b</span> <span class="o">=</span> <span class="n">ref</span><span class="p">;</span>  <span class="c1">// int&amp;
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="六标准库新增" class="headerLink">
+    <a href="#%e5%85%ad%e6%a0%87%e5%87%86%e5%ba%93%e6%96%b0%e5%a2%9e" class="header-mark"></a>6 六、标准库新增</h2><h3 id="61-stdmake_unique" class="headerLink">
+    <a href="#61-stdmake_unique" class="header-mark"></a>6.1 6.1 <code>std::make_unique</code></h3><p>C++11 有 <code>make_shared</code> 但漏掉了 <code>make_unique</code>，C++14 补上：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">p</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>  <span class="c1">// 推荐，比 new 安全
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="62-stdshared_timed_mutex" class="headerLink">
+    <a href="#62-stdshared_timed_mutex" class="header-mark"></a>6.2 6.2 <code>std::shared_timed_mutex</code></h3><p>读写锁的超时版本，C++17 又加了 <code>shared_mutex</code>。</p>
+<h3 id="63-整数序列-stdinteger_sequence" class="headerLink">
+    <a href="#63-%e6%95%b4%e6%95%b0%e5%ba%8f%e5%88%97-stdinteger_sequence" class="header-mark"></a>6.3 6.3 整数序列 <code>std::integer_sequence</code></h3><p>模板元编程工具，用于展开参数包：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">...</span> <span class="n">Is</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">integer_sequence</span> <span class="p">{</span> <span class="p">...</span> <span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>日常开发用得少，库作者用得多。</p>
+<h3 id="64-stdexchange" class="headerLink">
+    <a href="#64-stdexchange" class="header-mark"></a>6.4 6.4 <code>std::exchange</code></h3><p>赋值并返回旧值：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">old</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">exchange</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// old = {1,2,3}, v = {4,5,6}
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="七其他小特性" class="headerLink">
+    <a href="#%e4%b8%83%e5%85%b6%e4%bb%96%e5%b0%8f%e7%89%b9%e6%80%a7" class="header-mark"></a>7 七、其他小特性</h2><table>
+  <thead>
+      <tr>
+          <th>特性</th>
+          <th>说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>二进制字面量</td>
+          <td><code>0b1010</code> 表示十进制 10</td>
+      </tr>
+      <tr>
+          <td>数字分隔符</td>
+          <td><code>1'000'000</code> 可读性更好</td>
+      </tr>
+      <tr>
+          <td>lambda 初始化捕获</td>
+          <td>C++14 可以在捕获列表里初始化新变量</td>
+      </tr>
+  </tbody>
+</table>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 初始化捕获（init capture）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">y</span><span class="p">;</span> <span class="p">};</span>  <span class="c1">// y = 11
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="总结" class="headerLink">
+    <a href="#%e6%80%bb%e7%bb%93" class="header-mark"></a>8 总结</h2><p>C++14 是一个<strong>过渡版本</strong>，特性不多但都很实用：</p>
+<ul>
+<li><strong>函数返回值 auto</strong>：写起来更简洁</li>
+<li><strong>泛型 lambda</strong>：配合 auto 参数，写算法更方便</li>
+<li><strong>decltype(auto)</strong>：完美转发返回值</li>
+<li><strong>make_unique</strong>：终于补上了</li>
+<li><strong>变量模板</strong>：为后续标准库简化铺路</li>
+</ul>
+]]></description></item></channel></rss>

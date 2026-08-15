@@ -1,0 +1,81 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>多模态 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/</link><description>多模态 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Sat, 08 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/" rel="self" type="application/rss+xml"/><item><title>多模态模型原理：图像/视频/PDF 怎么被读</title><link>https://soybeanmilk.netlify.app/%E5%A4%9A%E6%A8%A1%E6%80%81%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86/</link><pubDate>Sat, 08 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/%E5%A4%9A%E6%A8%A1%E6%80%81%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86/</guid><description><![CDATA[<h2 id="简要回答" class="headerLink">
+    <a href="#%e7%ae%80%e8%a6%81%e5%9b%9e%e7%ad%94" class="header-mark"></a>1 简要回答</h2><p>文本模型只认识 token（词元）。多模态模型在语言模型外面加了一个<strong>视觉编码器（Vision Encoder）</strong>，把图像切块（patch）变成&quot;视觉 token&quot;，再投影到和文字 token 相同的向量空间，喂进同一个 Transformer。所以图像对它来说也是一串&quot;符号&quot;，只是这个符号来自像素而不是文字。</p>
+<h2 id="详细回答" class="headerLink">
+    <a href="#%e8%af%a6%e7%bb%86%e5%9b%9e%e7%ad%94" class="header-mark"></a>2 详细回答</h2><h3 id="文本模型怎么读文字基线" class="headerLink">
+    <a href="#%e6%96%87%e6%9c%ac%e6%a8%a1%e5%9e%8b%e6%80%8e%e4%b9%88%e8%af%bb%e6%96%87%e5%ad%97%e5%9f%ba%e7%ba%bf" class="header-mark"></a>2.1 文本模型怎么读文字（基线）</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&#34;你好&#34; → 分词器 → [token1, token2] → 嵌入表查表 → 向量 → Transformer
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>文字本来就有天然的分词方法（中文按字/词，英文按子词），每个 token 对应嵌入表里的一行向量。</p>
+<h3 id="多模态模型怎么读图像" class="headerLink">
+    <a href="#%e5%a4%9a%e6%a8%a1%e6%80%81%e6%a8%a1%e5%9e%8b%e6%80%8e%e4%b9%88%e8%af%bb%e5%9b%be%e5%83%8f" class="header-mark"></a>2.2 多模态模型怎么读图像</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">1024x1024 图片 → 视觉编码器(ViT/CLIP) → 切成 16x16 的 patch → 每个 patch 一个&#34;视觉 token&#34;
+</span></span><span class="line"><span class="cl">→ 线性投影层（Projection Layer）→ 和文字 token 同一向量空间 → 同一个 Transformer
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>关键点：</p>
+<ol>
+<li><strong>图像不是&quot;直接看懂&quot;，而是被转换成视觉 token 序列</strong>。一张 1024x1024 的图 ≈ 256~576 个视觉 token</li>
+<li><strong>视觉编码器和 LLM 是两个网络</strong>，中间靠一层投影矩阵对齐</li>
+<li>Transformer 对 token 一视同仁——不管是文字 token 还是视觉 token，都走 attention</li>
+</ol>
+<h3 id="和训练方式的区别多模态要分阶段训" class="headerLink">
+    <a href="#%e5%92%8c%e8%ae%ad%e7%bb%83%e6%96%b9%e5%bc%8f%e7%9a%84%e5%8c%ba%e5%88%ab%e5%a4%9a%e6%a8%a1%e6%80%81%e8%a6%81%e5%88%86%e9%98%b6%e6%ae%b5%e8%ae%ad" class="header-mark"></a>2.3 和训练方式的区别（多模态要分阶段训）</h3><table>
+  <thead>
+      <tr>
+          <th>阶段</th>
+          <th>内容</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1. 预训练</td>
+          <td>大规模&quot;图片-文字对&quot;（CLIP 对比学习，图片配描述），让视觉编码器学会图像特征</td>
+      </tr>
+      <tr>
+          <td>2. 对齐训练</td>
+          <td><strong>只训投影层</strong>，把视觉 token 的向量空间对齐到 LLM 的向量空间（LLM 冻住）</td>
+      </tr>
+      <tr>
+          <td>3. 联合预训练</td>
+          <td>图文交错数据一起训，LLM 学会理解视觉 token</td>
+      </tr>
+      <tr>
+          <td>4. SFT</td>
+          <td>多模态指令数据微调（看图回答问题、OCR、图表理解）</td>
+      </tr>
+  </tbody>
+</table>
+<p>所以多模态不是&quot;文本模型加了读图功能&quot;，而是<strong>从一开始就用图文数据训练</strong>，训练数据和计算量都大得多。</p>
+<h3 id="视频怎么读" class="headerLink">
+    <a href="#%e8%a7%86%e9%a2%91%e6%80%8e%e4%b9%88%e8%af%bb" class="header-mark"></a>2.4 视频怎么读</h3><p>视频 = 连续帧。处理方式：</p>
+<ol>
+<li>抽帧（通常 1~2 fps，即每秒抽 1-2 帧）</li>
+<li>每帧走视觉编码器变成视觉 token</li>
+<li>按时间顺序拼成超长 token 序列喂给模型</li>
+<li>部分模型（如 Gemini、Qwen2.5-VL）还有<strong>音频编码器</strong>，把声音轨也变成 token 一起处理</li>
+</ol>
+<p>这就是为什么视频贵：1 分钟视频 = 60 帧 × 每帧 256<del>1100 token ≈ 1.5万</del>6.6万 token。</p>
+<h3 id="pdf-怎么读" class="headerLink">
+    <a href="#pdf-%e6%80%8e%e4%b9%88%e8%af%bb" class="header-mark"></a>2.5 PDF 怎么读</h3><p>PDF 本身不算独立模态：</p>
+<ul>
+<li><strong>有文字层的 PDF</strong> → 直接抽文字（像文本一样）</li>
+<li><strong>扫描件/图文混排</strong> → 每页渲染成图像，走视觉编码器读</li>
+<li>大多数模型实际是&quot;按页转图再读&quot;</li>
+</ul>
+<h2 id="知识扩展" class="headerLink">
+    <a href="#%e7%9f%a5%e8%af%86%e6%89%a9%e5%b1%95" class="header-mark"></a>3 知识扩展</h2><ul>
+<li>判断一个模型是否多模态，看它有没有视觉编码器，而不是看名字</li>
+<li>同一模型的多模态版本（如 GPT-4o vs 纯文本 GPT-4）架构差别主要在编码器部分，LLM 主干基本共享</li>
+<li>DeepSeek V4 Flash 是文本模型，所以视频/图片对它 = 不可读；要用多模态功能得换支持视觉的模型</li>
+</ul>
+]]></description></item></channel></rss>

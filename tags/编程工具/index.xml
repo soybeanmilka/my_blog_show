@@ -1,0 +1,80 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>编程工具 - 标签 - 豆浆小屋</title><link>https://soybeanmilk.netlify.app/tags/%E7%BC%96%E7%A8%8B%E5%B7%A5%E5%85%B7/</link><description>编程工具 - 标签 - 豆浆小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</copyright><lastBuildDate>Thu, 06 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://soybeanmilk.netlify.app/tags/%E7%BC%96%E7%A8%8B%E5%B7%A5%E5%85%B7/" rel="self" type="application/rss+xml"/><item><title>Codex / Cloud Code 接 DeepSeek API：能接吗？效果差多少？</title><link>https://soybeanmilk.netlify.app/codex%E4%B8%8Ecloud-code%E6%8E%A5deepseek/</link><pubDate>Thu, 06 Aug 2026 00:00:00 +0000</pubDate><author><name>作者</name></author><guid>https://soybeanmilk.netlify.app/codex%E4%B8%8Ecloud-code%E6%8E%A5deepseek/</guid><description><![CDATA[<h2 id="简要回答" class="headerLink">
+    <a href="#%e7%ae%80%e8%a6%81%e5%9b%9e%e7%ad%94" class="header-mark"></a>1 简要回答</h2><ul>
+<li><strong>Codex</strong> 能接 DeepSeek，三行配置的事</li>
+<li><strong>Cloud Code</strong>（Google）基本不能接，绑定自家生态</li>
+<li>效果差别：外壳（工具本身）一样，<strong>上限由模型决定</strong>；GPT-5-Codex 为 coding agent 特调，DeepSeek 是通用模型，复杂任务差距明显、简单任务够用且便宜</li>
+</ul>
+<h2 id="我的想法--卡点" class="headerLink">
+    <a href="#%e6%88%91%e7%9a%84%e6%83%b3%e6%b3%95--%e5%8d%a1%e7%82%b9" class="header-mark"></a>2 我的想法 / 卡点</h2><p>之前一直以为这些工具只能用自己的模型，聊完才知道：</p>
+<ul>
+<li>Codex 2026 年 6 月官方宣布支持第三方模型，从&quot;OpenAI 专用客户端&quot;变成&quot;模型中立的编码代理平台&quot;</li>
+<li>我的困惑点是&quot;DeepSync 是什么&quot;——其实是语音识别把 DeepSeek 听错了</li>
+<li>&ldquo;Cloud Code 源码泄露导致 React/Reason 流行&quot;这个说法也记错了：<strong>泄露的是 Claude Code（Anthropic）</strong>，不是 Google 的 Cloud Code</li>
+</ul>
+<h2 id="详细回答" class="headerLink">
+    <a href="#%e8%af%a6%e7%bb%86%e5%9b%9e%e7%ad%94" class="header-mark"></a>3 详细回答</h2><h3 id="codex-接入-deepseek可行" class="headerLink">
+    <a href="#codex-%e6%8e%a5%e5%85%a5-deepseek%e5%8f%af%e8%a1%8c" class="header-mark"></a>3.1 Codex 接入 DeepSeek（可行）</h3><p><code>~/.codex/config.toml</code> 加 provider 定义：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-toml" data-lang="toml"><span class="line"><span class="cl"><span class="p">[</span><span class="nx">model_providers</span><span class="p">.</span><span class="nx">deepseek</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="nx">name</span> <span class="p">=</span> <span class="s2">&#34;DeepSeek&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">base_url</span> <span class="p">=</span> <span class="s2">&#34;https://api.deepseek.com/v1&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">env_key</span> <span class="p">=</span> <span class="s2">&#34;DEEPSEEK_API_KEY&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>命令行走 <code>codex --provider deepseek --model deepseek-coder</code> 切换。Kimi、GLM、Qwen、Ollama 同理。</p>
+<p><strong>坑</strong>：</p>
+<ul>
+<li>Codex 2026 年 2 月起默认走 Responses API，第三方接口大多只有 Chat Completions，需设 <code>wire_api = &quot;chat&quot;</code>，否则报流式/格式错误</li>
+<li>桌面端接 DeepSeek 需要两层本地代理（模型名映射 + Responses→Chat 转换），社区有现成方案</li>
+<li>provider ID 区分大小写，模型名前缀写错会被静默忽略走 fallback</li>
+</ul>
+<h3 id="cloud-code-接入-deepseek基本不可行" class="headerLink">
+    <a href="#cloud-code-%e6%8e%a5%e5%85%a5-deepseek%e5%9f%ba%e6%9c%ac%e4%b8%8d%e5%8f%af%e8%a1%8c" class="header-mark"></a>3.2 Cloud Code 接入 DeepSeek（基本不可行）</h3><ul>
+<li>Cloud Code（IDE 插件）绑定 Google 生态，不开放自定义模型</li>
+<li>Gemini CLI（已开源）原生只认 Gemini；需&quot;魔改版&quot;或 LiteLLM 代理才能接 DeepSeek</li>
+<li>且 Gemini CLI 免费版 <strong>2026-06-18 已停用</strong>，个人用户迁移到 Antigravity CLI</li>
+</ul>
+<h3 id="效果差别外壳一样上限由模型决定" class="headerLink">
+    <a href="#%e6%95%88%e6%9e%9c%e5%b7%ae%e5%88%ab%e5%a4%96%e5%a3%b3%e4%b8%80%e6%a0%b7%e4%b8%8a%e9%99%90%e7%94%b1%e6%a8%a1%e5%9e%8b%e5%86%b3%e5%ae%9a" class="header-mark"></a>3.3 效果差别：外壳一样，上限由模型决定</h3><table>
+  <thead>
+      <tr>
+          <th>场景</th>
+          <th>效果</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>简单任务、补全、小修改</td>
+          <td>DeepSeek 够用，价格低一个量级，性价比最高</td>
+      </tr>
+      <tr>
+          <td>复杂重构、多文件修改</td>
+          <td>GPT-5-Codex 工具调用准确率高，DeepSeek 出错率明显上升</td>
+      </tr>
+      <tr>
+          <td>多步 Agent 长任务</td>
+          <td>专用模型规划更稳，DeepSeek 容易跑偏</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>结论</strong>：日常小活用 DeepSeek 省钱，大活切回专用模型。Codex 支持多 provider 随时切，opencode 本身 75+ 模型随便换。</p>
+<h3 id="彩蛋源码泄露事件的真相" class="headerLink">
+    <a href="#%e5%bd%a9%e8%9b%8b%e6%ba%90%e7%a0%81%e6%b3%84%e9%9c%b2%e4%ba%8b%e4%bb%b6%e7%9a%84%e7%9c%9f%e7%9b%b8" class="header-mark"></a>3.4 彩蛋：源码泄露事件的真相</h3><ul>
+<li>2026-03-31，Anthropic 的 Claude Code 因 npm 包遗留 59MB source map（<code>cli.js.map</code>），51.2 万行 TypeScript 全曝光（第二次同原因泄露）</li>
+<li>大家因此看到：终端 UI 用 React+Ink、Bun 运行时、40+ 工具模块、权限分层</li>
+<li><strong>React（2013 年）/ ReAct（2022 年论文）不是泄露&quot;导致&quot;的</strong>，泄露只是让大家看到了顶级 Agent 的工程实现，引发讨论和借鉴</li>
+</ul>
+<h2 id="知识扩展" class="headerLink">
+    <a href="#%e7%9f%a5%e8%af%86%e6%89%a9%e5%b1%95" class="header-mark"></a>4 知识扩展</h2><ul>
+<li>DeepSeek API 完全兼容 OpenAI 协议，官方文档有 coding agents 接入指南</li>
+<li>Codex config.toml 三级配置：用户级（<code>~/.codex/config.toml</code>）→ 项目级（<code>.codex/config.toml</code>）→ 命令行参数，优先级递增</li>
+<li>环境变量方式（<code>OPENAI_BASE_URL</code>）只能配一个 provider，config.toml 支持多 provider 并存切换</li>
+</ul>
+]]></description></item></channel></rss>

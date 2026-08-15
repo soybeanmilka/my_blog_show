@@ -1,0 +1,273 @@
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>C++17 新特性 - 豆浆小屋</title><meta name=Description content="「最舒服的 C++ 版本」：结构化绑定、if 初始化、折叠表达式、constexpr if、CTAD、optional/variant/any、string_view、filesystem"><meta property="og:url" content="https://soybeanmilk.netlify.app/cpp17%E6%96%B0%E7%89%B9%E6%80%A7/">
+<meta property="og:site_name" content="豆浆小屋"><meta property="og:title" content="C++17 新特性"><meta property="og:description" content="「最舒服的 C++ 版本」：结构化绑定、if 初始化、折叠表达式、constexpr if、CTAD、optional/variant/any、string_view、filesystem"><meta property="og:locale" content="zh_CN"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2026-07-17T00:00:00+00:00"><meta property="article:modified_time" content="2026-07-17T00:00:00+00:00"><meta property="article:tag" content="C++"><meta property="article:tag" content="现代C++"><meta property="article:tag" content="C++17"><meta property="og:image" content="https://soybeanmilk.netlify.app/images/avatar.jpg"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://soybeanmilk.netlify.app/images/avatar.jpg"><meta name=twitter:title content="C++17 新特性"><meta name=twitter:description content="「最舒服的 C++ 版本」：结构化绑定、if 初始化、折叠表达式、constexpr if、CTAD、optional/variant/any、string_view、filesystem"><meta name=application-name content="豆浆小屋"><meta name=apple-mobile-web-app-title content="豆浆小屋"><meta name=theme-color content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel=icon href=/favicon.svg><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=canonical href=https://soybeanmilk.netlify.app/cpp17%E6%96%B0%E7%89%B9%E6%80%A7/><link rel=prev href=https://soybeanmilk.netlify.app/cpp20%E6%96%B0%E7%89%B9%E6%80%A7/><link rel=next href=https://soybeanmilk.netlify.app/cpp14%E6%96%B0%E7%89%B9%E6%80%A7/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/color.css><link rel=stylesheet href=/css/style.min.css><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/lib/fontawesome-free/all.min.css><noscript><link rel=stylesheet href=/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/lib/animate/animate.min.css><noscript><link rel=stylesheet href=/lib/animate/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"C++17 新特性","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/soybeanmilk.netlify.app\/cpp17%E6%96%B0%E7%89%B9%E6%80%A7\/"},"image":["https:\/\/soybeanmilk.netlify.app\/images\/avatar.jpg"],"genre":"posts","keywords":"C\u002b\u002b, 现代C\u002b\u002b, C\u002b\u002b17","wordcount":1592,"url":"https:\/\/soybeanmilk.netlify.app\/cpp17%E6%96%B0%E7%89%B9%E6%80%A7\/","datePublished":"2026-07-17T00:00:00+00:00","dateModified":"2026-07-17T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.","publisher":{"@type":"Organization","name":"作者"},"author":{"@type":"Person","name":"作者"},"description":"「最舒服的 C++ 版本」：结构化绑定、if 初始化、折叠表达式、constexpr if、CTAD、optional/variant/any、string_view、filesystem"}</script><script src=//instant.page/5.1.1 defer type=module integrity=sha384-MWfCL6g1OTGsbSwfuMHc8+8J2u71/LA8dzlIN3ycajckxuZZmF+DNjdm7O6H3PSq></script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>function setTheme(e){document.body.setAttribute("theme",e),document.documentElement.style.setProperty("color-scheme",e==="light"?"light":"dark"),window.theme=e}function saveTheme(e){window.localStorage&&localStorage.setItem("theme",e)}function getMeta(e){const t=document.getElementsByTagName("meta");for(let n=0;n<t.length;n++)if(t[n].getAttribute("name")===e)return t[n];return""}if(window.localStorage&&localStorage.getItem("theme")){let e=localStorage.getItem("theme");e==="light"||e==="dark"||e==="black"?setTheme(e):setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}else"auto"==="light"||"auto"==="dark"||"auto"==="black"?(setTheme("auto"),saveTheme("auto")):(saveTheme("auto"),setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));let metaColors={light:"#f8f8f8",dark:"#252627",black:"#000000"};getMeta("theme-color").content=metaColors[document.body.getAttribute("theme")]</script><div id=back-to-top></div><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title=豆浆小屋><span class=header-title-pre>🥛</span>豆浆小屋</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>所有文章 </a><a class=menu-item href=/tags/>标签 </a><a class=menu-item href=/categories/>分类 </a><a class=menu-item href=/about/>关于 </a><a class=menu-item href=/showcase/>作品 </a><a class=menu-item href=/links/>友链 </a><a class=menu-item href=/write/>写文章 </a><a class=menu-item href=https://github.com/soybeanmilka title=GitHub rel="noopener noreferrer" target=_blank><i class='fab fa-github fa-fw'></i> </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=# class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw"></i>
+</a><a href=# class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw"></i>
+</a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i>
+</span></span><a href=# class="menu-item theme-switch" title=切换主题><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title=豆浆小屋><span class=header-title-pre>🥛</span>豆浆小屋</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=# class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw"></i>
+</a><a href=# class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw"></i>
+</a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=# class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/posts/ title>所有文章</a><a class=menu-item href=/tags/ title>标签</a><a class=menu-item href=/categories/ title>分类</a><a class=menu-item href=/about/ title>关于</a><a class=menu-item href=/showcase/ title>作品</a><a class=menu-item href=/links/ title>友链</a><a class=menu-item href=/write/ title>写文章</a><a class=menu-item href=https://github.com/soybeanmilka title=GitHub rel="noopener noreferrer" target=_blank><i class='fab fa-github fa-fw'></i></a><a href=# class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto><nav id=TableOfContents><ul><li><a href=#一结构化绑定structured-bindings>一、结构化绑定（Structured Bindings）⭐</a></li><li><a href=#二if--switch-初始化语句>二、<code>if</code> / <code>switch</code> 初始化语句</a></li><li><a href=#三内联变量inline-variables>三、内联变量（Inline Variables）</a></li><li><a href=#四折叠表达式fold-expressions>四、折叠表达式（Fold Expressions）</a></li><li><a href=#五constexpr-增强>五、<code>constexpr</code> 增强</a><ul><li><a href=#51-constexpr-if>5.1 constexpr if</a></li><li><a href=#52-constexpr-lambda>5.2 constexpr lambda</a></li></ul></li><li><a href=#六类模板参数推导ctad>六、类模板参数推导（CTAD）</a></li><li><a href=#七标准库新增容器>七、标准库新增容器</a><ul><li><a href=#71-stdoptional>7.1 <code>std::optional</code></a></li><li><a href=#72-stdvariant>7.2 <code>std::variant</code></a></li><li><a href=#73-stdany>7.3 <code>std::any</code></a></li></ul></li><li><a href=#八stdstring_view>八、<code>std::string_view</code></a></li><li><a href=#九文件系统库-stdfilesystem>九、文件系统库 <code>std::filesystem</code></a></li><li><a href=#十其他实用特性>十、其他实用特性</a></li><li><a href=#总结>总结</a></li></ul></nav></div></div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC","true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">C++17 新特性</h1><div class=post-meta><div class=post-meta-line><span class=post-author><i class="author fas fa-user-circle fa-fw"></i><a href=/ title=Author rel=author class=author>作者</a>
+</span>&nbsp;<span class=post-category>收录于 </span>&nbsp;<span class=post-category>类别 <a href=/categories/c++/><i class="far fa-folder fa-fw"></i>C++</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2026-07-17>2026-07-17</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime=2026-07-17>2026-07-17</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1592 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#一结构化绑定structured-bindings>一、结构化绑定（Structured Bindings）⭐</a></li><li><a href=#二if--switch-初始化语句>二、<code>if</code> / <code>switch</code> 初始化语句</a></li><li><a href=#三内联变量inline-variables>三、内联变量（Inline Variables）</a></li><li><a href=#四折叠表达式fold-expressions>四、折叠表达式（Fold Expressions）</a></li><li><a href=#五constexpr-增强>五、<code>constexpr</code> 增强</a><ul><li><a href=#51-constexpr-if>5.1 constexpr if</a></li><li><a href=#52-constexpr-lambda>5.2 constexpr lambda</a></li></ul></li><li><a href=#六类模板参数推导ctad>六、类模板参数推导（CTAD）</a></li><li><a href=#七标准库新增容器>七、标准库新增容器</a><ul><li><a href=#71-stdoptional>7.1 <code>std::optional</code></a></li><li><a href=#72-stdvariant>7.2 <code>std::variant</code></a></li><li><a href=#73-stdany>7.3 <code>std::any</code></a></li></ul></li><li><a href=#八stdstring_view>八、<code>std::string_view</code></a></li><li><a href=#九文件系统库-stdfilesystem>九、文件系统库 <code>std::filesystem</code></a></li><li><a href=#十其他实用特性>十、其他实用特性</a></li><li><a href=#总结>总结</a></li></ul></nav></div></div><div class=content id=content><blockquote><p>C++17 是一个大版本，引入了很多实用特性，被称为「最舒服的 C++ 版本」。</p></blockquote><hr><h2 id=一结构化绑定structured-bindings class=headerLink><a href=#%e4%b8%80%e7%bb%93%e6%9e%84%e5%8c%96%e7%bb%91%e5%ae%9astructured-bindings class=header-mark></a>1 一、结构化绑定（Structured Bindings）⭐</h2><p>最常用的特性之一，一键解包 tuple/struct/数组：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=c1>// 解包 pair
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>std</span><span class=o>::</span><span class=n>pair</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span> <span class=n>getPerson</span><span class=p>()</span> <span class=p>{</span> <span class=k>return</span> <span class=p>{</span><span class=mi>25</span><span class=p>,</span> <span class=s>&#34;Tom&#34;</span><span class=p>};</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=k>auto</span> <span class=p>[</span><span class=n>age</span><span class=p>,</span> <span class=n>name</span><span class=p>]</span> <span class=o>=</span> <span class=n>getPerson</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 解包 tuple
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>auto</span> <span class=p>[</span><span class=n>a</span><span class=p>,</span> <span class=n>b</span><span class=p>,</span> <span class=n>c</span><span class=p>]</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>make_tuple</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mf>2.5</span><span class=p>,</span> <span class=s>&#34;hello&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 解包 struct
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>struct</span> <span class=nc>Point</span> <span class=p>{</span> <span class=kt>int</span> <span class=n>x</span><span class=p>;</span> <span class=kt>int</span> <span class=n>y</span><span class=p>;</span> <span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=n>Point</span> <span class=n>p</span><span class=p>{</span><span class=mi>10</span><span class=p>,</span> <span class=mi>20</span><span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=k>auto</span> <span class=p>[</span><span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>]</span> <span class=o>=</span> <span class=n>p</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 解包数组
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>int</span> <span class=n>arr</span><span class=p>[]</span> <span class=o>=</span> <span class=p>{</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=k>auto</span> <span class=p>[</span><span class=n>a</span><span class=p>,</span> <span class=n>b</span><span class=p>,</span> <span class=n>c</span><span class=p>]</span> <span class=o>=</span> <span class=n>arr</span><span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div><p><strong>结合 map 遍历超好用：</strong></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span> <span class=n>m</span> <span class=o>=</span> <span class=p>{{</span><span class=mi>1</span><span class=p>,</span> <span class=s>&#34;a&#34;</span><span class=p>},</span> <span class=p>{</span><span class=mi>2</span><span class=p>,</span> <span class=s>&#34;b&#34;</span><span class=p>}};</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=p>(</span><span class=k>const</span> <span class=k>auto</span><span class=o>&amp;</span> <span class=p>[</span><span class=n>key</span><span class=p>,</span> <span class=n>value</span><span class=p>]</span> <span class=o>:</span> <span class=n>m</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>key</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;: &#34;</span> <span class=o>&lt;&lt;</span> <span class=n>value</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p><strong>实战（Q347 前 K 个高频元素）：</strong></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=c1>// 传统写法：p.first / p.second 访问键值对
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>for</span> <span class=p>(</span><span class=k>auto</span><span class=o>&amp;</span> <span class=nl>p</span> <span class=p>:</span> <span class=n>u_map</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>vec</span><span class=p>.</span><span class=n>push_back</span><span class=p>({</span><span class=n>p</span><span class=p>.</span><span class=n>second</span><span class=p>,</span> <span class=n>p</span><span class=p>.</span><span class=n>first</span><span class=p>});</span>   <span class=c1>// p.first 是数字，p.second 是次数
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 结构化绑定写法：一行解包，见名知意
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>for</span> <span class=p>(</span><span class=k>auto</span><span class=o>&amp;</span> <span class=p>[</span><span class=n>num</span><span class=p>,</span> <span class=n>cnt</span><span class=p>]</span> <span class=o>:</span> <span class=n>u_map</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>vec</span><span class=p>.</span><span class=n>push_back</span><span class=p>({</span><span class=n>cnt</span><span class=p>,</span> <span class=n>num</span><span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>注意：LeetCode 默认 C++17，可以直接用 <code>auto [num, cnt]</code>；本地老编译器（C++14 及以下）不支持。</p><hr><h2 id=二if--switch-初始化语句 class=headerLink><a href=#%e4%ba%8cif--switch-%e5%88%9d%e5%a7%8b%e5%8c%96%e8%af%ad%e5%8f%a5 class=header-mark></a>2 二、<code>if</code> / <code>switch</code> 初始化语句</h2><p>在 if 条件里定义变量，缩小作用域：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=c1>// C++17 写法
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>if</span> <span class=p>(</span><span class=k>auto</span> <span class=n>it</span> <span class=o>=</span> <span class=n>m</span><span class=p>.</span><span class=n>find</span><span class=p>(</span><span class=n>key</span><span class=p>);</span> <span class=n>it</span> <span class=o>!=</span> <span class=n>m</span><span class=p>.</span><span class=n>end</span><span class=p>())</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 使用 it
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// it 在这里已经不可见了
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=c1>// switch 同理
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>switch</span> <span class=p>(</span><span class=kt>int</span> <span class=n>val</span> <span class=o>=</span> <span class=n>getValue</span><span class=p>();</span> <span class=n>val</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>case</span> <span class=mi>1</span><span class=o>:</span> <span class=p>...</span>
+</span></span><span class=line><span class=cl>    <span class=k>case</span> <span class=mi>2</span><span class=o>:</span> <span class=p>...</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=三内联变量inline-variables class=headerLink><a href=#%e4%b8%89%e5%86%85%e8%81%94%e5%8f%98%e9%87%8finline-variables class=header-mark></a>3 三、内联变量（Inline Variables）</h2><p>解决了「全局变量在头文件里定义导致多重定义」的老问题：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=c1>// 头文件中，C++17 之前会报重复定义
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>inline</span> <span class=k>constexpr</span> <span class=kt>int</span> <span class=n>MAX_SIZE</span> <span class=o>=</span> <span class=mi>1024</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 静态成员变量也可以直接在类内初始化
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>class</span> <span class=nc>MyClass</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kr>inline</span> <span class=k>static</span> <span class=kt>int</span> <span class=n>count</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>  <span class=c1>// C++17 不需要在 .cpp 里再定义一次
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=四折叠表达式fold-expressions class=headerLink><a href=#%e5%9b%9b%e6%8a%98%e5%8f%a0%e8%a1%a8%e8%be%be%e5%bc%8ffold-expressions class=header-mark></a>4 四、折叠表达式（Fold Expressions）</h2><p>简化可变参数模板的展开：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=c1>// 对所有参数求和
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>template</span><span class=o>&lt;</span><span class=k>typename</span><span class=p>...</span> <span class=n>Args</span><span class=o>&gt;</span>
+</span></span><span class=line><span class=cl><span class=k>auto</span> <span class=n>sum</span><span class=p>(</span><span class=n>Args</span><span class=p>...</span> <span class=n>args</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>(...</span> <span class=o>+</span> <span class=n>args</span><span class=p>);</span>  <span class=c1>// 一元右折叠：((a1 + a2) + a3) + ...
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>sum</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>4</span><span class=p>);</span>  <span class=c1>// = 10
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=c1>// 带初始值的折叠
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>template</span><span class=o>&lt;</span><span class=k>typename</span><span class=p>...</span> <span class=n>Args</span><span class=o>&gt;</span>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=n>printAll</span><span class=p>(</span><span class=n>Args</span><span class=p>...</span> <span class=n>args</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=p>...</span> <span class=o>&lt;&lt;</span> <span class=n>args</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>四种折叠形式：</p><ul><li><code>(... op args)</code> 一元右折叠</li><li><code>(args op ...)</code> 一元左折叠</li><li><code>(init op ... op args)</code> 二元右折叠</li><li><code>(args op ... op init)</code> 二元左折叠</li></ul><hr><h2 id=五constexpr-增强 class=headerLink><a href=#%e4%ba%94constexpr-%e5%a2%9e%e5%bc%ba class=header-mark></a>5 五、<code>constexpr</code> 增强</h2><p>C++17 中 constexpr 可以用的地方更多了：</p><h3 id=51-constexpr-if class=headerLink><a href=#51-constexpr-if class=header-mark></a>5.1 5.1 constexpr if</h3><p>编译期条件判断，替代部分 SFINAE 写法：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=k>template</span><span class=o>&lt;</span><span class=k>typename</span> <span class=n>T</span><span class=o>&gt;</span>
+</span></span><span class=line><span class=cl><span class=k>auto</span> <span class=n>getValue</span><span class=p>(</span><span class=n>T</span> <span class=n>x</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=nf>constexpr</span> <span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>is_integral_v</span><span class=o>&lt;</span><span class=n>T</span><span class=o>&gt;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>x</span> <span class=o>+</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>x</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=52-constexpr-lambda class=headerLink><a href=#52-constexpr-lambda class=header-mark></a>5.2 5.2 constexpr lambda</h3><p>lambda 可以在编译期执行：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=k>constexpr</span> <span class=k>auto</span> <span class=n>square</span> <span class=o>=</span> <span class=p>[](</span><span class=kt>int</span> <span class=n>n</span><span class=p>)</span> <span class=p>{</span> <span class=k>return</span> <span class=n>n</span> <span class=o>*</span> <span class=n>n</span><span class=p>;</span> <span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=k>static_assert</span><span class=p>(</span><span class=n>square</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span> <span class=o>==</span> <span class=mi>25</span><span class=p>);</span>  <span class=c1>// 编译期计算
+</span></span></span></code></pre></td></tr></table></div></div><hr><h2 id=六类模板参数推导ctad class=headerLink><a href=#%e5%85%ad%e7%b1%bb%e6%a8%a1%e6%9d%bf%e5%8f%82%e6%95%b0%e6%8e%a8%e5%af%bcctad class=header-mark></a>6 六、类模板参数推导（CTAD）</h2><p>构造模板类时不用写模板参数，编译器自动推导：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=c1>// C++11/14：必须写参数
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>std</span><span class=o>::</span><span class=n>pair</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>double</span><span class=o>&gt;</span> <span class=n>p1</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mf>2.5</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span> <span class=n>v1</span><span class=p>{</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// C++17：自动推导
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>std</span><span class=o>::</span><span class=n>pair</span> <span class=n>p2</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mf>2.5</span><span class=p>);</span>     <span class=c1>// pair&lt;int, double&gt;
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>std</span><span class=o>::</span><span class=n>vector</span> <span class=n>v2</span><span class=p>{</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>};</span>  <span class=c1>// vector&lt;int&gt;
+</span></span></span></code></pre></td></tr></table></div></div><hr><h2 id=七标准库新增容器 class=headerLink><a href=#%e4%b8%83%e6%a0%87%e5%87%86%e5%ba%93%e6%96%b0%e5%a2%9e%e5%ae%b9%e5%99%a8 class=header-mark></a>7 七、标准库新增容器</h2><h3 id=71-stdoptional class=headerLink><a href=#71-stdoptional class=header-mark></a>7.1 7.1 <code>std::optional</code></h3><p>表示「可能有值，可能为空」，替代指针判空：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=n>std</span><span class=o>::</span><span class=n>optional</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span> <span class=n>findNum</span><span class=p>(</span><span class=kt>int</span> <span class=n>x</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>x</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>)</span> <span class=k>return</span> <span class=n>x</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>std</span><span class=o>::</span><span class=n>nullopt</span><span class=p>;</span>  <span class=c1>// 空
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>auto</span> <span class=n>res</span> <span class=o>=</span> <span class=n>findNum</span><span class=p>(</span><span class=mi>5</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=p>(</span><span class=n>res</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=o>*</span><span class=n>res</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 有值返回，没值返回默认
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>int</span> <span class=n>val</span> <span class=o>=</span> <span class=n>findNum</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>).</span><span class=n>value_or</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=72-stdvariant class=headerLink><a href=#72-stdvariant class=header-mark></a>7.2 7.2 <code>std::variant</code></h3><p>类型安全的 union，访问时用 <code>std::visit</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=n>std</span><span class=o>::</span><span class=n>variant</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span> <span class=kt>double</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span> <span class=n>v</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=n>v</span> <span class=o>=</span> <span class=mi>42</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=n>v</span> <span class=o>=</span> <span class=mf>3.14</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=n>v</span> <span class=o>=</span> <span class=s>&#34;hello&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>std</span><span class=o>::</span><span class=n>visit</span><span class=p>([](</span><span class=k>auto</span><span class=o>&amp;&amp;</span> <span class=n>arg</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>arg</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>},</span> <span class=n>v</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=73-stdany class=headerLink><a href=#73-stdany class=header-mark></a>7.3 7.3 <code>std::any</code></h3><p>可以存任意类型的容器，类似 <code>void*</code> 但类型安全：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=n>std</span><span class=o>::</span><span class=n>any</span> <span class=n>a</span> <span class=o>=</span> <span class=mi>42</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=n>a</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=s>&#34;hello&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=p>(</span><span class=n>a</span><span class=p>.</span><span class=n>type</span><span class=p>()</span> <span class=o>==</span> <span class=k>typeid</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>))</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>any_cast</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=p>(</span><span class=n>a</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=八stdstring_view class=headerLink><a href=#%e5%85%abstdstring_view class=header-mark></a>8 八、<code>std::string_view</code></h2><p>字符串的「视图」，不持有数据，零拷贝：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=kt>void</span> <span class=nf>print</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string_view</span> <span class=n>sv</span><span class=p>)</span> <span class=p>{</span>  <span class=c1>// 传 const char* 或 std::string 都不用拷贝
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>sv</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>print</span><span class=p>(</span><span class=s>&#34;hello&#34;</span><span class=p>);</span>           <span class=c1>// OK
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>print</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=s>&#34;hi&#34;</span><span class=p>));</span> <span class=c1>// OK
+</span></span></span></code></pre></td></tr></table></div></div><p><strong>注意：</strong> string_view 不拥有数据，源字符串销毁后就悬空了。</p><hr><h2 id=九文件系统库-stdfilesystem class=headerLink><a href=#%e4%b9%9d%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f%e5%ba%93-stdfilesystem class=header-mark></a>9 九、文件系统库 <code>std::filesystem</code></h2><p>终于有了标准的文件操作库：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;filesystem&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=k>namespace</span> <span class=n>fs</span> <span class=o>=</span> <span class=n>std</span><span class=o>::</span><span class=n>filesystem</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 创建目录
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>fs</span><span class=o>::</span><span class=n>create_directory</span><span class=p>(</span><span class=s>&#34;test&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 遍历目录
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>for</span> <span class=p>(</span><span class=k>auto</span><span class=o>&amp;</span> <span class=nl>entry</span> <span class=p>:</span> <span class=n>fs</span><span class=o>::</span><span class=n>directory_iterator</span><span class=p>(</span><span class=s>&#34;.&#34;</span><span class=p>))</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>std</span><span class=o>::</span><span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>entry</span><span class=p>.</span><span class=n>path</span><span class=p>()</span> <span class=o>&lt;&lt;</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 文件大小、路径操作
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>auto</span> <span class=n>size</span> <span class=o>=</span> <span class=n>fs</span><span class=o>::</span><span class=n>file_size</span><span class=p>(</span><span class=s>&#34;test.txt&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=k>auto</span> <span class=n>ext</span> <span class=o>=</span> <span class=n>fs</span><span class=o>::</span><span class=n>path</span><span class=p>(</span><span class=s>&#34;test.txt&#34;</span><span class=p>).</span><span class=n>extension</span><span class=p>();</span>
+</span></span></code></pre></td></tr></table></div></div><hr><h2 id=十其他实用特性 class=headerLink><a href=#%e5%8d%81%e5%85%b6%e4%bb%96%e5%ae%9e%e7%94%a8%e7%89%b9%e6%80%a7 class=header-mark></a>10 十、其他实用特性</h2><table><thead><tr><th>特性</th><th>说明</th></tr></thead><tbody><tr><td><code>[[nodiscard]]</code></td><td>标记返回值不能忽略，编译器会警告</td></tr><tr><td><code>[[maybe_unused]]</code></td><td>标记可能不用的变量，消除警告</td></tr><tr><td><code>[[fallthrough]]</code></td><td>switch 中显式标注故意 fall-through</td></tr><tr><td>十六进制浮点字面量</td><td><code>0x1.2p3</code></td></tr><tr><td><code>std::as_const</code></td><td>把左值转成 const 引用</td></tr><tr><td><code>std::clamp</code></td><td>把值限制在区间内 <code>clamp(val, min, max)</code></td></tr></tbody></table><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=c1>// [[nodiscard]] 示例
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=na>[[nodiscard]]</span> <span class=kt>int</span> <span class=n>compute</span><span class=p>()</span> <span class=p>{</span> <span class=k>return</span> <span class=mi>42</span><span class=p>;</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=n>compute</span><span class=p>();</span>  <span class=c1>// 警告：返回值被忽略
+</span></span></span></code></pre></td></tr></table></div></div><hr><h2 id=总结 class=headerLink><a href=#%e6%80%bb%e7%bb%93 class=header-mark></a>11 总结</h2><p>C++17 是<strong>日常开发提升幸福感最多的版本</strong>：</p><ul><li>结构化绑定 + if-init：代码更简洁</li><li>optional/variant/any：类型安全三件套</li><li>string_view：字符串处理性能提升</li><li>filesystem：终于不用自己写文件操作了</li><li>constexpr if：模板元编程变得可读</li></ul></div><h2>相关内容</h2><div class=related-container><div class=related-item-container><h2 class=related-title><a href=/%E6%95%B0%E7%BB%84%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/>数组理论基础</a></h2></div><div class=related-item-container><h2 class=related-title><a href=/c%E8%AF%AD%E8%A8%80%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8E%E5%86%85%E5%AD%98%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0/>C 字符串与内存操作函数速查</a></h2></div><div class=related-item-container><h2 class=related-title><a href=/cpp-vector%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/>C++ vector 深度解析</a></h2></div><div class=related-item-container><h2 class=related-title><a href=/cpp14%E6%96%B0%E7%89%B9%E6%80%A7/>C++14 新特性</a></h2></div><div class=related-item-container><h2 class=related-title><a href=/cpp20%E6%96%B0%E7%89%B9%E6%80%A7/>C++20 新特性</a></h2></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2026-07-17</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-source href=https://github.com/soybeanmilka/my_blog_source/blob/main/content/posts/cpp17新特性/index.md target=_blank rel="noopener noreferrer">查看源代码</a>
+</span><span>|&nbsp;<a class=link-to-edit href=https://github.com/soybeanmilka/my_blog_source/edit/main/content/posts/cpp17新特性/index.md target=_blank rel="noopener noreferrer">编辑此页</a>
+</span><span>|&nbsp;<a class=link-to-report href="https://github.com/soybeanmilka/my_blog_source/issues/new?title=[bug]%20C%2B%2B17+%E6%96%B0%E7%89%B9%E6%80%A7" target=_blank rel="noopener noreferrer">报告问题</a></span></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/c++/>C++</a>,&nbsp;<a href=/tags/%E7%8E%B0%E4%BB%A3c++/>现代C++</a>,&nbsp;<a href=/tags/c++17/>C++17</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/cpp20%E6%96%B0%E7%89%B9%E6%80%A7/ class=prev rel=prev title="C++20 新特性"><i class="fas fa-angle-left fa-fw"></i>C++20 新特性</a>
+<a href=/cpp14%E6%96%B0%E7%89%B9%E6%80%A7/ class=next rel=next title="C++14 新特性">C++14 新特性<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><meting-js server=netease type=playlist id=5051984626 api="https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r" theme=#f78fb3 fixed=true mini=true order=random mutex=true list-folded=true list-max-height=240px></meting-js></div><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreferrer" title="Hugo 0.143.1">Hugo</a> 强力驱动&nbsp;|&nbsp;托管在 <a title=Netlify href=https://www.netlify.com/ target=_blank rel="noopener noreferrer">Netlify</a> 上&nbsp;|&nbsp;主题 - <a href=https://github.com/HEIGE-PCloud/DoIt target=_blank rel="noopener noreferrer" title="DoIt 0.3.0"><i class="far fa-edit fa-fw"></i> DoIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2026</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank rel="noopener noreferrer"></a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc-sa/4.0/ target=_blank>CC BY-NC-SA 4.0</a></span></div><div class=footer-line><script async src=https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js></script><span class=busuanzi-item id=busuanzi_container_site_pv style=display:inline><i class="far fa-eye fa-fw"></i>
+<span class=busuanzi-label>总访问量</span>
+<span id=busuanzi_value_site_pv></span>
+</span><span class=busuanzi-item id=busuanzi_container_site_uv style=display:inline><i class="far fa-user fa-fw"></i>
+<span class=busuanzi-label>访客数</span>
+<span id=busuanzi_value_site_uv></span></span></div><div class=footer-line></div></div></footer></div><div id=fixed-buttons><a href=#back-to-top id=back-to-top-button class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><div class=assets><link rel=stylesheet href=/lib/katex/katex.min.css><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/lib/katex/copy-tex.min.css><noscript><link rel=stylesheet href=/lib/katex/copy-tex.min.css></noscript><link rel=stylesheet href="https://fonts.googleapis.cn/css2?family=Averia+Gruesa+Libre&amp;display=swap"><link rel=stylesheet href=/css/custom.css><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/lib/aplayer/APlayer.min.css><noscript><link rel=stylesheet href=/lib/aplayer/APlayer.min.css></noscript><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{distance:null,findAllMatches:null,fuseIndexURL:"/index.json",highlightTag:"em",ignoreFieldNorm:null,ignoreLocation:null,isCaseSensitive:null,location:null,maxResultLength:10,minMatchCharLength:null,noResultsFound:"没有找到结果",snippetLength:50,threshold:null,type:"fuse",useExtendedSearch:null},table:{sort:!0}}</script><script type=text/javascript src=/lib/tablesort/tablesort.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/katex/katex.min.js defer></script><script type=text/javascript src=/lib/katex/auto-render.min.js defer></script><script type=text/javascript src=/lib/katex/copy-tex.min.js defer></script><script type=text/javascript src=/lib/katex/mhchem.min.js defer></script><script type=text/javascript src=/js/katex.min.js defer></script><script type=text/javascript src=/lib/aplayer/APlayer.min.js defer></script><script type=text/javascript src=/lib/meting/Meting.min.js defer></script><script type=text/javascript src=/js/custom.js defer></script><script type=text/javascript src=/js/theme.min.js defer></script></div></body></html>
