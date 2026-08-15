@@ -278,3 +278,135 @@ body[theme="black"] .aplayer .aplayer-list ol li:hover { background: rgba(255, 2
   .summary .summary-cover { height: 84px; }
   .summary .cover-emoji { font-size: 2.3rem; }
 }
+
+/* ================================================================
+   豆浆小屋 v2 · lvyovo-wiki 风格融合
+   青绿主色 #35bfab · 毛玻璃卡片 · Averia 标题字体 · 奶昔光标
+   ================================================================ */
+
+/* ---------- 自定义光标（奶昔杯 🥛） ---------- */
+body {
+  cursor: url("/images/cursor.svg") 8 9, auto;
+}
+a, button, .single.summary, .home-profile a, .post-tag, .page-link,
+summary, [role="button"], input[type="submit"], select {
+  cursor: url("/images/cursor-pointer.svg") 8 9, pointer;
+}
+
+/* ---------- 页面背景（浅灰，衬托毛玻璃） ---------- */
+body {
+  background: linear-gradient(165deg, #f3f6f4 0%, #eceff1 55%, #f2f6f8 100%);
+  background-attachment: fixed;
+}
+body[theme="dark"],
+body[theme="black"] { background: #23282b; }
+
+/* ---------- 背景光斑动画层 ---------- */
+#glow-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+body[theme="dark"] #glow-bg,
+body[theme="black"] #glow-bg { opacity: 0.55; }
+.main {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- 标题字体 Averia Gruesa Libre（拉丁字符生效） ---------- */
+h1, h2, h3, h4, h5, h6,
+.single-title, .home-title, .archive-item-link, .post-title {
+  font-family: "Averia Gruesa Libre", var(--global-font-family, ui-sans-serif, system-ui, sans-serif);
+  letter-spacing: 0.01em;
+}
+
+/* ---------- 毛玻璃卡片（覆盖 v1 实色背景） ---------- */
+.single.summary,
+.home-profile,
+.page.home.posts > div.single {
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.58);
+  backdrop-filter: blur(14px) saturate(1.25);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+}
+body[theme="dark"] .single.summary,
+body[theme="black"] .single.summary,
+body[theme="dark"] .home-profile,
+body[theme="black"] .home-profile,
+body[theme="dark"] .page.home.posts > div.single,
+body[theme="black"] .page.home.posts > div.single {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(34, 40, 44, 0.55);
+}
+.single.summary:hover {
+  border-color: rgba(53, 191, 171, 0.55);
+  box-shadow: 0 14px 30px rgba(53, 191, 171, 0.22), 0 4px 14px rgba(247, 143, 179, 0.18);
+}
+.home-profile:hover {
+  border-color: rgba(53, 191, 171, 0.4);
+  box-shadow: 0 8px 24px rgba(53, 191, 171, 0.15);
+}
+
+/* ---------- 青绿强调色点缀（保留粉彩基调） ---------- */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ffc3d6, #5fd8c9);
+}
+body[theme="dark"] ::-webkit-scrollbar-thumb,
+body[theme="black"] ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7a4a5c, #2f8578);
+}
+.summary .post-footer a.read-more {
+  background: linear-gradient(120deg, #f78fb3, #35bfab);
+  box-shadow: 0 3px 8px rgba(53, 191, 171, 0.35);
+}
+.summary .post-footer a.read-more:hover {
+  box-shadow: 0 5px 16px rgba(53, 191, 171, 0.55);
+}
+.page.home .pagination .active .page-link {
+  background: linear-gradient(120deg, #f78fb3, #35bfab);
+}
+.summary .post-tag:hover {
+  background: rgba(53, 191, 171, 0.28);
+  border-color: rgba(53, 191, 171, 0.5);
+}
+.summary .single-title a:hover {
+  color: #189a88;
+}
+.single.summary .cover-emoji {
+  filter: drop-shadow(0 3px 6px rgba(53, 191, 171, 0.22));
+}
+
+/* ---------- 卡片封面新增青绿渐变（配合 summary.html mod 8） ---------- */
+.card-g6 { background: linear-gradient(135deg, #c8f0e4, #a5e8dd); }
+.card-g7 { background: linear-gradient(135deg, #d5e9ff, #bfeee9); }
+
+/* ---------- 不蒜子访客统计 ---------- */
+.busuanzi-item {
+  color: #7a8a99;
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+.busuanzi-item:first-child {
+  margin-right: 1.2em;
+}
+.busuanzi-item .busuanzi-label {
+  margin-right: 0.2em;
+}
+.busuanzi-item i {
+  color: #35bfab;
+}
+.busuanzi-item span[id^="busuanzi_value_"] {
+  font-weight: 600;
+  background: linear-gradient(120deg, #f78fb3, #35bfab);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+body[theme="dark"] .busuanzi-item,
+body[theme="black"] .busuanzi-item {
+  color: #9aa7b4;
+}
