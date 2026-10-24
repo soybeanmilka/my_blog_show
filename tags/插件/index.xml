@@ -51,8 +51,8 @@
 </div><p>加载：<code>plugin: [&quot;npm包名&quot;, &quot;./本地.ts&quot;]</code>，或放 <code>.opencode/plugin/</code> 自动发现。宿主启动时调用导出函数拿到 hooks，之后事件发生时调用对应 hook。</p>
 <h3 id="5-对照obsidian-插件" class="headerLink">
     <a href="#5-%e5%af%b9%e7%85%a7obsidian-%e6%8f%92%e4%bb%b6" class="header-mark"></a>2.5 5. 对照：Obsidian 插件</h3><p><code>manifest.json</code> 声明 → Obsidian 扫描插件目录 → 实例化 <code>class extends Plugin</code> 并调用 <code>onLoad()</code> → 在 onLoad 里注册 ribbon 图标、状态栏、命令。和 <code>export default function</code> 是同一件事的两种写法：<strong>宿主调用插件注册的回调</strong>。</p>
-<h2 id="知识扩展" class="headerLink">
-    <a href="#%e7%9f%a5%e8%af%86%e6%89%a9%e5%b1%95" class="header-mark"></a>3 知识扩展</h2><ul>
+<h2 id="补充需要时再看" class="headerLink">
+    <a href="#%e8%a1%a5%e5%85%85%e9%9c%80%e8%a6%81%e6%97%b6%e5%86%8d%e7%9c%8b" class="header-mark"></a>3 补充：需要时再看</h2><ul>
 <li>事件总线：宿主发布事件，插件订阅（<code>event</code> hook 就是这个）</li>
 <li>生命周期：发现插件 → 加载模块 → 拿 hooks → 绑定事件 → 卸载时清理</li>
 <li>宿主不直接引用插件类型，通过约定的接口/函数签名解耦——插件和插件之间互不感知</li>

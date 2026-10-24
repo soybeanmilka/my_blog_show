@@ -71,8 +71,8 @@
 <li>大家因此看到：终端 UI 用 React+Ink、Bun 运行时、40+ 工具模块、权限分层</li>
 <li><strong>React（2013 年）/ ReAct（2022 年论文）不是泄露&quot;导致&quot;的</strong>，泄露只是让大家看到了顶级 Agent 的工程实现，引发讨论和借鉴</li>
 </ul>
-<h2 id="知识扩展" class="headerLink">
-    <a href="#%e7%9f%a5%e8%af%86%e6%89%a9%e5%b1%95" class="header-mark"></a>4 知识扩展</h2><ul>
+<h2 id="补充需要时再看" class="headerLink">
+    <a href="#%e8%a1%a5%e5%85%85%e9%9c%80%e8%a6%81%e6%97%b6%e5%86%8d%e7%9c%8b" class="header-mark"></a>4 补充：需要时再看</h2><ul>
 <li>DeepSeek API 完全兼容 OpenAI 协议，官方文档有 coding agents 接入指南</li>
 <li>Codex config.toml 三级配置：用户级（<code>~/.codex/config.toml</code>）→ 项目级（<code>.codex/config.toml</code>）→ 命令行参数，优先级递增</li>
 <li>环境变量方式（<code>OPENAI_BASE_URL</code>）只能配一个 provider，config.toml 支持多 provider 并存切换</li>

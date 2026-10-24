@@ -950,3 +950,745 @@ body[theme="dark"] .friend-bio,
 body[theme="black"] .friend-bio {
   color: #9aa7b4;
 }
+
+/* ================================================================
+   豆浆小屋 · 新主页 v2（huxx 粗野贴纸风：3px 描边 + 硬投影 + 平涂色）
+   数据/配色在 data/home.toml；模板 layouts/index.html
+   ================================================================ */
+.dj-home {
+  --t-light: #CFE1EF;
+  --t-dark: #0058C0;
+  max-width: 880px;
+  margin: 0 auto;
+  padding-top: 18px;
+}
+.dj-home[data-dj-theme="green"]  { --t-light:#BDF1CD; --t-dark:#16A062; }
+.dj-home[data-dj-theme="yellow"] { --t-light:#FEF8BB; --t-dark:#F6A200; }
+.dj-home[data-dj-theme="orange"] { --t-light:#FDCEA4; --t-dark:#F06E1C; }
+.dj-home[data-dj-theme="purple"] { --t-light:#E8D6F4; --t-dark:#7B1897; }
+.dj-home[data-dj-theme="red"]    { --t-light:#FFCABD; --t-dark:#D30000; }
+.dj-home[data-dj-theme="soy"]    { --t-light:#F6EBD8; --t-dark:#8A5A18; }
+
+/* 深色模式下：正文墨色换成主题色的亮化版（卡片仍是白底贴纸） */
+[theme='dark'] .dj-home, [data-theme='dark'] .dj-home {
+  --t-ink: color-mix(in srgb, var(--t-dark) 55%, #ffffff);
+}
+.dj-home { --t-ink: var(--t-dark); }
+
+/* 进场动画：--i 为序号，逐个浮起 */
+.dj-in {
+  animation: dj-fade-up 0.55s cubic-bezier(0.2, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+@keyframes dj-fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- 开场 ---------- */
+.dj-hero { text-align: center; padding: 26px 0 6px; }
+.dj-kaomoji {
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: var(--t-ink);
+  letter-spacing: 2px;
+}
+.dj-hero-title {
+  margin: 10px 0 6px;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--t-ink);
+  line-height: 1.3;
+}
+.dj-hero-sub { margin: 0; font-size: 1.02rem; opacity: 0.75; color: var(--t-ink); }
+
+/* ---------- 贴纸卡基元 ---------- */
+.dj-card {
+  background: #ffffff;
+  border: 3px solid var(--t-dark);
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 var(--t-dark);
+  color: var(--t-dark);
+  transition: transform 0.18s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.18s ease;
+}
+
+/* ---------- 身份卡 ---------- */
+.dj-idcard {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 26px;
+  padding: 24px 28px;
+}
+.dj-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 14px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 3px solid var(--t-dark);
+  box-shadow: 3px 3px 0 var(--t-dark);
+  transform: rotate(-2deg);
+  transition: transform 0.25s ease;
+}
+.dj-idcard:hover .dj-avatar { transform: rotate(2deg) scale(1.04); }
+.dj-idcard-text { min-width: 0; }
+.dj-idcard-title { margin: 0 0 4px; font-size: 1.3rem; font-weight: 800; }
+.dj-idcard-sub { margin: 0 0 12px; font-size: 0.92rem; opacity: 0.85; }
+
+/* 评级条（学 huxx：Lv + 细进度条 + +1/秒） */
+.dj-lv {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.dj-lv-num { font-weight: 800; font-size: 1.02rem; letter-spacing: 1px; white-space: nowrap; }
+.dj-lv-track {
+  position: relative;
+  width: 132px;
+  height: 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--t-dark) 18%, transparent);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.dj-lv-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 0%;
+  border-radius: 999px;
+  background: var(--t-dark);
+  transition: width 0.5s ease-out;
+}
+.dj-lv-rate {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-weight: 600;
+  font-size: 0.92rem;
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+/* 快捷圆钮 */
+.dj-quick { display: flex; gap: 12px; flex-wrap: wrap; }
+.dj-quick-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 42px;
+  padding: 0 10px;
+  border-radius: 10px;
+  background: var(--t-light);
+  border: 3px solid var(--t-dark);
+  box-shadow: 3px 3px 0 var(--t-dark);
+  color: var(--t-dark);
+  font-size: 1.05rem;
+  text-decoration: none !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.dj-quick-btn:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--t-dark);
+}
+
+/* ---------- 作品集 ---------- */
+.dj-section-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin: 34px 2px 16px;
+  color: var(--t-ink);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.dj-works {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+}
+.dj-work-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 22px;
+  text-decoration: none !important;
+}
+.dj-work-card:hover {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 var(--t-dark);
+}
+.dj-work-emoji {
+  font-size: 38px;
+  line-height: 1.1;
+  width: 66px;
+  height: 66px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--t-light);
+  border: 3px solid var(--t-dark);
+  box-shadow: 2px 2px 0 var(--t-dark);
+  flex-shrink: 0;
+  transition: transform 0.25s cubic-bezier(0.2, 1, 0.3, 1);
+}
+.dj-work-card:hover .dj-work-emoji { transform: rotate(-8deg) scale(1.08); }
+.dj-work-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.dj-work-title { font-weight: 800; font-size: 1.06rem; }
+.dj-ext { font-size: 0.66rem; opacity: 0.55; }
+.dj-work-desc { font-size: 0.84rem; opacity: 0.78; line-height: 1.55; }
+
+/* ---------- 关于我 ---------- */
+.dj-about-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+}
+.dj-about-card:hover {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 var(--t-dark);
+}
+.dj-about-desc { font-size: 0.92rem; line-height: 1.65; opacity: 0.9; }
+.dj-about-link {
+  font-weight: 800;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-bottom: 3px solid var(--t-light);
+}
+
+/* ---------- PJAX 切页过渡（丝滑的核心） ---------- */
+#pjax-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, #ff8fab, #ffd166);
+  z-index: 9999;
+  transition: width 0.25s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+body.pjax-loading #pjax-bar { opacity: 1; width: 82%; }
+body.pjax-loading main.main .container {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+body.pjax-in main.main .container {
+  animation: dj-page-in 0.42s cubic-bezier(0.2, 1, 0.3, 1);
+}
+@keyframes dj-page-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 680px) {
+  .dj-idcard { flex-direction: column; text-align: center; padding: 22px 16px; }
+  .dj-lv { justify-content: center; }
+  .dj-quick { justify-content: center; }
+  .dj-works { grid-template-columns: 1fr; }
+  .dj-hero-title { font-size: 1.5rem; }
+  .dj-kaomoji { font-size: 2rem; }
+  .dj-about-card { flex-direction: column; align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dj-in, body.pjax-in main.main .container { animation: none; }
+}
+
+/* ================================================================
+   主页 v3 修复与增强
+   ================================================================ */
+
+/* [修复] 主题给全站 a 和 a:hover 配了颜色（[theme=dark] a:hover 优先级
+   高于类选择器），悬停贴纸卡时整卡文字被染成白色。这里用更高优先级
+   把卡片内文字颜色锁回主题色。 */
+.dj-home .dj-card,
+.dj-home .dj-card:active,
+.dj-home .dj-card:hover {
+  color: var(--t-dark);
+}
+.dj-home .dj-card *,
+.dj-home .dj-card:active *,
+.dj-home .dj-card:hover * {
+  color: inherit;
+}
+.dj-home .dj-quick-btn,
+.dj-home .dj-quick-btn:active,
+.dj-home .dj-quick-btn:hover {
+  color: var(--t-dark);
+}
+.dj-home .dj-quick-btn:hover * {
+  color: inherit;
+}
+
+/* ---------- 滚动变脸：头像右下角的表情贴纸 ---------- */
+.dj-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.dj-face {
+  position: absolute;
+  right: -14px;
+  bottom: -10px;
+  font-size: 1.7rem;
+  line-height: 1;
+  filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.15));
+  pointer-events: none;
+  transition: transform 0.18s cubic-bezier(0.2, 1, 0.3, 1);
+}
+.dj-face.is-pop {
+  animation: dj-face-pop 0.32s cubic-bezier(0.2, 1, 0.3, 1);
+}
+@keyframes dj-face-pop {
+  0% { transform: scale(0.4) rotate(-18deg); }
+  70% { transform: scale(1.25) rotate(8deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+/* ---------- 滚动进场（作品卡/关于我卡进入视口才浮起） ---------- */
+[data-dj-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s cubic-bezier(0.2, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.2, 1, 0.3, 1);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+[data-dj-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-dj-reveal] { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- 牛奶海背景（滚动 = 往牛奶海里下潜） ---------- */
+#milk-sea {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  /* 300vh 高的渐变，随滚动下移，营造"越潜越深" */
+  background: linear-gradient(
+    180deg,
+    var(--sea-0) 0%,
+    var(--sea-1) 34%,
+    var(--sea-2) 62%,
+    var(--sea-3) 100%
+  );
+  background-size: 100% 300vh;
+  background-repeat: no-repeat;
+}
+:root {
+  --sea-0: #fffdf7;
+  --sea-1: #f7efdd;
+  --sea-2: #e8f0f7;
+  --sea-3: #d4e4f2;
+}
+[theme='dark'] #milk-sea, [data-theme='dark'] #milk-sea {
+  --sea-0: #1c2026;
+  --sea-1: #232a33;
+  --sea-2: #283442;
+  --sea-3: #2e3f52;
+}
+.dj-bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 255, 255, 0.35) 60%,
+    rgba(255, 255, 255, 0.12));
+  box-shadow: inset -2px -3px 6px rgba(160, 190, 220, 0.25);
+  will-change: transform;
+}
+[theme='dark'] .dj-bubble, [data-theme='dark'] .dj-bubble {
+  background: radial-gradient(circle at 32% 30%,
+    rgba(255, 244, 220, 0.5),
+    rgba(255, 244, 220, 0.16) 60%,
+    rgba(255, 244, 220, 0.05));
+}
+
+/* ================================================================
+   主页 v3.1 弹射进场 + 竖杠标题（用户批注版）
+   ================================================================ */
+
+/* 区块标题：不要 emoji，用彩色竖杠（作品/关于我颜色不同） */
+.dj-section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin: 34px 2px 16px;
+  color: var(--t-ink);
+}
+.dj-section-title::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 1.05em;
+  border-radius: 4px;
+  background: var(--t-dark);
+  box-shadow: 2px 2px 0 var(--t-light);
+}
+.dj-about-section .dj-section-title::before {
+  background: #ff8fab;
+  box-shadow: 2px 2px 0 #ffd3e2;
+}
+
+/* 作品卡：去掉 emoji 牌子后的排版 */
+.dj-work-card {
+  padding: 18px 22px;
+}
+
+/* 弹射进场：奇数卡从左、偶数卡从右，带回弹的弹簧曲线 */
+[data-dj-reveal] {
+  transition: opacity 0.45s ease,
+              transform 0.62s cubic-bezier(0.3, 1.75, 0.45, 1);
+  transition-delay: calc(var(--i, 0) * 90ms);
+  will-change: transform, opacity;
+}
+[data-dj-reveal]:not([data-dj-reveal="left"]):not([data-dj-reveal="right"]) {
+  transform: translateY(26px);
+}
+[data-dj-reveal="left"] {
+  transform: translateX(-72px) rotate(-2deg) scale(0.94);
+}
+[data-dj-reveal="right"] {
+  transform: translateX(72px) rotate(2deg) scale(0.94);
+}
+[data-dj-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* 底部颜文字模式：脸变小一号装得下 */
+.dj-face.is-kaomoji {
+  font-size: 1.05rem;
+  right: -6px;
+  bottom: -8px;
+  letter-spacing: -1px;
+}
+
+/* [fix] v2 残留的 space-between 会把竖杠和标题文字拆到两端 */
+.dj-section-title { justify-content: flex-start; }
+
+/* ================================================================
+   主页 v6 最终版：磨砂玻璃卡片（用户偏好）+ 简洁深色背景
+   ================================================================ */
+
+/* 滚动条：纯色，不要渐变 */
+::-webkit-scrollbar-thumb { background: #8fb5e6; }
+body[theme="dark"] ::-webkit-scrollbar-thumb,
+body[theme="black"] ::-webkit-scrollbar-thumb { background: #46618f; }
+
+/* 首屏居中：开场+身份卡占满第一屏 */
+.dj-first {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.dj-works-section { margin-top: 10vh; }
+
+/* 区块标题纯淡入，不再下坠（修复与卡片重叠） */
+.dj-section-title[data-dj-reveal] {
+  transform: none;
+  transition: opacity 0.5s ease;
+}
+
+/* ---------- 磨砂玻璃卡片（替换粗描边贴纸） ---------- */
+.dj-card {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(80, 110, 200, 0.16);
+  color: var(--t-dark);
+  transition: transform 0.22s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.22s ease;
+}
+.dj-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(80, 110, 200, 0.26);
+}
+[theme='dark'] .dj-card, [data-theme='dark'] .dj-card {
+  background: rgba(40, 45, 54, 0.5);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+[theme='dark'] .dj-card:hover, [data-theme='dark'] .dj-card:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+/* 悬停锁色（防主题 a:hover 把文字染白） */
+.dj-home .dj-card,
+.dj-home .dj-card:active,
+.dj-home .dj-card:hover { color: var(--t-dark); }
+[theme='dark'] .dj-home .dj-card,
+[theme='dark'] .dj-home .dj-card:active,
+[theme='dark'] .dj-home .dj-card:hover,
+[data-theme='dark'] .dj-home .dj-card,
+[data-theme='dark'] .dj-home .dj-card:active,
+[data-theme='dark'] .dj-home .dj-card:hover { color: #e6eaf0; }
+.dj-home .dj-card * { color: inherit; }
+
+/* 快捷圆钮同步磨砂 */
+.dj-quick-btn {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(80, 110, 200, 0.14);
+}
+.dj-quick-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(80, 110, 200, 0.26);
+}
+[theme='dark'] .dj-quick-btn, [data-theme='dark'] .dj-quick-btn {
+  background: rgba(56, 62, 72, 0.55);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 头像回归圆形大尺寸 */
+.dj-avatar {
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 6px 18px rgba(120, 140, 220, 0.3);
+  transform: none;
+}
+[theme='dark'] .dj-avatar, [data-theme='dark'] .dj-avatar {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* [fix] :not() 链使初始位移规则优先级达 (0,3,0)，压过 .is-in 复位。
+   这里用同级优先级 + 靠后位置压回来 */
+.dj-home [data-dj-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+.dj-home .dj-section-title[data-dj-reveal] {
+  transform: none;
+}
+
+/* ================================================================
+   主页 v7：黄昏动态壁纸背景（Wallpaper Engine 预览 + 磨砂模糊）
+   打字机标题（只打一次）+ 可爱字体 + 滚动条隐藏
+   ================================================================ */
+
+/* 黄昏壁纸：铺满全屏，模糊放大，上深色渐变保文字可读 */
+#dj-dusk-bg {
+  position: fixed;
+  inset: -34px;
+  z-index: -2;
+  pointer-events: none;
+  overflow: hidden;
+}
+#dj-dusk-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.08);
+}
+#dj-dusk-bg .dj-dusk-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 14, 24, 0.32), rgba(10, 14, 24, 0.5));
+}
+
+/* 打字机光标 */
+.dj-type-cursor {
+  display: inline-block;
+  margin-left: 2px;
+  color: #7fb0e8;
+  animation: dj-cursor-blink 0.9s steps(1) infinite;
+}
+@keyframes dj-cursor-blink { 50% { opacity: 0; } }
+.dj-idcard-title { min-height: 1.5em; }
+
+/* 可爱字体：只用在标题，不碰正文排版 */
+.dj-hero-title, .dj-idcard-title, .dj-section-title {
+  font-family: 'ZCOOL KuaiLe', 'Yuanti SC', 'YouYuan', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+/* 滚动条整个隐藏（页面仍可滚动） */
+::-webkit-scrollbar { width: 0; height: 0; }
+html { scrollbar-width: none; }
+
+/* 区块标题永远在卡片上层 */
+.dj-section-title { position: relative; z-index: 2; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dj-type-cursor { animation: none; }
+}
+
+/* ================================================================
+   主页 v8：滚动零阻力（模糊已烘焙）+ 首屏占满 + 页眉磨砂
+   + 主题切换圆环扩散
+   ================================================================ */
+
+/* 首屏占满整个视口：作品区完全在折叠线外 */
+.dj-first { min-height: 100vh; }
+
+/* 页眉磨砂玻璃（浅色/深色） */
+#header, #header .nav {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
+}
+body[theme='dark'] #header, body[theme='dark'] #header .nav,
+body[theme='black'] #header, body[theme='black'] #header .nav {
+  background-color: rgba(28, 32, 40, 0.55) !important;
+}
+
+/* 主题切换：圆环扩散过渡 */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 2147483646; }
+
+/* ================================================================
+   v8 补丁：清晰壁纸 + 轻遮罩 + 黑白双主题
+   ================================================================ */
+/* 遮罩调轻：让壁纸清晰可见，只保留一点点压暗 */
+#dj-dusk-bg .dj-dusk-overlay {
+  background: linear-gradient(180deg, rgba(16, 20, 30, 0.18), rgba(16, 20, 30, 0.34));
+}
+body[theme='dark'] #dj-dusk-bg .dj-dusk-overlay,
+body[theme='black'] #dj-dusk-bg .dj-dusk-overlay {
+  background: linear-gradient(180deg, rgba(10, 12, 20, 0.42), rgba(10, 12, 20, 0.58));
+}
+/* 光斑柔光在清晰壁纸上太抢，移除 */
+#glow-bg { display: none !important; }
+
+/* ================================================================
+   主页 v9：动态视频壁纸 + 页眉无 logo 磨砂透明
+   ================================================================ */
+
+/* 动态视频背景（替代静态图） */
+#dj-video-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  overflow: hidden;
+}
+#dj-video-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+#dj-dusk-bg { display: none !important; } /* 旧静态图背景停用 */
+
+/* 轻遮罩：一点点压暗保证可读 */
+#dj-video-bg .dj-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(12, 16, 24, 0.16), rgba(12, 16, 24, 0.3));
+}
+body[theme='dark'] #dj-video-bg .dj-video-overlay,
+body[theme='black'] #dj-video-bg .dj-video-overlay {
+  background: linear-gradient(180deg, rgba(8, 10, 16, 0.3), rgba(8, 10, 16, 0.44));
+}
+
+/* 页眉：无 logo，整体磨砂透明 */
+.header-title { display: none !important; }
+header, header .nav {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+}
+body[theme='dark'] header, body[theme='dark'] header .nav,
+body[theme='black'] header, body[theme='black'] header .nav {
+  background-color: rgba(16, 20, 28, 0.32) !important;
+}
+/* 菜单文字加一点投影保证在亮背景上可读 */
+#header .menu-item, #header .menu-item a {
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+}
+
+/* 页眉搜索框玻璃化 */
+header .search input, header .search-input {
+  background-color: rgba(255, 255, 255, 0.22) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: inherit;
+}
+body[theme='dark'] header .search input,
+body[theme='black'] header .search input {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ================================================================
+   访客特效设置面板（⚙️ 按钮 + 玻璃面板，localStorage 持久化）
+   ================================================================ */
+.dj-fx-gear {
+  position: fixed;
+  right: 30px;
+  bottom: 88px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 90;
+  transition: transform 0.25s ease;
+}
+.dj-fx-gear:hover { transform: rotate(90deg) scale(1.08); }
+body[theme='dark'] .dj-fx-gear, body[theme='black'] .dj-fx-gear {
+  background: rgba(40, 46, 56, 0.4);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+.dj-fx-panel {
+  position: fixed;
+  right: 24px;
+  bottom: 140px;
+  width: 240px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  z-index: 95;
+  color: #333;
+}
+body[theme='dark'] .dj-fx-panel, body[theme='black'] .dj-fx-panel {
+  background: rgba(34, 38, 46, 0.6);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #e6eaf0;
+}
+.dj-fx-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; }
+.dj-fx-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+.dj-fx-toggle {
+  border: none;
+  border-radius: 999px;
+  padding: 3px 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: #7bd88f;
+  color: #14351f;
+}
+.dj-fx-toggle.off { background: #c9ced6; color: #4a4f57; }
+.dj-fx-blur { width: 110px; accent-color: #f78fb3; }
+.dj-fx-note { font-size: 0.68rem; opacity: 0.55; margin-top: 2px; }

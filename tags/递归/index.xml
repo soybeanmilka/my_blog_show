@@ -387,8 +387,8 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>展开：<code>reverse(NULL,1) → reverse(1,2) → reverse(2,3) → reverse(3,4) → reverse(4,NULL)</code>，和循环逐轮等价。</p>
-<h2 id="自测" class="headerLink">
-    <a href="#%e8%87%aa%e6%b5%8b" class="header-mark"></a>6 自测</h2><ul>
+<h2 id="想复习时可以问自己" class="headerLink">
+    <a href="#%e6%83%b3%e5%a4%8d%e4%b9%a0%e6%97%b6%e5%8f%af%e4%bb%a5%e9%97%ae%e8%87%aa%e5%b7%b1" class="header-mark"></a>6 想复习时，可以问自己</h2><ul>
 <li><i class="far fa-square fa-fw"></i> 能说清&quot;假设小问题正确&quot;为什么不是循环论证</li>
 <li><i class="far fa-square fa-fw"></i> 能用具体数字验证 <code>fib(5)</code> 的&quot;如果……那么……&rdquo;</li>
 <li><i class="far fa-square fa-fw"></i> 用自己的 SOP 讲一遍：拆小问题 → 假设处理完 → 只做一步 → 判断能否得到答案</li>
