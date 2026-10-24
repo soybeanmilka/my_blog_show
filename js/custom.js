@@ -541,6 +541,7 @@
     wrap.id = 'dj-simple-bg'
     wrap.setAttribute('aria-hidden', 'true')
     document.body.insertBefore(wrap, document.body.firstChild)
+    if (FX.blur > 0) wrap.style.filter = 'blur(' + FX.blur + 'px)'
   }
 
   /* ---------- 打字机效果（只打一次，不循环） ---------- */
@@ -652,14 +653,22 @@
       '<div class="dj-fx-title">特效设置</div>' +
       '<div class="dj-fx-row"><span>🌸 飘落花瓣</span>' +
       '  <button type="button" class="dj-fx-toggle" data-k="petals"></button></div>' +
+      '<div class="dj-fx-row"><span>🌫️ 背景模糊</span>' +
+      '  <input type="range" class="dj-fx-blur" min="0" max="16" step="1" aria-label="背景模糊程度"></div>' +
       '<div class="dj-fx-note">设置保存在访客自己的浏览器里</div>'
     document.body.appendChild(panel)
 
+    function applyBlur () {
+      var bg = document.getElementById('dj-simple-bg')
+      if (bg) bg.style.filter = FX.blur > 0 ? 'blur(' + FX.blur + 'px)' : ''
+    }
     function refresh () {
       panel.querySelector('[data-k="petals"]').textContent = FX.petals ? '开' : '关'
       panel.querySelector('[data-k="petals"]').classList.toggle('off', !FX.petals)
+      panel.querySelector('.dj-fx-blur').value = FX.blur
       var f = document.getElementById('petal-field')
       if (f) f.style.display = FX.petals ? '' : 'none'
+      applyBlur()
     }
     function commit () { saveFx(FX); refresh() }
 
@@ -668,6 +677,11 @@
         FX.petals = !FX.petals
         commit()
       }
+    })
+    panel.querySelector('.dj-fx-blur').addEventListener('input', function (e) {
+      FX.blur = parseInt(e.target.value, 10) || 0
+      saveFx(FX)
+      applyBlur()
     })
 
     window.__djOpenFxPanel = function () {
