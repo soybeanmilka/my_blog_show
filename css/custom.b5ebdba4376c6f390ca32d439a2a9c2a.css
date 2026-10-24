@@ -1797,3 +1797,29 @@ body[theme='light'] #dj-simple-bg, [theme='light'] #dj-simple-bg {
   -webkit-mask: center / contain no-repeat;
   mask: center / contain no-repeat;
 }
+
+/* ================================================================
+   v13：页眉整组居中（真正的）+ 首页字体统一 + 手机视频浅适配
+   ================================================================ */
+/* 根因：DoIt 给 .header-title 设了 flex 撑满（765px），把菜单顶到右边 */
+header .header-title {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  margin-right: 26px;
+}
+/* 首页字体和导航栏统一 */
+header .header-title a {
+  font-family: inherit !important;
+  letter-spacing: 0;
+}
+/* 手机端视频壁纸浅浅适配：遮罩稍强 + 轻微压暗 */
+@media (max-width: 720px) {
+  #dj-video-bg .dj-video-overlay {
+    background: linear-gradient(180deg, rgba(8, 10, 16, 0.3), rgba(8, 10, 16, 0.46));
+  }
+  #dj-video-bg video { filter: brightness(0.92); }
+  .dj-first { min-height: calc(100vh - 120px); }
+}
+
+/* 菜单不再撑满右半边，让整组跟随居中 */
+header .header-wrapper .menu { flex-grow: 0 !important; }
