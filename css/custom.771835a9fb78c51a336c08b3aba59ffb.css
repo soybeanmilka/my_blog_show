@@ -1714,15 +1714,10 @@ body[theme='dark'] .dj-fx-panel, body[theme='black'] .dj-fx-panel {
   pointer-events: auto;
 }
 /* 页眉"首页"文字用可爱字体加重一点 */
-header .header-title a {
-  font-family: 'ZCOOL KuaiLe', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  letter-spacing: 1px;
-}
 
 /* ================================================================
    v10：页眉居中（Win11 任务栏式）+ 壁纸切换面板样式
    ================================================================ */
-header .header-wrapper { justify-content: center !important; gap: 26px; }
 #dj-video-bg img { width: 100%; height: 100%; object-fit: cover; }
 .dj-fx-wall {
   border: 1px solid rgba(255, 255, 255, 0.25);
@@ -1764,7 +1759,6 @@ header .header-wrapper { justify-content: center !important; gap: 26px; }
 #back-to-top-button:hover { transform: scale(1.12); }
 
 /* 菜单自带 margin-left:auto，会破坏居中——压掉 */
-header .header-wrapper .menu { margin-left: 0 !important; margin-right: 0 !important; }
 
 /* ================================================================
    v11：轻量纯 CSS 渐变背景（零媒体，不卡电脑）
@@ -1802,16 +1796,7 @@ body[theme='light'] #dj-simple-bg, [theme='light'] #dj-simple-bg {
    v13：页眉整组居中（真正的）+ 首页字体统一 + 手机视频浅适配
    ================================================================ */
 /* 根因：DoIt 给 .header-title 设了 flex 撑满（765px），把菜单顶到右边 */
-header .header-title {
-  flex: 0 0 auto !important;
-  width: auto !important;
-  margin-right: 26px;
-}
 /* 首页字体和导航栏统一 */
-header .header-title a {
-  font-family: inherit !important;
-  letter-spacing: 0;
-}
 /* 手机端视频壁纸浅浅适配：遮罩稍强 + 轻微压暗 */
 @media (max-width: 720px) {
   #dj-video-bg .dj-video-overlay {
@@ -1822,4 +1807,3 @@ header .header-title a {
 }
 
 /* 菜单不再撑满右半边，让整组跟随居中 */
-header .header-wrapper .menu { flex-grow: 0 !important; }
