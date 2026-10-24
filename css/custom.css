@@ -1417,7 +1417,7 @@ body[theme="black"] ::-webkit-scrollbar-thumb { background: #46618f; }
 }
 [theme='dark'] .dj-card, [data-theme='dark'] .dj-card {
   background: rgba(40, 45, 54, 0.5);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: transparent;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 [theme='dark'] .dj-card:hover, [data-theme='dark'] .dj-card:hover {
@@ -1632,7 +1632,7 @@ body[theme='black'] header .search input {
 .dj-fx-gear {
   position: fixed;
   right: 30px;
-  bottom: 88px;
+  bottom: 150px;
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -1652,22 +1652,23 @@ body[theme='dark'] .dj-fx-gear, body[theme='black'] .dj-fx-gear {
 }
 .dj-fx-panel {
   position: fixed;
-  right: 24px;
-  bottom: 140px;
+  right: 22px;
+  bottom: 202px;
   width: 240px;
   padding: 14px 16px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 10px 30px rgba(80, 110, 200, 0.16);
   z-index: 95;
-  color: #333;
+  color: var(--t-dark, #4a7fd4);
 }
 body[theme='dark'] .dj-fx-panel, body[theme='black'] .dj-fx-panel {
-  background: rgba(34, 38, 46, 0.6);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(40, 45, 54, 0.5);
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
   color: #e6eaf0;
 }
 .dj-fx-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; }
