@@ -519,20 +519,27 @@
     document.body.insertBefore(wrap, document.body.firstChild)
   }
 
-  /* ---------- 动态视频壁纸背景（Wallpaper Engine 视频 + 轻遮罩） ---------- */
-  function initVideoBG () {
-    if (document.getElementById('dj-video-bg')) return
-    var home = document.querySelector('.dj-home')
-    var src = (home && home.getAttribute('data-bg-video')) || '/media/bg-cat.mp4'
-    var poster = (home && home.getAttribute('data-bg-poster')) || ''
+  /* ---------- 简易背景：纯 CSS 渐变（零媒体，不卡电脑） ---------- */
+  var FXKEY = 'doujiang_fx'
+  function loadFx () {
+    var fx = { petals: true }
+    try {
+      var raw = localStorage.getItem(FXKEY)
+      if (raw) {
+        var saved = JSON.parse(raw)
+        for (var k in fx) if (saved[k] !== undefined) fx[k] = saved[k]
+      }
+    } catch (e) {}
+    return fx
+  }
+  function saveFx (fx) { try { localStorage.setItem(FXKEY, JSON.stringify(fx)) } catch (e) {} }
+  var FX = null
+  function initSimpleBG () {
+    if (document.getElementById('dj-simple-bg')) return
+    FX = loadFx()
     var wrap = document.createElement('div')
-    wrap.id = 'dj-video-bg'
+    wrap.id = 'dj-simple-bg'
     wrap.setAttribute('aria-hidden', 'true')
-    wrap.innerHTML =
-      '<video autoplay loop muted playsinline preload="auto"' +
-      (poster ? ' poster="' + poster + '"' : '') +
-      '><source src="' + src + '" type="video/mp4"></video>' +
-      '<div class="dj-video-overlay"></div>'
     document.body.insertBefore(wrap, document.body.firstChild)
   }
 
@@ -593,6 +600,19 @@
     }).catch(function () {})
   }
 
+  /* ---------- 页眉"设置"入口 → 特效面板 ---------- */
+  function initFxEntry () {
+    var a = Array.from(document.querySelectorAll('header a')).find(function (x) {
+      return x.textContent.trim() === '设置'
+    })
+    if (!a) return
+    a.addEventListener('click', function (e) {
+      e.preventDefault()
+      e.stopPropagation()
+      if (window.__djOpenFxPanel) window.__djOpenFxPanel()
+    })
+  }
+
   function initThemeReveal () {
     if (!document.startViewTransition) return
     /* 捕获阶段拦截：只允许 黑↔白 两个主题，拦下 DoIt 的 dark→black→light 三段循环 */
@@ -623,35 +643,8 @@
     })
   }
 
-  /* ---------- 访客特效设置：落花开关 + 背景模糊（访客侧持久化） ---------- */
+  /* ---------- 特效设置面板：落花开关（访客侧持久化） ---------- */
   function initFxPanel () {
-    var KEY = 'doujiang_fx'
-    var fx = { petals: true, blur: 0 }
-    try {
-      var raw = localStorage.getItem(KEY)
-      if (raw) {
-        var saved = JSON.parse(raw)
-        for (var k in fx) if (saved[k] !== undefined) fx[k] = saved[k]
-      }
-    } catch (e) {}
-
-    function save () { try { localStorage.setItem(KEY, JSON.stringify(fx)) } catch (e) {} }
-    function applyBlur () {
-      var v = document.querySelector('#dj-video-bg video')
-      if (v) v.style.filter = fx.blur > 0 ? 'blur(' + fx.blur + 'px)' : ''
-    }
-    function applyPetals () {
-      var f = document.getElementById('petal-field')
-      if (f) f.style.display = fx.petals ? '' : 'none'
-    }
-
-    var gear = document.createElement('button')
-    gear.type = 'button'
-    gear.className = 'dj-fx-gear'
-    gear.textContent = '⚙️'
-    gear.title = '特效设置'
-    document.body.appendChild(gear)
-
     var panel = document.createElement('div')
     panel.className = 'dj-fx-panel'
     panel.hidden = true
@@ -659,37 +652,33 @@
       '<div class="dj-fx-title">特效设置</div>' +
       '<div class="dj-fx-row"><span>🌸 飘落花瓣</span>' +
       '  <button type="button" class="dj-fx-toggle" data-k="petals"></button></div>' +
-      '<div class="dj-fx-row"><span>背景模糊</span>' +
-      '  <input type="range" class="dj-fx-blur" min="0" max="16" step="1" aria-label="背景模糊程度"></div>' +
-      '<div class="dj-fx-note">设置保存在你自己的浏览器里</div>'
+      '<div class="dj-fx-note">设置保存在访客自己的浏览器里</div>'
     document.body.appendChild(panel)
 
-    function render () {
-      panel.querySelector('[data-k="petals"]').textContent = fx.petals ? '开' : '关'
-      panel.querySelector('[data-k="petals"]').classList.toggle('off', !fx.petals)
-      panel.querySelector('.dj-fx-blur').value = fx.blur
-      applyPetals()
-      applyBlur()
+    function refresh () {
+      panel.querySelector('[data-k="petals"]').textContent = FX.petals ? '开' : '关'
+      panel.querySelector('[data-k="petals"]').classList.toggle('off', !FX.petals)
+      var f = document.getElementById('petal-field')
+      if (f) f.style.display = FX.petals ? '' : 'none'
     }
-    gear.addEventListener('click', function () { panel.hidden = !panel.hidden })
+    function commit () { saveFx(FX); refresh() }
+
     panel.addEventListener('click', function (e) {
       if (e.target.dataset && e.target.dataset.k === 'petals') {
-        fx.petals = !fx.petals
-        save()
-        render()
+        FX.petals = !FX.petals
+        commit()
       }
     })
-    panel.querySelector('.dj-fx-blur').addEventListener('input', function (e) {
-      fx.blur = parseInt(e.target.value, 10) || 0
-      save()
-      applyBlur()
-    })
-    render()
+
+    window.__djOpenFxPanel = function () {
+      panel.hidden = false
+      refresh()
+    }
+    refresh()
   }
 
-  /* 页面加载完成后执行 */
   function onReady () {
-    initVideoBG()
+    initSimpleBG()
     initTypewriter()
     initBackToTop()
     initThemeReveal()
@@ -697,6 +686,7 @@
     initFxPanel()
     initHeartBurst()
     initPjax()
+    initFxEntry()
     window.__djPageInit()
     initMusicPlayer(function () {
       restorePlayerState()

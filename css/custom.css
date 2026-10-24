@@ -1599,7 +1599,7 @@ body[theme='black'] #dj-video-bg .dj-video-overlay {
 }
 
 /* 页眉：无 logo，整体磨砂透明 */
-.header-title { display: none !important; }
+/* 页眉标题 = 「首页」入口，保留 */
 header, header .nav {
   background-color: rgba(255, 255, 255, 0.1) !important;
   backdrop-filter: blur(14px) saturate(1.15);
@@ -1693,3 +1693,106 @@ body[theme='dark'] .dj-fx-panel, body[theme='black'] .dj-fx-panel {
 .dj-fx-toggle.off { background: #c9ced6; color: #4a4f57; }
 .dj-fx-blur { width: 110px; accent-color: #f78fb3; }
 .dj-fx-note { font-size: 0.68rem; opacity: 0.55; margin-top: 2px; }
+
+/* ================================================================
+   v10：设置入口挪进页眉（右上），面板挂页眉下方
+   ================================================================ */
+.dj-fx-gear { display: none !important; } /* 旧浮动齿轮停用 */
+.dj-fx-panel {
+  right: 20px;
+  bottom: auto;
+  top: 68px;
+  transform: translateY(-8px);
+  opacity: 0;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  pointer-events: none;
+}
+.dj-fx-panel:not([hidden]) {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+/* 页眉"首页"文字用可爱字体加重一点 */
+header .header-title a {
+  font-family: 'ZCOOL KuaiLe', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  letter-spacing: 1px;
+}
+
+/* ================================================================
+   v10：页眉居中（Win11 任务栏式）+ 壁纸切换面板样式
+   ================================================================ */
+header .header-wrapper { justify-content: center !important; gap: 26px; }
+#dj-video-bg img { width: 100%; height: 100%; object-fit: cover; }
+.dj-fx-wall {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.12);
+  color: inherit;
+  border-radius: 10px;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.dj-fx-wall.active {
+  border-color: #7fb0e8;
+  background: rgba(127, 176, 232, 0.25);
+}
+.dj-fx-url {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  color: inherit;
+}
+.dj-fx-apply {
+  border: none;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: #7fb0e8;
+  color: #10203a;
+}
+.dj-fx-label { font-size: 0.78rem; opacity: 0.7; margin-bottom: 6px; }
+.dj-fx-walls { display: flex; gap: 8px; margin-bottom: 10px; }
+.dj-fx-apply:active { transform: scale(0.96); }
+#back-to-top-button { transition: transform 0.2s ease; }
+#back-to-top-button:hover { transform: scale(1.12); }
+
+/* 菜单自带 margin-left:auto，会破坏居中——压掉 */
+header .header-wrapper .menu { margin-left: 0 !important; margin-right: 0 !important; }
+
+/* ================================================================
+   v11：轻量纯 CSS 渐变背景（零媒体，不卡电脑）
+   ================================================================ */
+#dj-dusk-bg, #dj-video-bg { display: none !important; }
+#dj-simple-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 45% at 72% 88%, rgba(94, 118, 184, 0.35), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 18% 78%, rgba(120, 90, 150, 0.22), transparent 70%),
+    radial-gradient(ellipse 70% 50% at 50% 110%, rgba(40, 60, 110, 0.4), transparent 75%),
+    linear-gradient(180deg, #171c26 0%, #1a2130 45%, #1e2740 100%);
+}
+body[theme='light'] #dj-simple-bg, [theme='light'] #dj-simple-bg {
+  background:
+    radial-gradient(ellipse 60% 45% at 72% 88%, rgba(255, 214, 232, 0.5), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 18% 78%, rgba(214, 226, 250, 0.6), transparent 70%),
+    linear-gradient(180deg, #f5f2ec 0%, #eef0f6 55%, #e4e9f5 100%);
+}
+
+/* 品牌图标：CSS mask + currentColor（黑白单色，随主题变色） */
+.dj-brand-icon {
+  display: inline-block;
+  width: 19px;
+  height: 19px;
+  background-color: currentColor;
+  -webkit-mask: center / contain no-repeat;
+  mask: center / contain no-repeat;
+}
