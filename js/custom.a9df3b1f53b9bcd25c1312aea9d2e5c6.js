@@ -458,22 +458,34 @@
     })
 
     window.__djOpenFxPanel = function () {
-      panel.hidden = false
-      refresh()
+      panel.hidden = !panel.hidden
+      if (!panel.hidden) refresh()
     }
     refresh()
   }
 
-  /* ---------- 页眉"设置"入口 → 特效面板 ---------- */
+  /* ---------- 页眉"设置"入口 → 特效面板（桌面和手机两个链接都要绑） ---------- */
   function initFxEntry () {
-    var a = Array.from(document.querySelectorAll('header a')).find(function (x) {
+    var links = Array.from(document.querySelectorAll('header a')).filter(function (x) {
       return x.textContent.trim() === '设置'
     })
-    if (!a) return
-    a.addEventListener('click', function (e) {
-      e.preventDefault()
-      e.stopPropagation()
-      if (window.__djOpenFxPanel) window.__djOpenFxPanel()
+    if (!links.length) return
+    function closeMobileMenu () {
+      var menu = document.getElementById('menu-mobile')
+      var toggle = document.getElementById('menu-toggle-mobile')
+      if (menu && menu.classList.contains('active')) {
+        menu.classList.remove('active')
+        if (toggle) toggle.classList.remove('active')
+        document.body.classList.remove('blur')
+      }
+    }
+    links.forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        closeMobileMenu()
+        if (window.__djOpenFxPanel) window.__djOpenFxPanel()
+      })
     })
   }
 
