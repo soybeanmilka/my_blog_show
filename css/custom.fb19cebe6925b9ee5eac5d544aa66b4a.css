@@ -1925,3 +1925,46 @@ body[theme='light'] #dj-simple-bg, [theme='light'] #dj-simple-bg {
     min-height: calc(100svh - 120px);
   }
 }
+
+/* ================================================================
+   v16：关于/作品/文章页 —— 磨砂玻璃外框卡片
+   （这些页面文字原来直接压在视频壁纸上，黑主题下看不清；
+   套上和主页同款的磨砂卡，正文配色也明确到两个主题）
+   ================================================================ */
+.page.single {
+  box-sizing: border-box;
+  margin-top: 76px; /* 给固定页眉让位（main 的 margin 已被页眉改版清零） */
+  padding: 1.4rem 1.6rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(80, 110, 200, 0.16);
+}
+body[theme="dark"] .page.single,
+body[theme="black"] .page.single {
+  background: rgba(38, 43, 52, 0.55);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* 正文与标题配色：亮主题墨色、黑主题浅色，副标题/次要信息降一档但仍可读 */
+.page.single .single-title { color: #2c3440; }
+.page.single .single-subtitle { color: #5a6472; }
+.page.single .content { color: #3c4450; }
+body[theme="dark"] .page.single .single-title,
+body[theme="black"] .page.single .single-title { color: #f2f5fa; }
+body[theme="dark"] .page.single .single-subtitle,
+body[theme="black"] .page.single .single-subtitle { color: #c3ccd9; }
+body[theme="dark"] .page.single .content,
+body[theme="black"] .page.single .content { color: #e9edf4; }
+
+/* 手机端内边距收一点 */
+@media (max-width: 680px) {
+  .page.single { padding: 1.1rem 1.15rem; }
+}
+
+/* v16 补充：首页身份卡副标题黑主题配色（原来带透明度显得发灰） */
+body[theme="dark"] .dj-home .dj-idcard-sub,
+body[theme="black"] .dj-home .dj-idcard-sub { color: #d9e2ef; opacity: 1; }
