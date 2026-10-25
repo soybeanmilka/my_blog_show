@@ -242,6 +242,27 @@
     })
   }
 
+  /* ---------- 滚动进场：卡片进入视口弹出，滚出重进会重播 ---------- */
+  function initScrollReveal () {
+    var els = document.querySelectorAll('[data-dj-reveal]')
+    if (!els.length) return
+    if (window.__djIO) { window.__djIO.disconnect(); window.__djIO = null }
+    var io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (entries[i].isIntersecting) entries[i].target.classList.add('is-in')
+        else entries[i].target.classList.remove('is-in')
+      }
+    }, { threshold: 0.15 })
+    for (var j = 0; j < els.length; j++) io.observe(els[j])
+    window.__djIO = io
+  }
+
+  /* pjax 切页后重新绑定页面级特效 */
+  window.__djPageInit = function () {
+    initScrollReveal()
+    initTypewriter()
+  }
+
   /* ---------- 网易云音乐播放器（歌单缓存 + 切页续播） ---------- */
   var PLAYER_STORAGE = 'doujiang_player_state'
   var PLAYLIST_STORAGE = 'doujiang_playlist_cache'
@@ -466,7 +487,7 @@
     initFxPanel()
     initFxEntry()
     initPjax()
-    window.__djPageInit()
+    initScrollReveal()
     initMusicPlayer(function () {
       restorePlayerState()
     })
