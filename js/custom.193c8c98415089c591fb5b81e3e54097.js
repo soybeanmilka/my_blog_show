@@ -457,6 +457,12 @@
       panel.hidden = !panel.hidden
       if (!panel.hidden) refresh()
     }
+    /* 点面板外面任意位置关闭（页眉"设置"入口自己 stopPropagation，不会误触发） */
+    document.addEventListener('click', function (e) {
+      if (panel.hidden) return
+      if (panel.contains(e.target)) return
+      panel.hidden = true
+    })
     refresh()
   }
 

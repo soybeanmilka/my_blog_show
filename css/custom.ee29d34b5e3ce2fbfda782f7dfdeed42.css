@@ -1813,8 +1813,11 @@ body[theme='light'] #dj-simple-bg, [theme='light'] #dj-simple-bg {
    ================================================================ */
 .dj-intro-lock { overflow: hidden; }
 
-/* 身份卡：宽度/圆角可过渡（展开动画的主演） */
+/* 身份卡：宽度/圆角可过渡（展开动画的主演）
+   [fix] border-box：content-box 下 width:100% 会加上自身 padding/border，
+   手机端卡片比屏幕宽出一截、看起来不居中 */
 .dj-idcard {
+  box-sizing: border-box;
   width: 100%;
   transition: transform 0.22s cubic-bezier(0.2, 1, 0.3, 1),
               box-shadow 0.22s ease,
@@ -1877,4 +1880,48 @@ body[theme='light'] #dj-simple-bg, [theme='light'] #dj-simple-bg {
   .dj-home.dj-intro .dj-avatar { animation: none; }
   .dj-idcard { transition: none; }
   .dj-home:not(.dj-intro) .dj-idcard-text { animation: none; }
+}
+
+/* ================================================================
+   v15：反馈修复 —— 手机端设置面板稳妥居中、头像圆盘随屏幕自适应、
+   首屏用 svh 防止手机地址栏导致的不居中
+   ================================================================ */
+
+/* 设置面板：left/right 归零 + margin auto 居中（比 translateX 更稳），
+   窄屏时自动收窄不贴边 */
+.dj-fx-panel {
+  box-sizing: border-box;
+  left: 0;
+  right: 0;
+  top: 64px;
+  width: min(240px, calc(100vw - 24px));
+  margin-inline: auto;
+  transform: translateY(-8px);
+}
+.dj-fx-panel:not([hidden]) { transform: translateY(0); }
+
+/* 头像尺寸：小屏缩小一点，大屏略放大（圆盘卡片跟着变） */
+.dj-home { --dj-avatar-size: clamp(84px, 18vw, 112px); }
+.dj-home .dj-avatar {
+  width: var(--dj-avatar-size);
+  height: var(--dj-avatar-size);
+}
+.dj-home.dj-intro .dj-idcard {
+  width: calc(var(--dj-avatar-size) + 2 * clamp(18px, 4vw, 26px) + 4px);
+  padding: clamp(18px, 4vw, 26px);
+}
+@media (max-width: 680px) {
+  .dj-home { --dj-avatar-size: clamp(76px, 21vw, 96px); }
+}
+
+/* 首屏高度用 svh：手机浏览器地址栏收起/展开时头像仍然真正居中 */
+.dj-first {
+  min-height: calc(100vh - 140px);
+  min-height: calc(100svh - 140px);
+}
+@media (max-width: 720px) {
+  .dj-first {
+    min-height: calc(100vh - 120px);
+    min-height: calc(100svh - 120px);
+  }
 }
