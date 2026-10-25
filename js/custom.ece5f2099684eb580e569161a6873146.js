@@ -16,7 +16,7 @@
   /* ---------- 访客特效状态（localStorage 持久化，访客各自保存） ---------- */
   var FXKEY = 'doujiang_fx'
   function loadFx () {
-    var fx = { wallpaper: 'video', petals: true }
+    var fx = { wallpaper: 'video', petals: true, blur: 0 }
     try {
       var raw = localStorage.getItem(FXKEY)
       if (raw) {
@@ -54,6 +54,8 @@
         '<div class="dj-video-overlay"></div>'
       document.body.insertBefore(wrap, document.body.firstChild)
     }
+    var v = wrap.querySelector('video')
+    if (v && FX.blur > 0) v.style.filter = 'blur(' + FX.blur + 'px)'
   }
 
   /* ---------- 飘落花瓣（樱花+搭配粒子） ---------- */
@@ -395,9 +397,15 @@
       '  <button type="button" class="dj-fx-toggle" data-k="wallpaper"></button></div>' +
       '<div class="dj-fx-row"><span>🌸 飘落花瓣</span>' +
       '  <button type="button" class="dj-fx-toggle" data-k="petals"></button></div>' +
+      '<div class="dj-fx-row"><span>🌫️ 背景模糊</span>' +
+      '  <input type="range" class="dj-fx-blur" min="0" max="16" step="1" aria-label="背景模糊程度"></div>' +
       '<div class="dj-fx-note">设置保存在访客自己的浏览器里</div>'
     document.body.appendChild(panel)
 
+    function applyBlur () {
+      var v = document.querySelector('#dj-video-bg video')
+      if (v) v.style.filter = FX.blur > 0 ? 'blur(' + FX.blur + 'px)' : ''
+    }
     function refresh () {
       panel.querySelectorAll('.dj-fx-toggle').forEach(function (b) {
         var k = b.dataset.k
@@ -405,8 +413,10 @@
         b.textContent = on ? '开' : '关'
         b.classList.toggle('off', !on)
       })
+      panel.querySelector('.dj-fx-blur').value = FX.blur
       var f = document.getElementById('petal-field')
       if (f) f.style.display = FX.petals ? '' : 'none'
+      applyBlur()
     }
     function commit () { saveFx(FX); refresh(); buildBG() }
 
@@ -419,6 +429,11 @@
         FX.petals = !FX.petals
         commit()
       }
+    })
+    panel.querySelector('.dj-fx-blur').addEventListener('input', function (e) {
+      FX.blur = parseInt(e.target.value, 10) || 0
+      saveFx(FX)
+      applyBlur()
     })
 
     window.__djOpenFxPanel = function () {

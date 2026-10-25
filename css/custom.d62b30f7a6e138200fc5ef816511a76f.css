@@ -1763,7 +1763,6 @@ body[theme='dark'] .dj-fx-panel, body[theme='black'] .dj-fx-panel {
 /* ================================================================
    v11：轻量纯 CSS 渐变背景（零媒体，不卡电脑）
    ================================================================ */
-#dj-dusk-bg, #dj-video-bg { display: none !important; }
 #dj-simple-bg {
   position: fixed;
   inset: 0;
