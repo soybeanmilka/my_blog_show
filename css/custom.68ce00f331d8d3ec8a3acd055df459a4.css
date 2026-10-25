@@ -1933,7 +1933,7 @@ body[theme='light'] #dj-simple-bg, [theme='light'] #dj-simple-bg {
    ================================================================ */
 .page.single {
   box-sizing: border-box;
-  margin-top: 76px; /* 给固定页眉让位（main 的 margin 已被页眉改版清零） */
+  margin-top: 96px; /* 给固定页眉让位（main 的 margin 已被页眉改版清零），96 留出舒服的呼吸空隙 */
   padding: 1.4rem 1.6rem;
   border-radius: 18px;
   border: 1px solid rgba(255, 255, 255, 0.55);
@@ -1968,3 +1968,41 @@ body[theme="black"] .page.single .content { color: #e9edf4; }
 /* v16 补充：首页身份卡副标题黑主题配色（原来带透明度显得发灰） */
 body[theme="dark"] .dj-home .dj-idcard-sub,
 body[theme="black"] .dj-home .dj-idcard-sub { color: #d9e2ef; opacity: 1; }
+
+/* ================================================================
+   v17：反馈修复
+   1) pjax 切页动画会让磨砂卡瞬间失去模糊（祖先 opacity/transform
+      把 backdrop-filter 的采样范围切断了），含磨砂卡的页面直接停用
+   2) 作品卡片：磨砂底 + 描线边框，替代原来的全白/全黑
+   3) 作品卡之间、与外框之间隔开一点
+   ================================================================ */
+body.pjax-in main.main .container:has(.page.single),
+body.pjax-in main.main .container:has(.dj-card) { animation: none; }
+
+.page.single .showcase-box {
+  box-sizing: border-box;
+  width: calc(50% - 12px);
+  margin: 14px 0 0 0;
+  border: 2px solid rgba(45, 54, 68, 0.75);
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 6px 18px rgba(80, 110, 200, 0.12);
+}
+.page.single .showcase-box + .showcase-box { margin-left: 16px; }
+body[theme="dark"] .page.single .showcase-box,
+body[theme="black"] .page.single .showcase-box {
+  border-color: rgba(255, 255, 255, 0.75);
+  background: rgba(40, 45, 54, 0.5);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+@media (max-width: 680px) {
+  .page.single .showcase-box,
+  .page.single .showcase-box + .showcase-box {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 14px;
+  }
+}
