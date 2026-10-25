@@ -260,7 +260,7 @@
   /* pjax 切页后重新绑定页面级特效 */
   window.__djPageInit = function () {
     initScrollReveal()
-    initTypewriter()
+    initIntro()
   }
 
   /* ---------- 网易云音乐播放器（歌单缓存 + 切页续播） ---------- */
@@ -373,10 +373,7 @@
           audio.currentTime = state.time
         }
       } catch (e) {}
-      if (state.playing) {
-        var p = player.play()
-        if (p && p.catch) p.catch(function () {})
-      }
+      /* [改] 不再自动续播：访客打开页面绝不自动放歌，只记住进度，想听自己点 */
     }
     if (audio.readyState >= 1) {
       seek()
@@ -419,8 +416,7 @@
       '<div class="dj-fx-row"><span>🌸 飘落花瓣</span>' +
       '  <button type="button" class="dj-fx-toggle" data-k="petals"></button></div>' +
       '<div class="dj-fx-row"><span>🌫️ 背景模糊</span>' +
-      '  <input type="range" class="dj-fx-blur" min="0" max="16" step="1" aria-label="背景模糊程度"></div>' +
-      '<div class="dj-fx-note">设置保存在访客自己的浏览器里</div>'
+      '  <input type="range" class="dj-fx-blur" min="0" max="16" step="1" aria-label="背景模糊程度"></div>'
     document.body.appendChild(panel)
 
     function applyBlur () {
@@ -464,6 +460,47 @@
     refresh()
   }
 
+  /* ---------- 开场：居中头像+磨砂波纹 → 点击后卡片向两边展开 ---------- */
+  var INTRO_KEY = 'doujiang_intro_done'
+  function initIntro () {
+    var home = document.querySelector('.dj-home')
+    if (!home || home.__introInit) return
+    home.__introInit = true
+    var card = home.querySelector('.dj-idcard')
+    if (!card) { home.classList.remove('dj-intro'); return }
+
+    var skipped = false
+    try { skipped = sessionStorage.getItem(INTRO_KEY) === '1' } catch (e) {}
+
+    function expand () {
+      if (!home.classList.contains('dj-intro')) return
+      home.classList.remove('dj-intro')
+      document.body.classList.remove('dj-intro-lock')
+      try { sessionStorage.setItem(INTRO_KEY, '1') } catch (e) {}
+      setTimeout(initTypewriter, 300)
+    }
+    function onClick (e) {
+      if (!home.classList.contains('dj-intro')) return
+      e.preventDefault()
+      expand()
+    }
+    function onKey (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') return
+      if (!home.classList.contains('dj-intro')) return
+      e.preventDefault()
+      expand()
+    }
+
+    if (skipped) {
+      home.classList.remove('dj-intro')
+      initTypewriter()
+      return
+    }
+    document.body.classList.add('dj-intro-lock')
+    card.addEventListener('click', onClick)
+    card.addEventListener('keydown', onKey)
+  }
+
   /* ---------- 页眉"设置"入口 → 特效面板（桌面和手机两个链接都要绑） ---------- */
   function initFxEntry () {
     var links = Array.from(document.querySelectorAll('header a')).filter(function (x) {
@@ -493,7 +530,7 @@
   function onReady () {
     buildBG()
     initPetals()
-    initTypewriter()
+    initIntro()
     initBackToTop()
     initThemeReveal()
     initFxPanel()
